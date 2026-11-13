@@ -61,7 +61,7 @@ function LocalAdminPage() {
       <p className="muted">Panel de operaciones, catálogo y seguimiento. El catálogo y las opiniones se administran en Supabase; las oportunidades y abonos son datos de simulación locales.</p>
     </div>
     <div className="alert alert-warning admin-warning"><strong>Estado financiero:</strong> Bancolombia, Nequi, Bre-B y DaviPlata NO están conectados para verificar movimientos. Las aprobaciones de números y abonos son solo simulaciones guardadas en este navegador.</div>
-    <div className="row-actions top-gap" style={{flexWrap:"wrap",marginBottom:16}}><Link className="btn btn-secondary btn-small" href="/admin/conciliacion">Conciliación bancaria ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/catalogo">Catálogo e imágenes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/opiniones">Opiniones y resultados ↗</Link><Link className="btn btn-secondary btn-small" href="/acceso">Mi acceso ↗</Link></div>
+    <div className="row-actions top-gap" style={{flexWrap:"wrap",marginBottom:16}}><Link className="btn btn-secondary btn-small" href="/admin/clientes">CRM clientes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/numeros">Control de números ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/conciliacion">Conciliación bancaria ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/catalogo">Catálogo e imágenes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/opiniones">Opiniones y resultados ↗</Link><Link className="btn btn-secondary btn-small" href="/acceso">Mi acceso ↗</Link></div>
     <div className="draw-account-switch admin-draw-switch"><label htmlFor="admin-draw">Administrar sorteo</label>
       <select id="admin-draw" value={draw.id} onChange={(e) => chooseDraw(e.target.value)}>{draws.map((d) => <option key={d.id} value={d.id}>{d.title}{d.enabled ? " · visible" : " · oculto"}</option>)}</select>
     </div>
@@ -75,7 +75,7 @@ function LocalAdminPage() {
       {(["dashboard", "resumen", "pagos", "verificacion", "clientes", "sorteo", "sorteos", "contenido"] as Tab[]).map((t) =>
         <button type="button" role="tab" aria-selected={tab === t} key={t}
           className={"tab" + (tab === t ? " active" : "")} onClick={() => setTab(t)}>
-          {t === "dashboard" ? "Dashboard" : t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos (demo)" : t === "verificacion" ? "Conciliación" : t === "clientes" ? "Clientes" : t === "sorteos" ? "Gestionar sorteos" : t === "contenido" ? "Contenido e imágenes" : "Cierre"}
+          {t === "dashboard" ? "Dashboard" : t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos (demo)" : t === "verificacion" ? "Conciliación" : t === "clientes" ? "Clientes (demo)" : t === "sorteos" ? "Gestionar sorteos" : t === "contenido" ? "Contenido e imágenes" : "Cierre"}
         </button>)}
     </div>
     {error && <div className="alert alert-error" role="alert">{error}</div>}
@@ -125,7 +125,7 @@ function LocalAdminPage() {
           </table></div>}
       </section>}
       {tab === "clientes" && <section className="panel">
-        <div className="panel-heading"><div><h2>Clientes y cartera</h2><p className="small muted">Información guardada únicamente en este navegador.</p></div></div>
+        <div className="panel-heading"><div><h2>Clientes y cartera (solo demo local)</h2><p className="small muted">Información guardada únicamente en este navegador.</p></div></div>
         {orders.length === 0 ? <div className="empty-state"><span>♧</span><p>Aún no hay selecciones guardadas en este navegador.</p></div> :
           <div className="table-scroll"><table className="data-table">
             <thead><tr><th>Comprador</th><th>Celular</th><th>Oportunidad</th><th>Abonado</th><th>Saldo</th><th>Asignados</th><th>Participa</th></tr></thead>
