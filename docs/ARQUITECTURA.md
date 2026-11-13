@@ -9,8 +9,10 @@
 
 ## Reglas comerciales definidas
 - 200 oportunidades, COP $50.000 cada una, 50 números de cuatro cifras.
-- El comprador elige 10 de los números 0000 a 9999.
+- El comprador elige 10 de los números 0000 a 9999 **o solicita asignación automática de los 10 iniciales**. La demo evita duplicados dentro del navegador.
 - Los 40 restantes se asignan aleatoriamente según los abonos confirmados.
+- En Mi cuenta se muestra un porcentaje de colocación, sin totales de ventas; la demo lo calcula solo desde localStorage. En producción se necesita un agregado global seguro en Supabase, no datos del navegador.
+- Mensajes de avance en interfaz por hitos 25/50/75/90/100 %. Notificaciones externas vía n8n/WhatsApp/email quedan pendientes de consentimiento y backend real.
 - Mínimo primer abono: $10.000. Cada $1.000 confirmado equivale a un número asignado.
 - Ejemplo: $20.000 = 10 elegidos + 10 aleatorios; $35.000 = 10 + 25; $50.000 = 10 + 40.
 - SOLO con $50.000 confirmados y 50 números asignados queda habilitada la oportunidad.
@@ -28,7 +30,7 @@
 6. Reservas con caducidad y reglas autorizadas de cancelación/reembolso.
 7. Bitácora inmutable de pagos, asignaciones y cambios; no confiar en datos del navegador.
 8. Fechas oficiales de la Lotería de Medellín verificadas y resolución de impagos al día 7.
-9. Integración n8n/WhatsApp con consentimiento y políticas de privacidad.
+9. Integración n8n/WhatsApp con consentimiento y políticas de privacidad, eventos por hitos, idempotencia, exclusión de destinatarios sin opt-in y auditoría. Ver docs/COMUNICACIONES.md.
 10. Pruebas concurrentes, backup, monitoreo y despliegue Vercel con dominio y HTTPS.
 
 ## Seguridad

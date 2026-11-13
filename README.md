@@ -16,21 +16,21 @@ No se necesitan variables de entorno para la demo. Para preparar Supabase, copia
 ## Pantallas incluidas
 
 - / y /embudo — página de embudo comercial con CTA, simulador de abonos, preguntas frecuentes y formulario de interés desactivado por defecto.
-- /numeros — selección de 10 números entre 0000 y 9999 (buscador y cuadrícula paginada).
+- /numeros — el cliente escoge 10 números manualmente o solicita 10 automáticos disponibles; los 40 adicionales se asignan con abonos aprobados (demo local).
 - /pagos — reportes de abonos simulados.
-- /mi-cuenta — números reservados/asignados y saldo.
+- /mi-cuenta — números reservados/asignados, saldo, porcentaje de colocación y novedades por hitos (demo local, no cifras globales).
 - /admin — dashboard, aprobación/rechazo de pagos, cartera y control de cierre.
 
 ## Flujo de prueba
 
-1. Crear una oportunidad y elegir exactamente 10 números disponibles.
+1. Crear una oportunidad: escoger 10 números manualmente o seleccionar asignación automática de los primeros 10.
 2. Reportar un primer abono de $20.000.
 3. En /admin → Pagos, aprobarlo.
 4. En /mi-cuenta se ven 10 elegidos + 10 aleatorios, pero no participa.
 5. Repetir con $15.000: 10 + 25, aún no participa.
 6. Repetir con $15.000: 10 + 40, habilitada al completar $50.000.
 
-Los números se mantienen únicos en el navegador de demo. Los datos se guardan en localStorage: no son compartidos, seguros ni persistentes entre dispositivos. El panel administrativo no tiene autenticación. NO usar para cobrar, vender o sortear.
+La asignación automática reserva diez números únicos de la demo y los muestra en Mi cuenta. El progreso de colocación solo refleja las oportunidades creadas en el mismo navegador; NO es un indicador global de ventas. Los avisos por hitos se muestran en la pantalla, no se envían por WhatsApp ni correo. Los números se mantienen únicos en el navegador de demo. Los datos se guardan en localStorage: no son compartidos, seguros ni persistentes entre dispositivos. El panel administrativo no tiene autenticación. NO usar para cobrar, vender o sortear.
 
 ## Preparación Supabase
 

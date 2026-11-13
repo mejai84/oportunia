@@ -11,6 +11,7 @@ export const TOTAL_NUMBERS = 10_000;
 export const COP_PER_NUMBER = 1_000;
 
 export type Plan = "contado" | "dos-cuotas" | "tres-cuotas";
+export type SelectionMode = "manual" | "automatic";
 export type Method = "Bre-B" | "Nequi" | "PSE" | "Efectivo";
 export type PaymentStatus = "pendiente" | "aprobado" | "rechazado";
 export type OpportunityStatus = "pendiente" | "financiada" | "pagada";
@@ -26,6 +27,7 @@ export type Opportunity = {
   id: string;
   customer: Customer;
   selected: string[];
+  selectionMode?: SelectionMode; // Opcional para conservar órdenes demo antiguas.
   random: string[];
   paid: number;
   plan: Plan;
@@ -70,6 +72,28 @@ export function reservedNumbers(state: DemoState): Set<string> {
   return new Set(state.opportunities.flatMap((o) => [...o.selected, ...o.random]));
 }
 
+/** Selección sin duplicados dentro de una sola simulación local. */
+function drawAvailableNumbers(state: DemoState, count: number, rng: () => number): string[] {
+  const taken = reservedNumbers(state);
+  const available: string[] = [];
+  for (let i = 0; i < TOTAL_NUMBERS; i++) {
+    const number = String(i).padStart(4, "0");
+    if (!taken.has(number)) available.push(number);
+  }
+  if (available.length < count) throw new Error("No quedan suficientes números únicos disponibles.");
+  const drawn: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const randomValue = rng();
+    if (!Number.isFinite(randomValue) || randomValue < 0 || randomValue >= 1) {
+      throw new Error("Generador aleatorio no válido.");
+    }
+    const index = Math.floor(randomValue * available.length);
+    drawn.push(available[index]);
+    available.splice(index, 1);
+  }
+  return drawn;
+}
+
 export function isEligible(order: Opportunity): boolean {
   return order.status === "pagada" &&
     order.paid === PRICE &&
@@ -88,11 +112,58 @@ export function phaseOf(state: DemoState, now = new Date()): Phase {
   return "cobranza";
 }
 
+/**
+ * Porcentaje de oportunidades COLOCADAS, no de pagos completados.
+ * Solo cuenta órdenes de este navegador en la demo; no son ventas globales.
+ */
+export function salesProgressPercent(state: DemoState): number {
+  return Math.min(100, Math.max(0, state.opportunities.length / MAX_OPPORTUNITIES * 100));
+}
+
+export type SalesUpdate = { threshold: number; title: string; message: string };
+export const SALES_MILESTONES: readonly SalesUpdate[] = [
+  { threshold: 25, title: "Primer avance importante", message: "La colocación simulada llegó al 25 %. El proceso continúa." },
+  { threshold: 50, title: "Mitad del recorrido", message: "La colocación simulada llegó al 50 %. Sigue pendiente completar el cupo." },
+  { threshold: 75, title: "Entramos en la recta final", message: "La colocación simulada llegó al 75 %. Sigue atento a las próximas novedades." },
+  { threshold: 90, title: "Cerca de completar la colocación", message: "La colocación simulada llegó al 90 %. La fecha del sorteo todavía no está confirmada." },
+  { threshold: 100, title: "Colocación completada", message: "La colocación simulada llegó al 100 %. Antes de cualquier sorteo deben revisarse los pagos y el reglamento." },
+];
+
+export function reachedSalesUpdates(state: DemoState): SalesUpdate[] {
+  const progress = salesProgressPercent(state);
+  return SALES_MILESTONES.filter((item) => progress >= item.threshold).reverse();
+}
+
+export function salesProgressStatus(state: DemoState, now = new Date()): { title: string; message: string } {
+  const progress = salesProgressPercent(state);
+  if (progress === 100) {
+    const phase = phaseOf(state, now);
+    if (phase === "listo") return {
+      title: "Colocación y pagos completados en la demo",
+      message: "La fecha y las condiciones del sorteo requieren confirmación y autorización. No hay sorteo real programado.",
+    };
+    if (phase === "revision") return {
+      title: "Cierre en revisión",
+      message: "Terminó el plazo simulado de cobranza con saldos pendientes. No se anunciará un sorteo sin resolverlos.",
+    };
+    return {
+      title: "Colocación completada; faltan pagos",
+      message: "Se abrió el plazo simulado de hasta siete días para completar abonos. El sorteo aún no tiene fecha confirmada.",
+    };
+  }
+  if (progress >= 90) return { title: "Muy cerca de completar la colocación", message: "El avance es alto, pero aún faltan oportunidades y no hay fecha de sorteo confirmada." };
+  if (progress >= 75) return { title: "Estamos en la recta final", message: "La colocación sigue avanzando. Revisa tus abonos para mantener tu oportunidad al día." };
+  if (progress >= 50) return { title: "Ya se alcanzó la mitad", message: "Continúa el proceso de colocación. El sorteo solo podrá definirse según las condiciones autorizadas." };
+  if (progress >= 25) return { title: "La colocación está avanzando", message: "Aquí verás nuevas actualizaciones conforme aumente el porcentaje." };
+  return { title: "La colocación está comenzando", message: "Aquí aparecerán novedades al alcanzar nuevos porcentajes de avance." };
+}
+
 export function createOpportunity(
   state: DemoState,
-  input: { customer: Customer; selected: string[]; plan: Plan },
+  input: { customer: Customer; selected: string[]; plan: Plan; selectionMode?: SelectionMode },
   id: string,
   now = new Date(),
+  rng: () => number = Math.random,
 ): DemoState {
   if (state.opportunities.length >= MAX_OPPORTUNITIES) throw new Error("No quedan oportunidades disponibles.");
   const name = input.customer.name.trim();
@@ -100,17 +171,25 @@ export function createOpportunity(
   if (name.length < 3 || !/^\+?[0-9]{7,15}$/.test(phone)) {
     throw new Error("Ingresa nombre y celular válidos.");
   }
-  if (input.selected.length !== CUSTOM_NUMBERS) throw new Error("Debes elegir exactamente 10 números.");
-  const normalized = input.selected.map(normalizeNumber);
-  if (normalized.some((n) => n === null)) throw new Error("Los números deben tener de una a cuatro cifras.");
-  const selected = normalized as string[];
-  if (new Set(selected).size !== CUSTOM_NUMBERS) throw new Error("No puedes repetir números.");
-  const taken = reservedNumbers(state);
-  if (selected.some((n) => taken.has(n))) throw new Error("Alguno de tus números ya está reservado.");
+  const selectionMode = input.selectionMode ?? "manual";
+  if (selectionMode !== "manual" && selectionMode !== "automatic") throw new Error("Modo de selección no válido.");
+  let selected: string[];
+  if (selectionMode === "automatic") {
+    if (input.selected.length > 0) throw new Error("La asignación automática no admite números escogidos manualmente.");
+    selected = drawAvailableNumbers(state, CUSTOM_NUMBERS, rng);
+  } else {
+    if (input.selected.length !== CUSTOM_NUMBERS) throw new Error("Debes elegir exactamente 10 números.");
+    const normalized = input.selected.map(normalizeNumber);
+    if (normalized.some((n) => n === null)) throw new Error("Los números deben tener de una a cuatro cifras.");
+    selected = normalized as string[];
+    if (new Set(selected).size !== CUSTOM_NUMBERS) throw new Error("No puedes repetir números.");
+    const taken = reservedNumbers(state);
+    if (selected.some((n) => taken.has(n))) throw new Error("Alguno de tus números ya está reservado.");
+  }
   if (!["contado", "dos-cuotas", "tres-cuotas"].includes(input.plan)) throw new Error("Plan no válido.");
   const opportunity: Opportunity = {
     id, customer: { name, phone, email: input.customer.email.trim() },
-    selected, random: [], paid: 0, plan: input.plan, status: "pendiente",
+    selected, selectionMode, random: [], paid: 0, plan: input.plan, status: "pendiente",
     createdAt: now.toISOString(),
   };
   const opportunities = [...state.opportunities, opportunity];
@@ -164,19 +243,7 @@ export function approvePayment(
   const targetRandom = Math.max(0, Math.min(RANDOM_NUMBERS, Math.floor(paid / COP_PER_NUMBER) - CUSTOM_NUMBERS));
   const required = targetRandom - order.random.length;
   if (required < 0) throw new Error("Inconsistencia en asignaciones anteriores.");
-  const taken = reservedNumbers(state);
-  const available: string[] = [];
-  for (let i = 0; i < TOTAL_NUMBERS; i++) {
-    const n = String(i).padStart(4, "0");
-    if (!taken.has(n)) available.push(n);
-  }
-  if (available.length < required) throw new Error("No quedan suficientes números únicos para completar el abono.");
-  const newRandom: string[] = [];
-  for (let i = 0; i < required; i++) {
-    const index = Math.min(available.length - 1, Math.max(0, Math.floor(rng() * available.length)));
-    newRandom.push(available[index]);
-    available.splice(index, 1);
-  }
+  const newRandom = drawAvailableNumbers(state, required, rng);
   const opportunities = state.opportunities.map((o) => o.id !== order.id ? o : {
     ...o,
     paid,

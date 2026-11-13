@@ -2,6 +2,17 @@
 
 Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de código; no implican publicación web verificada.
 
+## [Cambios funcionales en desarrollo] — 2026-11-13
+
+### Añadido
+- Elección opcional: diez números manuales o diez automáticos únicos al crear una oportunidad de prueba.
+- Barra de porcentaje de colocación en Mi cuenta, sin mostrar cantidad de oportunidades colocadas.
+- Mensajes de seguimiento por hitos de 25 %, 50 %, 75 %, 90 % y 100 %, solo en interfaz local.
+- Pruebas de asignación automática, elegibilidad y progreso; documentación OPR-COM-001.
+
+### Limitaciones
+- No se envían WhatsApp, correo ni notificaciones push; el avance no refleja ventas globales reales.
+
 ## [Código validado por CI; despliegue Vercel completado; aceptación funcional pendiente] — 2026-11-13
 
 ### Seguridad

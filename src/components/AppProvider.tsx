@@ -1,11 +1,11 @@
 "use client";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { EMPTY_STATE, approvePayment, createOpportunity, rejectPayment, reportPayment, setDrawDate, type Customer, type DemoState, type Method, type Plan } from "@/lib/domain";
+import { EMPTY_STATE, approvePayment, createOpportunity, rejectPayment, reportPayment, setDrawDate, type Customer, type DemoState, type Method, type Plan, type SelectionMode } from "@/lib/domain";
 
 const KEY = "oportunia-demo-v1";
 type Context = {
   state: DemoState; hydrated: boolean;
-  createOrder: (input: { customer: Customer; selected: string[]; plan: Plan }) => string;
+  createOrder: (input: { customer: Customer; selected: string[]; plan: Plan; selectionMode?: SelectionMode }) => string;
   sendPayment: (input: { orderId: string; amount: number; method: Method; reference: string }) => void;
   approve: (id: string) => void; reject: (id: string) => void;
   schedule: (date: string) => void; reset: () => void;

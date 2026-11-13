@@ -36,7 +36,7 @@ export default function PagosPage() {
     <div className="two-col-layout"><section className="panel">
       <h2>Nuevo reporte de pago</h2>
       {!hydrated ? <p className="muted">Cargando…</p> : state.opportunities.length === 0 ?
-        <div className="empty-state"><span>◎</span><h3>Aún no tienes oportunidades</h3><p>Primero selecciona tus diez números favoritos.</p><Link className="btn btn-primary" href="/numeros">Elegir números</Link></div> :
+        <div className="empty-state"><span>◎</span><h3>Aún no tienes oportunidades</h3><p>Primero escoge tus diez números o solicita asignación automática.</p><Link className="btn btn-primary" href="/numeros">Elegir números</Link></div> :
         <form onSubmit={submit} className="form-stack top-gap">
           <label>Oportunidad<select value={orderId} onChange={(e) => { setOrderId(e.target.value); setSuccess(""); }}>
             {state.opportunities.map((o) => <option key={o.id} value={o.id}>{shortId(o.id)} · {o.customer.name}</option>)}

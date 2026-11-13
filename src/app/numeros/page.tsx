@@ -2,7 +2,7 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/components/AppProvider";
-import { CUSTOM_NUMBERS, MAX_OPPORTUNITIES, normalizeNumber, reservedNumbers, type Plan } from "@/lib/domain";
+import { CUSTOM_NUMBERS, MAX_OPPORTUNITIES, normalizeNumber, reservedNumbers, type Plan, type SelectionMode } from "@/lib/domain";
 const plans: { value: Plan; title: string; detail: string }[] = [
   { value: "contado", title: "Pago completo", detail: "1 pago de $50.000" },
   { value: "dos-cuotas", title: "2 cuotas", detail: "2 pagos de $25.000" },
@@ -12,6 +12,7 @@ export default function NumerosPage() {
   const { state, hydrated, createOrder } = useApp();
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
+  const [selectionMode, setSelectionMode] = useState<SelectionMode>("manual");
   const [numberInput, setNumberInput] = useState("");
   const [page, setPage] = useState(0);
   const [plan, setPlan] = useState<Plan>("tres-cuotas");
@@ -35,17 +36,30 @@ export default function NumerosPage() {
     event.preventDefault(); setError("");
     if (soldOut) return setError("No quedan oportunidades disponibles.");
     try {
-      createOrder({ customer: { name, phone, email }, selected, plan });
+      createOrder({ customer: { name, phone, email }, selected: selectionMode === "manual" ? selected : [], selectionMode, plan });
       router.push("/pagos");
     } catch (e) { setError(e instanceof Error ? e.message : "No se pudo crear la orden."); }
   }
   return <div className="container page-space">
     <div className="page-title"><span className="overline">PASO 01 · PERSONALIZA TU OPORTUNIDAD</span>
-      <h1>Escoge tus <span className="gradient-text">10 números.</span></h1>
-      <p className="muted">Entre 0000 y 9999. Los 40 restantes se asignarán progresivamente cuando se confirmen tus abonos.</p>
+      <h1>10 números <span className="gradient-text">a tu manera.</span></h1>
+      <p className="muted">Escoge tus 10 favoritos o deja que Oportunia los asigne automáticamente. Los otros 40 se asignarán con los abonos aprobados.</p>
     </div>
+    <section className="panel selection-mode-panel" aria-labelledby="selection-mode-heading">
+      <h2 id="selection-mode-heading">¿Cómo quieres obtener tus primeros 10 números?</h2>
+      <div className="selection-mode-options">
+        <label className={"selection-mode-option" + (selectionMode === "manual" ? " selected" : "")}>
+          <input type="radio" name="selectionMode" checked={selectionMode === "manual"} onChange={() => { setSelectionMode("manual"); setError(""); }} />
+          <span><strong>Quiero escogerlos</strong><small>Busca y selecciona personalmente 10 números disponibles.</small></span>
+        </label>
+        <label className={"selection-mode-option" + (selectionMode === "automatic" ? " selected" : "")}>
+          <input type="radio" name="selectionMode" checked={selectionMode === "automatic"} onChange={() => { setSelectionMode("automatic"); setError(""); }} />
+          <span><strong>Que Oportunia los asigne</strong><small>El sistema escogerá 10 números libres al crear la oportunidad de prueba.</small></span>
+        </label>
+      </div>
+    </section>
     <div className="two-col-layout"><div className="stack">
-      <section className="panel">
+      {selectionMode === "manual" ? <section className="panel">
         <div className="panel-heading"><div><h2>Explora los números</h2><p className="muted small">Selecciona desde la cuadrícula o escribe un número.</p></div><span className="counter-pill">{selected.length} / 10</span></div>
         <div className="number-search">
           <input aria-label="Número de cuatro cifras" inputMode="numeric" maxLength={4} placeholder="Ej. 0007"
@@ -66,14 +80,23 @@ export default function NumerosPage() {
           <span className="small muted">Página {page + 1} de 100</span>
           <button className="btn btn-ghost" type="button" disabled={page === 99} onClick={() => setPage((p) => p + 1)}>Siguiente →</button>
         </div>
-      </section>
+      </section> : <section className="panel auto-allocation-panel">
+        <span className="auto-allocation-icon" aria-hidden="true">✧</span>
+        <h2>Nosotros elegimos los 10 por ti</h2>
+        <p>Al crear la oportunidad, el sistema reservará automáticamente 10 números de cuatro cifras que estén libres en esta demostración.</p>
+        <p>Los verás en <strong>Mi cuenta</strong>. Se considerarán asignados después de aprobar el primer abono mínimo de $10.000.</p>
+        <div className="alert alert-warning">Los otros 40 números se asignarán con los abonos siguientes. Ninguno participa hasta completar $50.000.</div>
+      </section>}
     </div><div className="stack">
       <section className="panel sticky-panel">
-        <div className="panel-heading"><div><h2>Tu selección</h2><p className="muted small">10 elegidos + 40 aleatorios al pagar</p></div></div>
-        <div className="selected-grid">{Array.from({ length: 10 }, (_, i) =>
+        <div className="panel-heading"><div><h2>{selectionMode === "manual" ? "Tu selección" : "Asignación automática"}</h2>
+          <p className="muted small">10 iniciales + 40 aleatorios con los abonos</p></div></div>
+        {selectionMode === "manual" ? <div className="selected-grid">{Array.from({ length: 10 }, (_, i) =>
           <button type="button" className={"selected-slot" + (selected[i] ? " filled" : "")} key={i}
             disabled={!selected[i]} title={selected[i] ? "Quitar " + selected[i] : "Pendiente"}
             onClick={() => setSelected((prev) => prev.filter((x) => x !== selected[i]))}>{selected[i] || "—"}</button>)}</div>
+          : <div className="auto-allocation-summary"><strong>10 números automáticos</strong>
+            <span>Se mostrarán después de crear tu oportunidad de prueba.</span></div>}
         <div className="mini-info"><span>40 números aleatorios</span><strong>Pendientes de abonos</strong></div>
         <div className="divider" /><h3>Forma de pago</h3>
         <div className="plan-options">{plans.map((p) => <label key={p.value} className={"plan-option" + (plan === p.value ? " selected" : "")}>
@@ -84,7 +107,7 @@ export default function NumerosPage() {
           <label>Celular<input required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>
           <label>Correo (opcional)<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ejemplo.com" /></label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || selected.length !== 10}>Crear oportunidad de prueba →</button>
+          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || (selectionMode === "manual" && selected.length !== 10)}>Crear oportunidad de prueba →</button>
         </form>
         <p className="small muted">No se cobra dinero. Los números quedan reservados solo en este navegador de demostración.</p>
       </section>

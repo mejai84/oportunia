@@ -3,7 +3,7 @@ import test from "node:test";
 import {
   EMPTY_STATE, PRICE, approvePayment, assignedCount, createOpportunity,
   isEligible, normalizeNumber, phaseOf, rejectPayment, reportPayment,
-  reservedNumbers,
+  reservedNumbers, reachedSalesUpdates, salesProgressPercent, salesProgressStatus,
 } from "../src/lib/domain";
 
 const customer = { name: "Cliente de prueba", phone: "3001234567", email: "" };
@@ -63,4 +63,56 @@ test("rechazar no asigna números", () => {
   assert.equal(state.opportunities[0].paid, 0);
   assert.equal(state.opportunities[0].random.length, 0);
   assert.throws(() => approvePayment(state, "p1"), /procesado/);
+});
+
+test("permite asignar automáticamente los primeros 10 números sin duplicarlos", () => {
+  let state = setup();
+  state = createOpportunity(state, {
+    customer, selected: [], plan: "dos-cuotas", selectionMode: "automatic",
+  }, "orden-2", date, () => 0.5);
+  const automatic = state.opportunities[1];
+  assert.equal(automatic.selectionMode, "automatic");
+  assert.equal(automatic.selected.length, 10);
+  assert.equal(new Set(automatic.selected).size, 10);
+  assert.equal(reservedNumbers(state).size, 20);
+  assert.equal(assignedCount(automatic), 0);
+  assert.equal(isEligible(automatic), false);
+});
+
+test("en asignación automática solo participan los 50 tras pagar todo", () => {
+  let state = createOpportunity(EMPTY_STATE, {
+    customer, selected: [], plan: "tres-cuotas", selectionMode: "automatic",
+  }, "auto-1", date, () => 0.5);
+  for (const [i, amount] of [20_000, 15_000, 15_000].entries()) {
+    const id = "auto-p-" + i;
+    state = reportPayment(state, { orderId: "auto-1", amount, method: "PSE", reference: id }, id, date);
+    state = approvePayment(state, id, () => 0.5, date);
+    assert.equal(assignedCount(state.opportunities[0]), [20, 35, 50][i]);
+    assert.equal(isEligible(state.opportunities[0]), i === 2);
+  }
+  assert.equal(reservedNumbers(state).size, 50);
+});
+
+test("la elección automática rechaza números manuales y generador inválido", () => {
+  assert.throws(() => createOpportunity(EMPTY_STATE, {
+    customer, selected, plan: "contado", selectionMode: "automatic",
+  }, "invalid", date), /no admite/);
+  assert.throws(() => createOpportunity(EMPTY_STATE, {
+    customer, selected: [], plan: "contado", selectionMode: "automatic",
+  }, "invalid", date, () => 1), /Generador aleatorio/);
+});
+
+test("barra de compras muestra porcentajes y comunicaciones por hitos", () => {
+  assert.equal(salesProgressPercent(EMPTY_STATE), 0);
+  assert.equal(reachedSalesUpdates(EMPTY_STATE).length, 0);
+  const one = setup();
+  assert.equal(salesProgressPercent(one), 0.5);
+  assert.match(salesProgressStatus(one).title, /comenzando/);
+  const at75 = { ...EMPTY_STATE, opportunities: Array(150).fill(one.opportunities[0]) };
+  assert.equal(salesProgressPercent(at75), 75);
+  assert.deepEqual(reachedSalesUpdates(at75).map((item) => item.threshold), [75, 50, 25]);
+  const all = { ...EMPTY_STATE, opportunities: Array(200).fill(one.opportunities[0]), deadlineAt: new Date("2026-11-20T18:00:00Z").toISOString() };
+  assert.equal(salesProgressPercent(all), 100);
+  assert.match(salesProgressStatus(all, date).message, /siete días/);
+  assert.equal(reachedSalesUpdates(all)[0].threshold, 100);
 });

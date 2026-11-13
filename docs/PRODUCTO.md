@@ -14,7 +14,8 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 - Landing de conversión para campañas digitales y tráfico orgánico.
 - Explicación de premio proyectado, precio, número de oportunidades y condiciones.
 - Simulador interactivo de abonos y estado de elegibilidad.
-- Selección demostrativa de diez números de cuatro cifras.
+- Selección demostrativa de diez números de cuatro cifras, manual o automática.
+- Porcentaje de colocación y mensajes de seguimiento por hitos en el portal del comprador (solo datos locales de prueba).
 - Panel de pagos y administración **solo en localStorage**, sin autenticación real.
 - Captura UTM y formulario de interesados preparados, pero **desactivados** hasta cumplir privacidad y antiabuso.
 - Tabla de interesados en Supabase con RLS sin acceso directo público.
@@ -28,7 +29,7 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 | BR-001 | Máximo 200 oportunidades por sorteo | Confirmada para prototipo |
 | BR-002 | Valor COP 50.000 por oportunidad | Confirmada para prototipo |
 | BR-003 | 50 números únicos de cuatro cifras por oportunidad | Confirmada para prototipo |
-| BR-004 | El usuario escoge 10 números de 0000 a 9999 | Confirmada para prototipo |
+| BR-004 | El usuario puede escoger 10 números de 0000 a 9999 o solicitar asignación automática de los 10 iniciales | Implementada en demo |
 | BR-005 | Los otros 40 se asignan aleatoriamente según pagos confirmados | Confirmada para prototipo |
 | BR-006 | Primer abono mínimo COP 10.000 | Implementada en demo; revisar condiciones comerciales |
 | BR-007 | Por cada COP 1.000 confirmado corresponde un número asignado | Confirmada para prototipo |
@@ -36,8 +37,11 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 | BR-009 | Al colocar las 200 oportunidades se permite hasta 7 días calendario para cobrar saldos | Definida para diseño; cierre real sujeto a reglamento |
 | BR-010 | Se propone tomar las cuatro últimas cifras del premio mayor de la Lotería de Medellín | Propuesta sujeta a validación y autorización |
 | BR-011 | Si vencen 7 días con saldos impagos, el sistema entra en revisión, sin adjudicar ni reasignar automáticamente | Pendiente de decisión y reglamento |
+| BR-012 | En Mi cuenta se muestra solo el porcentaje de oportunidades colocadas; no se revela el total de compras ni el inventario global | Implementada en demo local; fuente global pendiente |
+| BR-013 | Se muestran mensajes de seguimiento al alcanzar 25 %, 50 %, 75 %, 90 % y 100 % de colocación | Implementada en interfaz de demo; envíos externos pendientes |
+| BR-014 | Llegar al 100 % de colocación no equivale a tener pagos completos ni a confirmar la fecha del sorteo | Obligatoria |
 
-**Ejemplo de pagos aprobados:** COP 20.000 → 10 elegidos + 10 aleatorios (20 asignados; NO participa); COP 35.000 acumulados → 10 + 25 (35 asignados; NO participa); COP 50.000 acumulados → 10 + 40 (50 asignados; elegible sujeto a reglamento).
+**Ejemplo de pagos aprobados:** COP 20.000 → 10 iniciales (elegidos o automáticos) + 10 aleatorios (20 asignados; NO participa); COP 35.000 acumulados → 10 + 25 (35 asignados; NO participa); COP 50.000 acumulados → 10 + 40 (50 asignados; elegible sujeto a reglamento).
 
 **Unicidad:** el universo de números es 0000 a 9999. En producción, la unicidad debe garantizarse en PostgreSQL por sorteo con transacciones y restricciones, no con localStorage ni comprobaciones del navegador.
 
@@ -45,7 +49,7 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 
 **Visitante** → landing → explicación y preguntas → simulador de abonos → demostración de elección → interés/contacto (solo cuando esté habilitado legalmente) → eventual compra autorizada.
 
-Métricas futuras: visitas, procedencia UTM, CTA de selección, finalización de formulario, solicitudes válidas y conversiones. **No hay analítica ni indicadores de conversión reales implementados.** No publicar métricas simuladas como datos operativos.
+Métricas futuras: visitas, procedencia UTM, CTA de selección, elección manual/automática, finalización de formulario, solicitudes válidas y conversiones. El avance global de colocación se calculará en backend con órdenes válidas, excluyendo canceladas o caducadas según reglamento. Ver [OPR-COM-001](COMUNICACIONES.md). **No hay analítica ni indicadores de conversión reales implementados.** No publicar métricas simuladas como datos operativos.
 
 ## 5. Criterios de aceptación de la landing
 
@@ -59,6 +63,11 @@ Métricas futuras: visitas, procedencia UTM, CTA de selección, finalización de
 - AC-008: la API de interesados desactivada responde 503.
 - AC-009: los datos no se exponen a usuarios anónimos desde Supabase.
 - AC-010: se conservan UTMs en las solicitudes solo cuando el formulario se habilite.
+- AC-011: el modo automático reserva diez números únicos y los muestra en Mi cuenta sin duplicados.
+- AC-012: ambos modos asignan 20, 35 y 50 números al aprobar abonos acumulados de COP 20.000, 35.000 y 50.000.
+- AC-013: la barra del cliente muestra exclusivamente un porcentaje de colocación; 1 oportunidad local equivale a 0,5 % en la demo.
+- AC-014: se muestran mensajes al cruzar hitos y se advierte que no se enviaron notificaciones externas.
+- AC-015: el 100 % de colocación inicia cobranza o revisión si faltan pagos; nunca anuncia sorteo confirmado.
 
 ## 6. Decisiones de negocio abiertas
 
