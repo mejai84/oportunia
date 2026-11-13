@@ -1,6 +1,8 @@
-# Oportunia — primera versión Next.js
+# Oportunia — plataforma digital | Ingeniería de software
 
-Demo funcional de una plataforma independiente de oportunidades y sorteos, con embudo comercial y preparación para Vercel, Supabase y n8n.
+Proyecto independiente de software en fase **prototipo / preproducción**. El producto contiene un embudo de captación y una demostración de oportunidades, financiación y administración. No se venden oportunidades ni se procesan pagos reales.
+
+**Documentación de ingeniería:** [docs/README.md](docs/README.md) — índice, requisitos, arquitectura, decisiones técnicas, seguridad, despliegue, incidencias y control de cambios.
 
 ## Ejecutar localmente
 
@@ -39,7 +41,7 @@ Ese esquema de oportunidades no se ha aplicado a ninguna base de datos. Incluye 
 
 ## Despliegue Vercel
 
-Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. No existe todavía un despliegue web. La tabla de captación del embudo existe en Supabase, pero el sitio no tiene configuradas las credenciales de servidor.
+Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. Se recibió un registro de compilación Vercel del 2026-11-13 para el commit b84339d. La compilación terminó, pero Vercel detectó Next.js 15.5.6 vulnerable. **No se ha verificado la publicación final ni la URL pública.** La corrección de dependencias está registrada en docs/INCIDENTES/INC-2026-11-13-001.md. La tabla de captación del embudo existe en Supabase, pero el sitio no tiene configuradas las credenciales de servidor.
 
 ## Pruebas
 
@@ -51,4 +53,4 @@ Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto 
 
 **Solo prototipo.** El esquema de financiación, la asignación progresiva, la fecha del sorteo condicionada a ventas y el plazo de siete días requieren validación del reglamento y de las autorizaciones aplicables en Colombia. Si vencen los siete días con saldos impagos, el sistema entra en revisión, no adjudica ni decide automáticamente sobre esos números.
 
-Consultar docs/ARQUITECTURA.md para los requisitos pendientes de producción.
+Consultar docs/README.md para toda la documentación controlada del proyecto.
