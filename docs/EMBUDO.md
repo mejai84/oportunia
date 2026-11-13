@@ -29,11 +29,15 @@ El formulario es opcional: no es una compra ni crea reservas. Nunca se habilitan
 
 ## Despliegue pendiente
 
-1. Desplegar la aplicación Next.js en Vercel con un proyecto independiente.
+1. Verificar el despliegue Vercel independiente, la URL publicada y el estado de seguridad tras actualizar Next.js.
 2. Configurar SUPABASE_URL y SUPABASE_SECRET_KEY como variables de servidor en Vercel.
 3. Mantener FUNNEL_LEADS_ENABLED=false hasta cumplir requisitos legales y de seguridad.
 4. Probar en entorno de ensayo y auditar permisos y flujo de contacto antes de habilitar captación.
 5. Definir dominio y políticas definitivas.
+
+## Estado del despliegue al 2026-11-13
+
+El log de Vercel para commit b84339d indica compilación completada, pero advierte una versión vulnerable de Next.js y no demuestra una publicación final correcta. La corrección de dependencias y el registro de incidencia se documentan en docs/INCIDENTES/INC-2026-11-13-001.md.
 
 ## Nota sobre migraciones
 

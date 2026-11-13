@@ -1,9 +1,9 @@
 # Arquitectura de Oportunia
 
 ## Etapa actual: demo, sin pagos reales
-- Frontend: Next.js App Router (Vercel, cuando se conecte).
+- Frontend: Next.js App Router 15.5.x en Vercel. Se recibió log de compilación de Vercel; publicación final aún no verificada.
 - Estado de demo: localStorage del navegador, solo para pruebas; NO compartido entre usuarios.
-- Backend previsto: Supabase/PostgreSQL con Auth, RLS, Storage privado.
+- Backend: Supabase/PostgreSQL con tabla funnel_leads y RLS denegación por defecto; Auth, transacciones de oportunidades y Storage privado pendientes.
 - Automatizaciones previstas: n8n + API oficial de WhatsApp Business.
 - Dominio: por definir; no se ha comprado ni configurado.
 

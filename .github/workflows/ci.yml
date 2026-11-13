@@ -1,9 +1,11 @@
 name: Validar Oportunia
 on:
   push:
-    branches: [main, feat/base-nextjs-supabase-demo]
+    branches: [main]
   pull_request:
     branches: [main]
+permissions:
+  contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -14,6 +16,8 @@ jobs:
           node-version: "22"
       - name: Instalar dependencias
         run: npm install --no-audit --no-fund
+      - name: Auditoría de seguridad (producción)
+        run: npm audit --omit=dev --audit-level=high
       - name: Comprobar TypeScript
         run: npm run typecheck
       - name: Ejecutar pruebas
