@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 import "./funnel.css";
 import "./apple-light.css";
+import "./responsive.css";
 
 export const metadata: Metadata = {
   title: "Oportunia | Demo de oportunidades",

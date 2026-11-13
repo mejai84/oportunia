@@ -1,7 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { useApp } from "@/components/AppProvider";
-import { assignedCount, activeOrders, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
+import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
 type Tab = "resumen" | "pagos" | "clientes" | "sorteo" | "sorteos";
 const phaseNames = { venta: "En comercialización", cobranza: "Cobranza: 7 días", revision: "Revisión por impagos", listo: "Listo para programar" };
 export default function AdminPage() {
@@ -17,6 +17,7 @@ export default function AdminPage() {
   const draw = findDraw(state, activeDrawId) || draws[0];
   const orders = state.opportunities.filter((o) => drawIdOf(o) === draw.id);
   const active = activeOrders(state, draw.id);
+  const progress = drawProgress(state, draw.id);
   const milestones = milestoneOf(state, draw.id);
   const phase = phaseOf(state, new Date(), draw.id);
   const fullyPaid = active.filter(isEligible).length;
@@ -59,7 +60,7 @@ export default function AdminPage() {
       <select id="admin-draw" value={draw.id} onChange={(e) => chooseDraw(e.target.value)}>{draws.map((d) => <option key={d.id} value={d.id}>{d.title}{d.enabled ? " · visible" : " · oculto"}</option>)}</select>
     </div>
     <div className="admin-metrics">
-      <div className="metric-card"><span>Oportunidades colocadas</span><strong>{active.length} <small>/ {MAX_OPPORTUNITIES}</small></strong></div>
+      <div className="metric-card"><span>Oportunidades ocupadas</span><strong>{active.length} <small>/ {MAX_OPPORTUNITIES}</small></strong></div>
       <div className="metric-card"><span>Completamente pagadas</span><strong>{fullyPaid}</strong></div>
       <div className="metric-card"><span>Recaudo confirmado</span><strong>{money(collected)}</strong></div>
       <div className="metric-card"><span>Reportes pendientes</span><strong>{pendingReports.length}</strong></div>
@@ -78,6 +79,9 @@ export default function AdminPage() {
         <section className="panel"><h2>Estado general</h2><div className="summary-rows">
           <div><span>Fase del sorteo</span><strong>{phaseNames[phase]}</strong></div>
           <div><span>Clientes únicos</span><strong>{uniqueCustomers}</strong></div>
+          <div><span>Reservadas sin pago aprobado</span><strong>{progress.reservedWithoutPayment}</strong></div>
+          <div><span>Con abono parcial</span><strong>{progress.withPartialPayment}</strong></div>
+          <div><span>Pagadas al 100 %</span><strong>{progress.paid}</strong></div>
           <div><span>Oportunidades con saldo</span><strong>{active.length - fullyPaid}</strong></div>
           <div><span>Números asignados</span><strong>{active.reduce((sum, o) => sum + assignedCount(o), 0)} / 10.000</strong></div>
           <div><span>Recaudo potencial</span><strong>{money(MAX_OPPORTUNITIES * PRICE)}</strong></div>

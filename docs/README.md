@@ -26,6 +26,8 @@ No se deben documentar secretos, claves privadas, contraseñas, datos personales
 | [Embudo](EMBUDO.md) | OPR-FUN-001 | Recorrido de visitantes, atribución, captura y limitaciones |
 | [Comunicaciones y avance](COMUNICACIONES.md) | OPR-COM-001 | Porcentaje de colocación, hitos y futuras notificaciones |
 | [Multisorteos, reservas y acceso](MULTISORTEOS-RESERVAS-ACCESO.md) | OPR-UX-003 | Carrusel, reserva de 24 h, recuperación, aceptación y futuro OTP WhatsApp |
+| [Pago por defecto, avance honesto y responsive](PAGO-AVANCE-RESPONSIVE.md) | OPR-UX-004 | Pago completo, porcentajes separados y diseño adaptable a dispositivos |
+| [QA responsive pendiente](PRUEBAS/QA-2026-11-13-004.md) | OPR-QA-004 | Matriz de dispositivos y verificación visual manual pendiente |
 | [Seguridad y privacidad](SEGURIDAD.md) | OPR-SEC-001 | Amenazas, controles, riesgo residual y bloqueos de producción |
 | [Despliegue y operación](OPERACIONES.md) | OPR-OPS-001 | Vercel, Supabase, variables, pruebas y rollback |
 | [Informe de verificación pública](PRUEBAS/QA-2026-11-13-001.md) | OPR-QA-001 | Evidencia de landing publicada, pruebas ejecutadas y pendientes |

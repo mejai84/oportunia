@@ -16,7 +16,7 @@ export default function NumerosPage() {
   const [selectionMode, setSelectionMode] = useState<SelectionMode>("manual");
   const [numberInput, setNumberInput] = useState("");
   const [page, setPage] = useState(0);
-  const [plan, setPlan] = useState<Plan>("tres-cuotas");
+  const [plan, setPlan] = useState<Plan>("contado");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -109,7 +109,8 @@ export default function NumerosPage() {
         <div className="divider" /><h3>Forma de pago</h3>
         <div className="plan-options">{plans.map((p) => <label key={p.value} className={"plan-option" + (plan === p.value ? " selected" : "")}>
           <input type="radio" name="plan" checked={plan === p.value} onChange={() => setPlan(p.value)} />
-          <span><strong>{p.title}</strong><small>{p.detail}</small></span></label>)}</div>
+          <span><strong>{p.title}{p.value === "contado" && <em className="payment-recommended">Opción principal</em>}</strong><small>{p.detail}</small></span></label>)}</div>
+        <p className="small muted payment-plan-hint">El pago completo viene seleccionado. Puedes cambiarlo a cuotas si lo prefieres. Los números solo participan cuando el 100 % esté confirmado.</p>
         <form onSubmit={submit} className="form-stack">
           <label>Nombre completo<input required minLength={3} value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre y apellido" /></label>
           <label>Celular<input required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>

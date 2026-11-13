@@ -1,3 +1,12 @@
+## [Pago completo, avance verificable y responsive] — 2026-11-13
+
+- Pago completo preseleccionado en el formulario y en el simulador; el reporte de pago sugiere el valor correspondiente al plan elegido.
+- Progreso inicial en 0 %, sin 35 % ficticio; porcentajes de reservas/abonos y pagos completos separados en carrusel y Mi cuenta, sin divulgar totales públicos.
+- Contabilización de reservas vigentes y pagos completos por sorteo; reservas vencidas excluidas del avance.
+- Diseño responsive con menú móvil accesible, controles táctiles, cuadrícula de números adaptable, tablas desplazables, espaciado seguro y reducción de movimiento.
+- Se añadieron pruebas de reglas; QA visual en dispositivos reales pendiente.
+- No se conectaron ventas reales ni se habilitaron pagos o sorteos.
+
 ## [Demo multisorteos y reservas] — 2026-11-13
 
 - Administrador de prueba: crear sorteos ocultos, habilitarlos, deshabilitarlos y administrarlos por separado.

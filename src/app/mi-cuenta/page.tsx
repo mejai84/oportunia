@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
-import { assignedCount, isEligible, isReservationExpired, drawCatalog, findDraw, drawIdOf, previousNumberAvailability, money, PRICE, shortId, salesProgressPercent, salesProgressStatus, reachedSalesUpdates } from "@/lib/domain";
+import { assignedCount, isEligible, isReservationExpired, drawCatalog, findDraw, drawIdOf, previousNumberAvailability, money, PRICE, shortId, drawProgress, salesProgressStatus, reachedSalesUpdates } from "@/lib/domain";
 export default function MiCuentaPage() {
   const { state, hydrated, activeDrawId, chooseDraw } = useApp();
   const activeDraw = findDraw(state, activeDrawId) ?? drawCatalog(state)[0];
-  const progress = salesProgressPercent(state, activeDraw.id);
+  const stats = drawProgress(state, activeDraw.id);
+  const progress = stats.occupiedPercent;
   const progressLabel = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 1 }).format(progress) + "%";
   const progressStatus = salesProgressStatus(state, new Date(), activeDraw.id);
   const updates = reachedSalesUpdates(state, activeDraw.id);
@@ -24,16 +25,21 @@ export default function MiCuentaPage() {
         </div>
         <section className="panel sales-progress-panel" aria-labelledby="sales-progress-title">
           <div className="panel-heading">
-            <div><span className="overline">SEGUIMIENTO DEL SORTEO · DEMOSTRACIÓN</span><h2 id="sales-progress-title">Avance de compras · {activeDraw.title}</h2></div>
+            <div><span className="overline">SEGUIMIENTO DEL SORTEO · DEMOSTRACIÓN</span><h2 id="sales-progress-title">Ocupación de oportunidades · {activeDraw.title}</h2></div>
             <strong className="sales-progress-percent">{progressLabel}</strong>
           </div>
-          <div className="progress-track sales-progress-track" role="progressbar" aria-label="Porcentaje de colocación simulada"
+          <div className="progress-track sales-progress-track segmented-progress" role="progressbar" aria-label="Porcentaje de ocupación de prueba"
             aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-            <div className="progress-fill" style={{ width: progress + "%" }} />
+            <div className="segmented-progress-paid" style={{ width: stats.paidPercent + "%" }} />
+            <div className="segmented-progress-reserved" style={{ width: (progress - stats.paidPercent) + "%" }} />
+          </div>
+          <div className="progress-metrics">
+            <span><strong>{(progress - stats.paidPercent).toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> separadas o con abono</span>
+            <span><strong>{stats.paidPercent.toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> pagadas al 100 %</span>
           </div>
           <h3 className="sales-progress-status">{progressStatus.title}</h3>
           <p className="muted small">{progressStatus.message}</p>
-          <p className="sales-progress-disclaimer">Este porcentaje refleja solo oportunidades de prueba creadas en este navegador. No representa ventas reales ni confirma una fecha de sorteo.</p>
+          <p className="sales-progress-disclaimer">Este porcentaje comienza en 0 % y refleja solo ocupación en este navegador: reservas y oportunidades pagadas, sin mezclarlas con ventas confirmadas. No representa cifras reales ni confirma una fecha de sorteo.</p>
           <div className="sales-updates">
             <h3>Novedades del proceso</h3>
             {updates.length ? <ul className="sales-update-list">{updates.slice(0, 3).map((update) =>

@@ -41,7 +41,7 @@ type Props = { leadCaptureEnabled: boolean };
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
   const { state, chooseDraw } = useApp();
   const featuredDraw = drawCatalog(state).find((draw) => draw.enabled);
-  const [amount, setAmount] = useState(20000);
+  const [amount, setAmount] = useState(50000);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
