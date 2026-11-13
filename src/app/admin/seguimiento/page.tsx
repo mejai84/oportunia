@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react
 import { AdminAccessGate } from "@/components/AdminAccessGate";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
 import type { CrmProfile } from "@/lib/crm";
+import { followupMetrics } from "@/lib/operations";
 
 type Category="contacto"|"revision_referencia"|"soporte"|"documentacion";
 type Status="pending"|"done"|"cancelled";
@@ -64,10 +65,7 @@ function FollowUpWorkspace(){
     return()=>{active=false};
   },[refresh]);
   const today=dateTodayBogota();
-  const pending=tasks.filter(t=>t.status==="pending");
-  const overdue=pending.filter(t=>t.due_date<today).length;
-  const dueToday=pending.filter(t=>t.due_date===today).length;
-  const completed=tasks.filter(t=>t.status==="done").length;
+  const counts=followupMetrics(tasks,today);
   const people=new Map(profiles.map(p=>[p.user_id,p]));
   const matches=tasks.filter(t=>{
     if(filter!=="all"&&t.status!==filter)return false;
@@ -117,10 +115,10 @@ function FollowUpWorkspace(){
     <div className="follow-banner"><strong>Seguimiento administrativo, no cartera vencida.</strong>
       Los reportes de pago no representan deuda ni confirman dinero recibido. Esta agenda no envía WhatsApp, correo ni SMS; los consentimientos comerciales deben respetarse antes de cualquier contacto.</div>
     <div className="follow-kpis">
-      <article><span>Tareas pendientes</span><strong>{pending.length}</strong><small>Acciones por realizar</small></article>
-      <article><span>Vencidas</span><strong>{overdue}</strong><small>Fecha anterior a hoy</small></article>
-      <article><span>Para hoy</span><strong>{dueToday}</strong><small>Hoy en Colombia</small></article>
-      <article><span>Completadas</span><strong>{completed}</strong><small>Con evento de auditoría</small></article>
+      <article><span>Tareas pendientes</span><strong>{counts.pending}</strong><small>Acciones por realizar</small></article>
+      <article><span>Vencidas</span><strong>{counts.overdue}</strong><small>Fecha anterior a hoy</small></article>
+      <article><span>Para hoy</span><strong>{counts.today}</strong><small>Hoy en Colombia</small></article>
+      <article><span>Completadas</span><strong>{counts.completed}</strong><small>Con evento de auditoría</small></article>
     </div>
     {error&&<div className="alert alert-error" role="alert">{error}</div>}
     {notice&&<div className="alert alert-success" role="status">{notice}</div>}
