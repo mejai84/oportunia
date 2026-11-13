@@ -194,3 +194,6 @@ input:focus,select:focus{border-color:#4a8ff4;box-shadow:0 0 0 4px #4a8ff41c}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
+
+.draw-art-gift{display:grid;place-items:center;gap:16px;text-align:center;padding:35px;max-width:320px;min-height:230px;background:#ffffffa8;border:1px solid #d0e0f4;border-radius:30px;box-shadow:0 25px 60px #4774ac25;transform:rotate(-3deg)}
+.draw-art-gift span{font-size:74px;color:#6393d6;line-height:1}.draw-art-gift strong{font-size:clamp(1.2rem,2.6vw,2rem);color:#294a73;line-height:1.1}

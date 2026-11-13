@@ -16,7 +16,7 @@ export default function AccesoPage() {
       <p className="muted">En la versión definitiva recibirás un código temporal por WhatsApp para confirmar que el número te pertenece. No enviaremos contraseñas permanentes.</p>
       <form className="form-stack" onSubmit={submit}>
         <label>Número de celular (Colombia)<input type="tel" required autoComplete="tel" inputMode="tel"
-          pattern="\\+?[0-9 ]{10,16}" placeholder="300 000 0000" value={phone}
+          pattern="\+?[0-9 ]{10,16}" placeholder="300 000 0000" value={phone}
           onChange={(e) => setPhone(e.target.value)} /></label>
         <button className="btn btn-primary full" type="submit">Ver estado de la integración</button>
       </form>

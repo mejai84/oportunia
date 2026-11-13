@@ -38,7 +38,9 @@ export function DrawCarousel() {
       </div>
       <div className="draw-carousel-art" aria-hidden="true">
         <div className="draw-art-halo" />
-        <div className="draw-art-phone"><div className="draw-art-camera"><i/><i/><i/></div><span>✦</span></div>
+        {/iphone|celular|smartphone|teléfono|telefono|móvil|movil/i.test(draw.prize)
+          ? <div className="draw-art-phone"><div className="draw-art-camera"><i/><i/><i/></div><span>✦</span></div>
+          : <div className="draw-art-gift"><span aria-hidden="true">✧</span><strong>{draw.prize}</strong></div>}
         <div className="draw-art-caption">OPORTUNIA <strong>EDICIÓN {String(currentIndex + 1).padStart(2, "0")}</strong></div>
       </div>
     </div>
