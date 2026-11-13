@@ -58,7 +58,7 @@ function CatalogEditor() {
   }
   return <section className="container page-space">
     <div className="page-title"><span className="overline">ADMINISTRACIÓN PROTEGIDA</span><h1>Catálogo e imágenes</h1>
-      <p>Gestiona las ediciones públicas y sus dos imágenes independientes en Supabase.</p></div>
+      <p>Gestiona las ediciones públicas y sus dos imágenes independientes en Supabase. <a href="/admin/opiniones">Moderar opiniones y publicar resultados verificados →</a></p></div>
     <div className="alert alert-warning">La publicación de una ficha no habilita pagos ni participación. El catálogo es informativo hasta completar las autorizaciones y la plataforma transaccional.</div>
     <div className="two-col-layout">
       <section className="panel"><h2>Sorteos</h2><button className="btn btn-secondary" onClick={()=>void create()} type="button">+ Crear sorteo</button>

@@ -15,7 +15,7 @@ export function SiteHeader() {
     return <header className="site-header f-site-header"><div className="container header-inner">
       <Link href="/" className="brand" aria-label="Oportunia, inicio"><Image src="/brand/trebol-oportunia.svg" width={38} height={38} alt="" className="brand-clover" /><span>oportunia<span className="brand-dot">.</span></span></Link>
       <nav className="f-header-nav" aria-label="Navegación del embudo">
-        <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a><a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
+        <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a><a href="#opiniones">Opiniones</a><a href="#resultados">Resultados</a><a href="#preguntas">Preguntas</a>
       </nav>
       <Link className="f-header-cta" href="/acceso">Mi cuenta ↗</Link>
       <details className="mobile-nav-menu"><summary aria-label="Abrir menú de navegación">Menú <span aria-hidden="true">☰</span></summary>
