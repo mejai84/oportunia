@@ -7,6 +7,7 @@ import "./funnel.css";
 import "./apple-light.css";
 import "./responsive.css";
 import "./admin-media.css";
+import "./brand.css";
 
 export const metadata: Metadata = {
   title: "Oportunia | Demo de oportunidades",
