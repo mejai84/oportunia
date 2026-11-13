@@ -2,7 +2,7 @@
 
 Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de código; no implican publicación web verificada.
 
-## [Sin publicar] — 2026-11-13
+## [Código validado por CI; despliegue pendiente de verificar] — 2026-11-13
 
 ### Seguridad
 - Propuesta de actualización de Next.js 15.5.6 a 15.5.29 y React 19.1.1 a 19.1.5.

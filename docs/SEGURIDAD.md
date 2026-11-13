@@ -24,7 +24,7 @@
 | Pago y asignación atómicos en BD | **Pendiente** | Bloquea ventas reales |
 | Verificación de webhooks de pagos | **Pendiente** | Bloquea cobros |
 | Registro auditable e inmutable de sorteos | **Pendiente** | Bloquea operación |
-| Dependencias actualizadas y auditoría CI | Corrección en PR; hallazgo adicional de PostCSS y override 8.5.23; requiere validación CI y Vercel | INC-2026-11-13-001 |
+| Dependencias actualizadas y auditoría CI | Corrección validada en GitHub Actions (run 43488315895); override PostCSS 8.5.23; pendiente verificar Vercel | INC-2026-11-13-001 |
 
 ## 3. Matriz de riesgos
 
