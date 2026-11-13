@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -12,7 +13,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   if (pathname === "/" || pathname === "/embudo") {
     return <header className="site-header f-site-header"><div className="container header-inner">
-      <Link href="/" className="brand" aria-label="Oportunia, inicio"><span className="brand-icon">✦</span><span>oportunia<span className="brand-dot">.</span></span></Link>
+      <Link href="/" className="brand" aria-label="Oportunia, inicio"><Image src="/brand/trebol-oportunia.svg" width={38} height={38} alt="" className="brand-clover" /><span>oportunia<span className="brand-dot">.</span></span></Link>
       <nav className="f-header-nav" aria-label="Navegación del embudo">
         <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a><a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
       </nav>
@@ -27,7 +28,7 @@ export function SiteHeader() {
     </div></header>;
   }
   return <header className="site-header"><div className="container header-inner">
-    <Link href="/" className="brand" aria-label="Oportunia, inicio"><span className="brand-icon">✦</span><span>oportunia<span className="brand-dot">.</span></span></Link>
+    <Link href="/" className="brand" aria-label="Oportunia, inicio"><Image src="/brand/trebol-oportunia.svg" width={38} height={38} alt="" className="brand-clover" /><span>oportunia<span className="brand-dot">.</span></span></Link>
     <nav className="nav-links" aria-label="Navegación principal">
       {links.map((link) => <Link key={link.href} href={link.href} className={"nav-link" + (pathname === link.href ? " active" : "")}>{link.label}</Link>)}
     </nav>
