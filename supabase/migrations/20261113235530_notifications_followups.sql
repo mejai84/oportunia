@@ -157,11 +157,11 @@ create trigger track_crm_followup_after_update
  execute function public.record_crm_followup_change();
 
 create function public.touch_crm_followup_updated_at()
-returns trigger language plpgsql set search_path='' as $
+returns trigger language plpgsql set search_path='' as $$
 begin
  new.updated_at:=now();
  return new;
-end; $;
+end; $$;
 revoke all on function public.touch_crm_followup_updated_at() from public,anon,authenticated;
 create trigger touch_crm_followup_before_update
  before update of status on public.crm_followups for each row
