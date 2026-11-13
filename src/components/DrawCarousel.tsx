@@ -1,41 +1,60 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
-import { usePublicDraws } from "@/lib/usePublicDraws";
+import { useRef } from "react";
+import { usePublicDraws, type PublicDraw } from "@/lib/usePublicDraws";
+
+type DrawCard = PublicDraw & { illustrative?: boolean };
+/* Conceptos visuales: no son sorteos convocados, anunciados ni habilitados. */
+const EXAMPLE_DRAWS: DrawCard[] = [
+  {id:"concepto-televisor",title:"Concepto: Smart TV",prize:"Smart TV 55″",description:"Una idea para futuras ediciones de entretenimiento en casa.",status:"preview",display_order:2,hero_image_url:null,prize_image_url:"/raffles/concept-tv.svg",illustrative:true},
+  {id:"concepto-consola",title:"Concepto: Consola",prize:"Consola de videojuegos",description:"Una propuesta de premio para quienes disfrutan jugar.",status:"preview",display_order:3,hero_image_url:null,prize_image_url:"/raffles/concept-console.svg",illustrative:true},
+  {id:"concepto-moto",title:"Concepto: Moto",prize:"Motocicleta urbana",description:"Concepto de una futura edición sobre dos ruedas.",status:"preview",display_order:4,hero_image_url:null,prize_image_url:"/raffles/concept-moto.svg",illustrative:true},
+  {id:"concepto-portatil",title:"Concepto: Portátil",prize:"Computador portátil",description:"Una idea de premio para estudiar, crear o trabajar.",status:"preview",display_order:5,hero_image_url:null,prize_image_url:"/raffles/concept-laptop.svg",illustrative:true},
+  {id:"concepto-tablet",title:"Concepto: Tablet",prize:"Tablet de última generación",description:"Otra opción ilustrativa para una próxima edición.",status:"preview",display_order:6,hero_image_url:null,prize_image_url:"/raffles/concept-tablet.svg",illustrative:true}
+];
 
 export function DrawCarousel() {
   const { draws, loading, error } = usePublicDraws();
-  const [index, setIndex] = useState(0);
-  const current = Math.min(index, Math.max(0, draws.length - 1));
-  const draw = draws[current];
-  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos">
-    <div className="draw-carousel-header"><div><span className="f-kicker">EXPLORA OPORTUNIA</span>
-      <h2>Premios que ilusionan.</h2>
-      <p>Descubre los próximos sorteos y conoce cómo funcionará cada edición.</p></div>
-      {draws.length > 1 && <div className="draw-carousel-controls">
-        <button type="button" aria-label="Sorteo anterior" onClick={() => setIndex((current + draws.length - 1) % draws.length)}>←</button>
-        <button type="button" aria-label="Sorteo siguiente" onClick={() => setIndex((current + 1) % draws.length)}>→</button>
-      </div>}
+  const trackRef = useRef<HTMLDivElement>(null);
+  // Actual catalog items take priority; visual concepts fill the five slots only
+  // while fewer than five public editions exist.
+  const cards: DrawCard[] = [...draws, ...EXAMPLE_DRAWS.slice(0,Math.max(0,5-draws.length))];
+  function move(direction: number) {
+    const track=trackRef.current;
+    if(!track)return;
+    const first=track.querySelector<HTMLElement>(".draw-mini-card");
+    const width=first?.getBoundingClientRect().width||240;
+    const gap=Number.parseFloat(getComputedStyle(track).columnGap)||16;
+    track.scrollBy({left:direction*(width+gap),behavior:"smooth"});
+  }
+  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos y conceptos">
+    <div className="draw-carousel-header">
+      <div><span className="f-kicker">EXPLORA OPORTUNIA</span><h2>Premios que ilusionan.</h2>
+      <p>Una fila de cinco premios para explorar. Las propuestas ilustrativas no son sorteos anunciados.</p></div>
+      <div className="draw-carousel-controls draw-row-controls" aria-label="Desplazar premios">
+        <button type="button" aria-label="Ver premios anteriores" onClick={()=>move(-1)}>←</button>
+        <button type="button" aria-label="Ver premios siguientes" onClick={()=>move(1)}>→</button>
+      </div>
     </div>
-    {loading && <p role="status">Consultando próximos sorteos…</p>}
-    {error && <div className="alert alert-warning" role="status">{error} Intenta actualizar la página.</div>}
-    {!loading && !error && !draw && <div className="draw-carousel-empty"><h3>Pronto habrá novedades.</h3><p>Estamos preparando nuevas ediciones.</p></div>}
-    {draw && <div className="draw-carousel-card" key={draw.id}>
-      <div className="draw-carousel-copy">
-        <span className="draw-carousel-edition">EDICIÓN {String(current + 1).padStart(2, "0")} · {draw.status === "closed" ? "CERRADA" : "EN PREPARACIÓN"}</span>
-        <h3>{draw.prize}</h3><p className="draw-carousel-title">{draw.title}</p>
-        <p className="draw-carousel-description">{draw.description}</p>
-        <p className="draw-carousel-disclaimer"><strong>Próximamente:</strong> aún no se aceptan compras, reservas ni pagos. Publicaremos fechas y condiciones cuando estén definidas.</p>
-        <a href="#registro" className="f-button f-button-primary">Conocer novedades <span aria-hidden="true">↗</span></a>
-      </div>
-      <div className="draw-carousel-art" aria-hidden="true">
-        {draw.prize_image_url ? <img className="draw-prize-upload" src={draw.prize_image_url} alt="" /> : <span className="draw-art-gift">✦</span>}
-        <div className="draw-art-caption">OPORTUNIA <strong>PRÓXIMA EDICIÓN</strong></div>
-      </div>
-    </div>}
-    {draws.length > 1 && <div className="draw-carousel-dots" role="group" aria-label="Seleccionar sorteo">
-      {draws.map((d,i)=><button key={d.id} type="button" aria-label={"Ver "+d.title}
-        aria-current={i===current?"true":undefined} className={i===current?"active":""} onClick={()=>setIndex(i)}/>)}
-    </div>}
+    {loading&&<p role="status">Consultando el catálogo…</p>}
+    {error&&<div className="alert alert-warning" role="status">{error} Las tarjetas adicionales son conceptos ilustrativos.</div>}
+    <div className="draw-five-track" ref={trackRef} aria-label="Premios y propuestas de sorteo">
+      {cards.map((draw,i)=><article className={"draw-mini-card"+(draw.illustrative?" is-concept":"")} key={draw.id}>
+        <div className="draw-mini-art">
+          <span className={"draw-mini-badge"+(draw.illustrative?" is-concept":"")}>{draw.illustrative?"IDEA DE PREMIO":draw.status==="closed"?"EDICIÓN CERRADA":"EN PREPARACIÓN"}</span>
+          <img src={draw.prize_image_url||"/raffles/iphone18-product.svg"} alt={"Ilustración del premio "+draw.prize} loading={i>1?"lazy":"eager"}/>
+        </div>
+        <div className="draw-mini-content">
+          <span className="draw-mini-kicker">OPORTUNIA · {String(i+1).padStart(2,"0")}</span>
+          <h3>{draw.prize}</h3>
+          <p>{draw.description}</p>
+          <div className="draw-mini-foot">
+            <span>{draw.illustrative?"Propuesta visual · No confirmado":"Consulta las novedades del sorteo"}</span>
+            <a href="#registro" aria-label={"Conocer novedades de "+draw.prize}>Conocer más <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </article>)}
+    </div>
+    <p className="draw-mini-disclosure"><strong>Importante:</strong> las tarjetas marcadas «Idea de premio» son propuestas de diseño, no sorteos convocados. La apertura de cualquier edición requiere condiciones y autorizaciones publicadas.</p>
   </section>;
 }
