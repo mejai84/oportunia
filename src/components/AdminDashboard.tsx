@@ -7,7 +7,7 @@ import { summarizeAdminDemo } from "@/lib/adminMetrics";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
 
 type QuickTab = "pagos" | "clientes" | "sorteos" | "verificacion";
-type RemoteMetrics = { catalog: number; visible: number; pendingReviews: number; verifiedResults: number };
+type RemoteMetrics = { catalog: number; visible: number; pendingReviews: number; verifiedResults: number; accounts: number; paymentReports: number };
 
 function ActivityChart({ trend }: { trend: ReturnType<typeof summarizeAdminDemo>["trend"] }) {
   const peak = Math.max(1000, ...trend.flatMap(day => [day.reported, day.approved]));
@@ -61,14 +61,18 @@ export function AdminDashboard({ state, drawId, onOpenTab }: {
       client.from("draw_catalog").select("id,enabled"),
       client.from("draw_reviews").select("id,status"),
       client.from("draw_results").select("id,verified_at"),
-    ]).then(([catalog, reviews, results]) => {
+      client.from("customer_profiles").select("user_id"),
+      client.from("bank_recon_claims").select("id,customer_user_id"),
+    ]).then(([catalog, reviews, results, accounts, paymentReports]) => {
       if (!active) return;
-      if (catalog.error || reviews.error || results.error) { setRemote("error"); return; }
+      if (catalog.error || reviews.error || results.error || accounts.error || paymentReports.error) { setRemote("error"); return; }
       setRemote({
         catalog: catalog.data?.length ?? 0,
         visible: catalog.data?.filter(item => item.enabled).length ?? 0,
         pendingReviews: reviews.data?.filter(item => item.status === "pending").length ?? 0,
         verifiedResults: results.data?.filter(item => item.verified_at !== null).length ?? 0,
+        accounts: accounts.data?.length ?? 0,
+        paymentReports: paymentReports.data?.length ?? 0,
       });
     }).catch(() => { if (active) setRemote("error"); });
     return () => { active = false; };
@@ -118,8 +122,9 @@ export function AdminDashboard({ state, drawId, onOpenTab }: {
         <header className="op-card-header"><div><span className="op-dash-kicker">DATOS DE SUPABASE</span><h3>Catálogo y contenido</h3></div><Link href="/admin/catalogo">Gestionar ↗</Link></header>
         {remote === null ? <p className="op-no-data">Consultando datos de Supabase…</p> :
           remote === "error" ? <p role="alert" className="op-no-data">No se pudieron consultar los indicadores remotos. Verifica conexión y permisos.</p> :
-          <div className="op-remote-grid"><div><strong>{remote.catalog}</strong><span>Ediciones</span></div><div><strong>{remote.visible}</strong><span>Visibles</span></div><div><strong>{remote.pendingReviews}</strong><span>Opiniones pendientes</span></div><div><strong>{remote.verifiedResults}</strong><span>Resultados verificados</span></div></div>}
-        <p className="op-caption">Solo estos indicadores provienen del proyecto Supabase; las cifras financieras anteriores son locales.</p>
+          <div className="op-remote-grid"><div><strong>{remote.catalog}</strong><span>Ediciones</span></div><div><strong>{remote.visible}</strong><span>Visibles</span></div><div><strong>{remote.pendingReviews}</strong><span>Opiniones pendientes</span></div><div><strong>{remote.verifiedResults}</strong><span>Resultados verificados</span></div><div><strong>{remote.accounts}</strong><span>Cuentas registradas</span></div><div><strong>{remote.paymentReports}</strong><span>Referencias reportadas</span></div></div>}
+        <p className="op-caption">Estos indicadores proceden de Supabase (no representan ventas). Las cifras financieras anteriores son simulaciones del navegador.</p>
+        <div className="op-dash-footer"><Link href="/admin/clientes">Abrir CRM ↗</Link><Link href="/admin/numeros">Auditar números demo ↗</Link></div>
       </section>
       <section className="op-dash-card op-dash-wide">
         <header className="op-card-header"><div><span className="op-dash-kicker">OPERACIONES RECIENTES</span><h3>Últimos reportes de prueba</h3></div><button className="op-link-button" type="button" onClick={() => onOpenTab("pagos")}>Revisar todos ↗</button></header>
