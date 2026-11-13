@@ -98,7 +98,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
               <div className="f-phone-camera"><span /><span /><span /></div>
               <div className="f-phone-logo">✦</div>
             </div>
-            <div className="f-floating-ticket"><small>TUS NÚMEROS</small><strong>0 0 0 7</strong><span>Elegido por ti</span></div>
+            <div className="f-floating-ticket"><small>TUS NÚMEROS</small><strong>0 0 0 7</strong><span>Tu número inicial</span></div>
             <div className="f-floating-spark">✧</div>
           </div>
           <div className="f-showcase-bottom">
@@ -143,7 +143,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
               className={"f-amount" + (amount === value ? " active" : "")}
               aria-pressed={amount === value} onClick={() => setAmount(value)}>{money(value)}</button>)}
           </div>
-          <div className="f-example-note">Ejemplo: $20.000 confirmados = 10 elegidos + 10 aleatorios. Aún no participa.</div>
+          <div className="f-example-note">Ejemplo: $20.000 confirmados = 10 iniciales + 10 aleatorios. Aún no participa.</div>
         </div>
         <div className="f-demo-card">
           <div className="f-demo-card-header"><span>ESTADO DE TU OPORTUNIDAD</span><span className={"f-state" + (eligible ? " is-ready" : "")}>{eligible ? "✓ HABILITADA" : "◷ NO PARTICIPA"}</span></div>
