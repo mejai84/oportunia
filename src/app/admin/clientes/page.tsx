@@ -53,7 +53,7 @@ function CrmWorkspace() {
 
   const metrics=useMemo(()=>crmSummary(profiles,claims),[profiles,claims]);
   const filtered=useMemo(()=>filterCrmProfiles(profiles,claims,term,segment),[profiles,claims,term,segment]);
-  const chosen=profiles.find(p=>p.user_id===selectedId) || filtered[0] || null;
+  const chosen=filtered.find(p=>p.user_id===selectedId) || filtered[0] || null;
   const chosenClaims=chosen?claims.filter(c=>c.customer_user_id===chosen.user_id):[];
   const chosenNotes=chosen?notes.filter(n=>n.customer_user_id===chosen.user_id):[];
   async function addNote(event: FormEvent<HTMLFormElement>) {
