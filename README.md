@@ -1,6 +1,6 @@
 # Oportunia — primera versión Next.js
 
-Demo funcional de una plataforma independiente de oportunidades y sorteos, preparada para conectar posteriormente a Vercel, Supabase y n8n.
+Demo funcional de una plataforma independiente de oportunidades y sorteos, con embudo comercial y preparación para Vercel, Supabase y n8n.
 
 ## Ejecutar localmente
 
@@ -13,7 +13,7 @@ No se necesitan variables de entorno para la demo. Para preparar Supabase, copia
 
 ## Pantallas incluidas
 
-- / — bienvenida y explicación.
+- / y /embudo — página de embudo comercial con CTA, simulador de abonos, preguntas frecuentes y formulario de interés desactivado por defecto.
 - /numeros — selección de 10 números entre 0000 y 9999 (buscador y cuadrícula paginada).
 - /pagos — reportes de abonos simulados.
 - /mi-cuenta — números reservados/asignados y saldo.
@@ -32,12 +32,14 @@ Los números se mantienen únicos en el navegador de demo. Los datos se guardan 
 
 ## Preparación Supabase
 
-El esquema SQL inicial está en supabase/migrations/20261113000100_initial_oportunia.sql.
-No se ha aplicado a ninguna base de datos. Incluye RLS habilitado sin políticas de acceso: denegación por defecto. Antes de conectar datos reales hay que implementar Auth, roles, políticas RLS, asignaciones atómicas y auditoría.
+El esquema SQL inicial de oportunidades está en supabase/migrations/20261113000100_initial_oportunia.sql.
+Ese esquema de oportunidades no se ha aplicado a ninguna base de datos. Incluye RLS habilitado sin políticas de acceso: denegación por defecto.
+
+**El proyecto Supabase Oportunia qsclrpmkgcjobtupicyx sí tiene creada la tabla public.funnel_leads**, mediante la migración 20261113185320_funnel_leads_initial. La tabla tiene RLS y no permite acceso directo a visitantes. El formulario está apagado por defecto y requiere un secreto de servidor, política de privacidad y medidas anti-abuso antes de activarse. Ver docs/EMBUDO.md. Antes de conectar datos reales hay que implementar Auth, roles, políticas RLS, asignaciones atómicas y auditoría.
 
 ## Despliegue Vercel
 
-Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. No existe todavía un despliegue ni una conexión a Supabase.
+Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. No existe todavía un despliegue web. La tabla de captación del embudo existe en Supabase, pero el sitio no tiene configuradas las credenciales de servidor.
 
 ## Pruebas
 
