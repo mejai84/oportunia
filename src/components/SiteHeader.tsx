@@ -7,6 +7,7 @@ const links = [
   { href: "/", label: "Inicio" }, { href: "/#sorteos", label: "Sorteos" },
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/acceso", label: "Mi cuenta" },
+  { href: "/notificaciones", label: "Avisos" },
 ];
 
 export function SiteHeader() {
