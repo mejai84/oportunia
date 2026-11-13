@@ -7,7 +7,7 @@
 **Versión documental:** 0.1  
 **Repositorio:** https://github.com/mejai84/oportunia  
 **Base de datos:** Supabase, proyecto qsclrpmkgcjobtupicyx  
-**Entorno web:** Vercel; URL de producción y publicación final pendientes de verificación.
+**Entorno web:** Vercel. GitHub registró despliegue completado del commit 80e7140 el 2026-11-13; URL pública y pruebas funcionales todavía pendientes.
 
 ## Política documental
 
@@ -59,7 +59,7 @@ Los roles a asignar formalmente son: responsable de producto, líder técnico, r
 ## Pendientes transversales
 
 - Añadir y versionar package-lock.json con instalación reproducible; hoy el repositorio no lo incluye.
-- Definir ambiente de pruebas y URL de Vercel, sin afirmar disponibilidad antes de verificar.
+- Confirmar URL pública de Vercel y completar smoke tests; el estado de integración confirma despliegue, no aceptación funcional.
 - Habilitar controles de ramas y revisiones según permisos del repositorio.
 - Completar matriz de pruebas E2E y control de vulnerabilidades de dependencias.
 - Definir política de conservación, derechos de titulares y gestión de incidentes de datos.

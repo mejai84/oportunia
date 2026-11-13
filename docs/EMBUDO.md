@@ -37,7 +37,7 @@ El formulario es opcional: no es una compra ni crea reservas. Nunca se habilitan
 
 ## Estado del despliegue al 2026-11-13
 
-El log de Vercel para commit b84339d indica compilación completada, pero advierte una versión vulnerable de Next.js y no demuestra una publicación final correcta. La corrección de dependencias y el registro de incidencia se documentan en docs/INCIDENTES/INC-2026-11-13-001.md.
+El log inicial de Vercel para commit b84339d advirtió una versión vulnerable de Next.js. Tras la corrección, la integración de Vercel en GitHub confirmó despliegue completado del commit 80e7140; falta verificar URL pública y comportamiento de pantallas. La corrección de dependencias y el registro de incidencia se documentan en docs/INCIDENTES/INC-2026-11-13-001.md.
 
 ## Nota sobre migraciones
 

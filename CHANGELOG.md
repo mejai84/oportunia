@@ -2,7 +2,7 @@
 
 Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de código; no implican publicación web verificada.
 
-## [Código validado por CI; despliegue pendiente de verificar] — 2026-11-13
+## [Código validado por CI; despliegue Vercel completado; aceptación funcional pendiente] — 2026-11-13
 
 ### Seguridad
 - Propuesta de actualización de Next.js 15.5.6 a 15.5.29 y React 19.1.1 a 19.1.5.
@@ -12,6 +12,9 @@ Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de
 
 ### Correcciones
 - Sustitución de dos valores CSS de align-items:start por flex-start.
+
+### Entrega
+- Integración de Vercel en GitHub confirmó despliegue completado del commit 80e7140. URL pública y smoke tests pendientes.
 
 ### Documentación
 - Línea base profesional SDLC: PRD, arquitectura, seguridad, operaciones, ADR, incidencias y criterios de aceptación.
