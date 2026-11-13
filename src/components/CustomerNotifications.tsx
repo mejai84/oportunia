@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
+import { unreadNotificationCount } from "@/lib/operations";
 
 type Notice = {
   id:string; user_id:string; kind:"reporte_recibido"|"cotejo_extracto"|"reporte_rechazado";
@@ -51,7 +52,7 @@ export function CustomerNotifications({standalone=false}:{standalone?:boolean}) 
     return()=>{live=false;};
   },[userId,refresh]);
 
-  const unread=notices.filter(n=>!n.read_at).length;
+  const unread=unreadNotificationCount(notices);
   const visible=filter==="unread"?notices.filter(n=>!n.read_at):notices;
 
   async function markAsRead(id?:string){
