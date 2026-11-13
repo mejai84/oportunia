@@ -65,7 +65,7 @@ export function CustomerProfile() {
       <form className="customer-profile-form" onSubmit={e=>void save(e)}>
         <label>Correo de tu cuenta<input type="email" disabled value={profile.email}/></label>
         <label>Nombre para identificarte<input type="text" maxLength={100} value={name} onChange={e=>setName(e.target.value)} placeholder="Tu nombre"/></label>
-        <label>Celular de contacto<input type="tel" inputMode="tel" pattern="\\+?[0-9]{7,15}" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="3001234567"/></label>
+        <label>Celular de contacto<input type="tel" inputMode="tel" pattern="[+]?[0-9]{7,15}" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="3001234567"/></label>
         <label className="customer-profile-consent"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)}/>
           <span>Autorizo recibir novedades comerciales de Oportunia. Puedo retirar este consentimiento desmarcando la casilla y guardando.</span></label>
         <div className="customer-profile-actions"><button className="btn btn-primary btn-small" disabled={busy}>{busy?"Guardando…":"Guardar mi perfil"}</button>
