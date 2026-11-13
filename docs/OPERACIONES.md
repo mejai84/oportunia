@@ -85,6 +85,15 @@ Referencia: [INC-2026-11-13-001](INCIDENTES/INC-2026-11-13-001.md).
 - Informe de verificación parcial: [OPR-QA-001](PRUEBAS/QA-2026-11-13-001.md).
 - Pruebas de aceptación de flujos internos: **pendientes**. No se declara listo para operación comercial.
 
+## 6.2. Entrega de selección automática y progreso porcentual (2026-11-13)
+
+- Commit integrado en main: `64471594907bbfa0542a554b1d778ebeffe91889`.
+- GitHub Actions: auditoría, TypeScript, pruebas y build **aprobados** (run `43491098661`).
+- Integración de Vercel: **Deployment has completed** para el mismo commit.
+- URL del entorno: https://oportunia-chi.vercel.app/.
+- Se introducen elección manual/automática, barra porcentual y mensajes por hitos. **Pendiente:** probar los clics y la experiencia en la URL pública; ver [OPR-QA-002](PRUEBAS/QA-2026-11-13-002.md).
+- Los datos siguen siendo solo del navegador y no se enviaron notificaciones externas.
+
 ## 7. Operación posterior
 
 Antes de lanzar: monitoreo, alertas, respaldo, pruebas de restauración, plan de respuesta a incidentes, gestión de accesos, actualización periódica de dependencias y revisión de auditoría.
