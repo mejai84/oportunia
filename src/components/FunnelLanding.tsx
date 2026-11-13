@@ -7,6 +7,7 @@ import { money } from "@/lib/domain";
 import { usePublicDraws } from "@/lib/usePublicDraws";
 
 import { DrawCarousel } from "@/components/DrawCarousel";
+import { SocialProofSections } from "@/components/SocialProofSections";
 import { campaignFromSearch } from "@/lib/funnel";
 
 const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
@@ -125,6 +126,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     </section>
 
     <DrawCarousel />
+    <SocialProofSections />
     <section className="container f-stats" aria-label="Características de la propuesta">
       <div><strong>200</strong><span>Oportunidades previstas por sorteo</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>

@@ -33,8 +33,8 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
   if (loading) return <section className="container page-space"><p>Verificando acceso administrativo…</p></section>;
   if (!user) return <section className="container page-space access-page"><div className="access-card">
     <span className="overline">ACCESO RESTRINGIDO</span><h1>Administración de Oportunia</h1>
-    <p>Ingresa con una cuenta autorizada. Los visitantes no pueden modificar sorteos ni imágenes.</p>
-    <form className="form-stack" onSubmit={login}>
+    <p>Ingresa con una cuenta autorizada. Para crear la primera cuenta de propietario, regístrate y verifica el correo autorizado en la página de acceso.</p>
+    <p><a href="/acceso">Crear cuenta o verificar correo</a></p><form className="form-stack" onSubmit={login}>
       <label>Correo electrónico<input required type="email" autoComplete="username" value={email} onChange={e=>setEmail(e.target.value)} /></label>
       <label>Contraseña<input required type="password" autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)} /></label>
       {error && <div role="alert" className="alert alert-error">{error}</div>}

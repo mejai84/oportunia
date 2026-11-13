@@ -76,3 +76,44 @@ input:focus,select:focus{border-color:#17a658;box-shadow:0 0 0 4px #17a65824}
 .terms-accept input{accent-color:#0b8844}.terms-accept a{color:#086b39}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline-color:#078a48}
 @media(max-width:740px){.f-hero{background-attachment:scroll}.f-showcase{box-shadow:0 14px 38px #0b6a3b16}}
+
+/* Oportunia · reseñas auténticas y resultados verificados */
+.social-proof-section{padding:70px 0 45px}
+.social-proof-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px}
+.social-proof-heading h2{font-size:clamp(1.8rem,3.5vw,2.8rem);color:#07572f;letter-spacing:-.04em;margin:9px 0}
+.social-proof-heading p{max-width:690px;color:#56705d;line-height:1.65}
+.social-review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.social-review-card{background:#fff;border:1px solid #d8ebda;border-radius:24px;padding:25px;box-shadow:0 12px 30px #075a3112;display:flex;flex-direction:column;gap:20px}
+.social-review-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.social-stars,.rating-stars{color:#e6aa16;font-size:22px;letter-spacing:2px}
+.social-stars span{color:#d2d9d2}
+.social-verified{font-size:11px;font-weight:800;color:#0a8141;background:#e7f8eb;border-radius:30px;padding:6px 10px}
+.social-review-text{flex:1;color:#244d35;line-height:1.7}
+.social-review-footer{display:flex;align-items:center;gap:12px;border-top:1px solid #e3eee4;padding-top:15px}
+.social-review-footer strong,.social-review-footer small{display:block}.social-review-footer small{color:#5b7461;font-size:12px;margin-top:4px}
+.social-avatar{width:42px;height:42px;display:grid;place-items:center;background:#dcf7e2;color:#086a38;border-radius:50%;font-weight:900}
+.social-draw-thumb{width:60px;height:52px;object-fit:contain;margin-left:auto}
+.social-empty{background:linear-gradient(120deg,#f0faed,#fff);border:1px solid #d9edda;border-radius:26px;text-align:center;padding:42px 22px}
+.social-empty h3{font-size:23px;color:#07572f;margin:12px 0}
+.social-empty p{color:#577260;max-width:600px;margin:10px auto 20px;line-height:1.6}
+.social-empty-icon{color:#e6ae20;font-size:30px}
+.social-placeholder{margin:20px auto 0;max-width:390px;background:#fff;border:1px solid #d6e9d8;border-radius:22px;padding:18px;display:flex;align-items:center;flex-direction:column;gap:8px}
+.social-placeholder>span{color:#936d12;font-size:11px;font-weight:900;letter-spacing:.1em}
+.social-placeholder img{height:190px;width:100%;object-fit:contain}
+.social-placeholder strong{color:#07572f}.social-placeholder small{color:#54735e}
+.social-result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.social-result-card{border:1px solid #d4e8d7;border-radius:22px;padding:22px;background:#fff}
+.social-result-card>img{height:180px;width:100%;object-fit:contain}
+.social-result-card h3{margin:14px 0;color:#07572f}
+.social-result-card p{margin:8px 0}.social-result-card small{color:#56715c;line-height:1.5}
+.review-account-panel{margin-top:25px}
+.rating-stars-field{border:0;padding:0;margin:8px 0}
+.rating-stars-field legend{font-weight:700;margin-bottom:6px}
+.rating-stars{display:flex;gap:4px}
+.rating-stars button{font-size:32px;color:#e6aa16;border:0;background:none;cursor:pointer;padding:0 4px}
+.auth-switch{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
+.auth-switch button{background:none;border:0;color:#08723c;cursor:pointer;text-decoration:underline}
+@media(max-width:850px){.social-review-grid,.social-result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.social-proof-section{padding:42px 0 28px}.social-proof-heading{align-items:flex-start;flex-direction:column}.social-review-grid,.social-result-grid{grid-template-columns:1fr}.social-review-card{padding:20px}}
+
+.review-moderation-item{border:1px solid #d6e8d9;border-radius:16px;background:#fafffa;padding:16px;margin-top:12px}.review-moderation-item p{line-height:1.5;margin:12px 0}.review-moderation-item small{color:#54745f}.admin-review-actions{display:flex;gap:10px;flex-wrap:wrap}
