@@ -220,7 +220,7 @@ function ReconciliationWorkspace() {
     </> : section==="reportes" ? <>
       <section className="bank-panel">
         <header><div><span className="overline">01 · DECLARACIÓN DE CLIENTE</span><h2>Registrar un pago reportado</h2></div></header>
-        <p>Este formulario es para administración, no captura pagos ni demuestra que haya ingresado dinero. Registra la referencia oficial informada para cruzarla contra el abono del extracto.</p>
+        <p>Este formulario es para administración. Los clientes también pueden registrar y consultar su historial desde <strong>Pagos</strong> y <strong>Mi cuenta</strong>. Un reporte no acredita que haya ingresado dinero.</p>
         <form className="bank-claim-form" onSubmit={e=>void submitClaim(e)}>
           <label>Banco de destino<select value={bank} onChange={e=>setBank(e.target.value as ReconBank)}><option value="BANCOLOMBIA">Bancolombia</option><option value="NEQUI">Nequi</option></select></label>
           <label>Alias de cuenta<input required minLength={3} maxLength={40} pattern="[A-Za-z0-9_-]{3,40}" value={accountAlias} placeholder="AHORROS_PRINCIPAL" onChange={e=>setAccountAlias(e.target.value.toUpperCase())}/></label>
@@ -235,6 +235,7 @@ function ReconciliationWorkspace() {
           <div className="bank-movements">{claims.map(c=><article className="bank-movement" key={c.id}>
             <div className="bank-movement-top"><div><strong>{c.customer_label}</strong><span>{c.bank} · {c.account_alias}</span></div><strong className="bank-money">{money(c.expected_amount_cop)}</strong></div>
             <p>Referencia: {c.claimed_reference} <span className={"bank-status bank-"+c.status}>{statusLabel[c.status]}</span></p>
+            {c.customer_user_id&&<p>Cliente registrado con cuenta Oportunia · Origen declarado: {c.origin_channel||"No indicado"}{c.customer_order_reference?" · Oportunidad: "+c.customer_order_reference:""}</p>}
             <small>{new Date(c.created_at).toLocaleString("es-CO")}</small>
             {c.status==="pending"&&<div className="bank-row-actions">
               <button className="btn btn-ghost btn-small" disabled={busy} onClick={()=>void closeItem("claim",c.id)}>Rechazar con motivo</button></div>}
