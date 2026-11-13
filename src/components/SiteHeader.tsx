@@ -17,6 +17,13 @@ export function SiteHeader() {
         <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a><a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
       </nav>
       <Link className="f-header-cta" href="/acceso">Mi cuenta ↗</Link>
+      <details className="mobile-nav-menu"><summary aria-label="Abrir menú de navegación">Menú <span aria-hidden="true">☰</span></summary>
+        <nav aria-label="Navegación móvil">
+          <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a>
+          <a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
+          <Link href="/numeros">Elegir números</Link><Link href="/mi-cuenta">Mi cuenta</Link>
+        </nav>
+      </details>
     </div></header>;
   }
   return <header className="site-header"><div className="container header-inner">
@@ -24,5 +31,10 @@ export function SiteHeader() {
     <nav className="nav-links" aria-label="Navegación principal">
       {links.map((link) => <Link key={link.href} href={link.href} className={"nav-link" + (pathname === link.href ? " active" : "")}>{link.label}</Link>)}
     </nav>
+    <details className="mobile-nav-menu"><summary aria-label="Abrir menú de navegación">Menú <span aria-hidden="true">☰</span></summary>
+      <nav aria-label="Navegación móvil">
+        {links.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
+      </nav>
+    </details>
   </div></header>;
 }

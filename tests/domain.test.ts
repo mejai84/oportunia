@@ -5,7 +5,7 @@ import {
   isEligible, normalizeNumber, phaseOf, rejectPayment, reportPayment,
   reservedNumbers, reachedSalesUpdates, salesProgressPercent, salesProgressStatus,
   createDraw, setDrawEnabled, expireUnpaidReservations, renewExpiredOpportunity,
-  previousNumberAvailability, activeOrders, isReservationExpired, drawCatalog,
+  previousNumberAvailability, activeOrders, isReservationExpired, drawCatalog, drawProgress,
 } from "../src/lib/domain";
 
 const customer = { name: "Cliente de prueba", phone: "3001234567", email: "" };
@@ -189,4 +189,37 @@ test("abonos aprobados no se liberan automáticamente hasta definir política de
   assert.equal(state.opportunities[0].status, "financiada");
   assert.equal(reservedNumbers(state, "principal", later).size, 20);
   assert.equal(isReservationExpired(state.opportunities[0], later), false);
+});
+
+test("avance parte en cero sin inventar porcentaje ni ventas", () => {
+  assert.deepEqual(drawProgress(EMPTY_STATE, "principal", date), {
+    total: 200, occupied: 0, paid: 0, withPartialPayment: 0, reservedWithoutPayment: 0,
+    separated: 0, occupiedPercent: 0, paidPercent: 0,
+  });
+});
+
+test("el avance distingue reservas, abonos parciales y pagos completos", () => {
+  let state = setup();
+  assert.equal(drawProgress(state, "principal", date).reservedWithoutPayment, 1);
+  state = createOpportunity(state, {
+    customer, selected: Array.from({length: 10}, (_, i) => String(i+10).padStart(4,"0")),
+    plan: "contado", termsAccepted: true,
+  }, "orden-2", date);
+  state = reportPayment(state, { orderId: "orden-2", amount: PRICE, method: "PSE", reference: "full" }, "full", date);
+  state = approvePayment(state, "full", () => 0.5, date);
+  const stats = drawProgress(state, "principal", date);
+  assert.equal(stats.occupied, 2);
+  assert.equal(stats.separated, 1);
+  assert.equal(stats.reservedWithoutPayment, 1);
+  assert.equal(stats.withPartialPayment, 0);
+  assert.equal(stats.paid, 1);
+  assert.equal(stats.occupiedPercent, 1);
+  assert.equal(stats.paidPercent, 0.5);
+});
+
+test("las reservas vencidas no se presentan como avance real", () => {
+  const state = setup();
+  const later = new Date(date.getTime() + 25 * 3_600_000);
+  assert.equal(drawProgress(state, "principal", later).occupied, 0);
+  assert.equal(drawProgress(state, "principal", later).paid, 0);
 });

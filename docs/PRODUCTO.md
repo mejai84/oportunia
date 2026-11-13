@@ -39,9 +39,13 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 | BR-009 | Al colocar las 200 oportunidades se permite hasta 7 días calendario para cobrar saldos | Definida para diseño; cierre real sujeto a reglamento |
 | BR-010 | Se propone tomar las cuatro últimas cifras del premio mayor de la Lotería de Medellín | Propuesta sujeta a validación y autorización |
 | BR-011 | Si vencen 7 días con saldos impagos, el sistema entra en revisión, sin adjudicar ni reasignar automáticamente | Pendiente de decisión y reglamento |
-| BR-012 | En Mi cuenta se muestra solo el porcentaje de oportunidades colocadas; no se revela el total de compras ni el inventario global | Implementada en demo local; fuente global pendiente |
+| BR-012 | En Mi cuenta se muestra el porcentaje de ocupación, separado en reservas/abonos y pagos completos; no se revela el total de compras ni el inventario global | Implementada en demo local; fuente global pendiente |
 | BR-013 | Se muestran mensajes de seguimiento al alcanzar 25 %, 50 %, 75 %, 90 % y 100 % de colocación | Implementada en interfaz de demo; envíos externos pendientes |
 | BR-014 | Llegar al 100 % de colocación no equivale a tener pagos completos ni a confirmar la fecha del sorteo | Obligatoria |
+| BR-015 | El plan de pago completo es la opción inicial; el usuario puede elegir cuotas voluntariamente | Implementada en demo |
+| BR-016 | Los porcentajes de avance empiezan en 0 % y nunca se inflan con un porcentaje inicial ficticio | Obligatoria |
+| BR-017 | Las reservas vencidas no se cuentan como ocupación; separar reservas/abonos de oportunidades totalmente pagadas | Implementada en demo; fuente global pendiente |
+| BR-018 | Experiencia adaptable a móviles, tabletas y PC; navegación accesible, objetivos táctiles y movimiento reducido | Estilos implementados; QA visual multidispositivo pendiente |
 
 **Ejemplo de pagos aprobados:** COP 20.000 → 10 iniciales (elegidos o automáticos) + 10 aleatorios (20 asignados; NO participa); COP 35.000 acumulados → 10 + 25 (35 asignados; NO participa); COP 50.000 acumulados → 10 + 40 (50 asignados; elegible sujeto a reglamento).
 

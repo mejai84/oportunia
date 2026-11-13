@@ -16,9 +16,9 @@ No se necesitan variables de entorno para la demo. Para preparar Supabase, copia
 ## Pantallas incluidas
 
 - / y /embudo — página de embudo comercial con CTA, simulador de abonos, preguntas frecuentes y formulario de interés desactivado por defecto.
-- /numeros — el cliente escoge 10 números manualmente o solicita 10 automáticos disponibles; los 40 adicionales se asignan con abonos aprobados (demo local).
+- /numeros — el cliente escoge 10 números manualmente o solicita 10 automáticos disponibles; los 40 adicionales se asignan con abonos aprobados. **Pago completo está preseleccionado**, las cuotas son opcionales (demo local).
 - /pagos — reportes de abonos simulados.
-- /mi-cuenta — números reservados/asignados, saldo, porcentaje de colocación y novedades por hitos (demo local, no cifras globales).
+- /mi-cuenta — números reservados/asignados, saldo, **porcentajes reales de la demo local** de ocupación separados entre reservas y pagos completos, y novedades por hitos (no cifras globales).
 - /recuperar — renovar una reserva inicial vencida, recuperar números anteriores libres y sustituir los ocupados.
 - /reglas — reglas provisionales, aceptación obligatoria antes de reservar.
 - /acceso — vista informativa del futuro acceso por celular y código temporal de WhatsApp (sin envíos).
@@ -27,14 +27,14 @@ No se necesitan variables de entorno para la demo. Para preparar Supabase, copia
 
 ## Flujo de prueba
 
-1. Crear una oportunidad: escoger 10 números manualmente o seleccionar asignación automática de los primeros 10.
-2. Reportar un primer abono de $20.000.
+1. Crear una oportunidad: escoger 10 números manualmente o seleccionar asignación automática de los primeros 10. **Pago completo viene seleccionado por defecto**.
+2. Si deseas probar abonos, cambia expresamente a tres cuotas y reporta el primer abono de $20.000. Si mantienes pago completo, reporta $50.000.
 3. En /admin → Pagos, aprobarlo.
 4. En /mi-cuenta se ven 10 elegidos + 10 aleatorios, pero no participa.
 5. Repetir con $15.000: 10 + 25, aún no participa.
 6. Repetir con $15.000: 10 + 40, habilitada al completar $50.000.
 
-La reserva inicial sin abono aprobado vence en 24 horas; el cliente puede recuperar números aún disponibles. Los sorteos múltiples, las reservas y las aceptaciones son solo datos de este navegador. La asignación automática reserva diez números únicos de la demo y los muestra en Mi cuenta. El progreso de colocación solo refleja las oportunidades creadas en el mismo navegador; NO es un indicador global de ventas. Los avisos por hitos se muestran en la pantalla, no se envían por WhatsApp ni correo. Los números se mantienen únicos en el navegador de demo. Los datos se guardan en localStorage: no son compartidos, seguros ni persistentes entre dispositivos. El panel administrativo no tiene autenticación. NO usar para cobrar, vender o sortear.
+La reserva inicial sin abono aprobado vence en 24 horas; el cliente puede recuperar números aún disponibles. Los sorteos múltiples, las reservas y las aceptaciones son solo datos de este navegador. La asignación automática reserva diez números únicos de la demo y los muestra en Mi cuenta. El progreso de ocupación inicia en 0 % y separa reservas/abonos de pagos completos; solo refleja las oportunidades creadas en el mismo navegador, sin inventar un 35 % inicial. NO es un indicador global de ventas. Los avisos por hitos se muestran en la pantalla, no se envían por WhatsApp ni correo. Los números se mantienen únicos en el navegador de demo. Los datos se guardan en localStorage: no son compartidos, seguros ni persistentes entre dispositivos. El panel administrativo no tiene autenticación. NO usar para cobrar, vender o sortear.
 
 ## Preparación Supabase
 

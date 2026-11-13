@@ -219,8 +219,26 @@ export function renewExpiredOpportunity(
  * Porcentaje de oportunidades COLOCADAS, no de pagos completados.
  * Solo cuenta órdenes de este navegador en la demo; no son ventas globales.
  */
+/** Conteos separados, auditables y sin avance ficticio. "Separadas" incluye las que tienen abonos parciales. */
+export function drawProgress(state: DemoState, drawId = DEFAULT_DRAW_ID, now = new Date()) {
+  const orders = activeOrders(state, drawId, now);
+  const paid = orders.filter((order) => isEligible(order)).length;
+  const withPartialPayment = orders.filter((order) => order.paid > 0 && !isEligible(order)).length;
+  const reservedWithoutPayment = orders.length - paid - withPartialPayment;
+  return {
+    total: MAX_OPPORTUNITIES,
+    occupied: orders.length,
+    paid,
+    withPartialPayment,
+    reservedWithoutPayment,
+    separated: orders.length - paid,
+    occupiedPercent: Math.min(100, orders.length / MAX_OPPORTUNITIES * 100),
+    paidPercent: Math.min(100, paid / MAX_OPPORTUNITIES * 100),
+  };
+}
+
 export function salesProgressPercent(state: DemoState, drawId = DEFAULT_DRAW_ID, now = new Date()): number {
-  return Math.min(100, Math.max(0, activeOrders(state, drawId, now).length / MAX_OPPORTUNITIES * 100));
+  return drawProgress(state, drawId, now).occupiedPercent;
 }
 
 export type SalesUpdate = { threshold: number; title: string; message: string };

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
-import { drawCatalog, salesProgressPercent } from "@/lib/domain";
+import { drawCatalog, drawProgress } from "@/lib/domain";
 
 export function DrawCarousel() {
   const { state, hydrated, chooseDraw } = useApp();
@@ -15,7 +15,8 @@ export function DrawCarousel() {
   </section>;
   const currentIndex = Math.min(index, draws.length - 1);
   const draw = draws[currentIndex];
-  const progress = salesProgressPercent(state, draw.id);
+  const stats = drawProgress(state, draw.id);
+  const progress = stats.occupiedPercent;
   const percent = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 1 }).format(progress);
   return <section id="sorteos" className="container draw-carousel-section" aria-label="Sorteos disponibles en demostración">
     <div className="draw-carousel-header"><div><span className="f-kicker">EXPLORA LAS EDICIONES</span>
@@ -32,8 +33,17 @@ export function DrawCarousel() {
         <h3>{draw.prize}</h3>
         <p className="draw-carousel-title">{draw.title}</p>
         <p className="draw-carousel-description">{draw.description || "Escoge tus diez números o recíbelos automáticamente."}</p>
-        <div className="draw-carousel-progress-label"><span>Avance de compras (simulación local)</span><strong>{percent}%</strong></div>
-        <div className="draw-carousel-progress"><div style={{ width: progress + "%" }} /></div>
+        <div className="draw-carousel-progress-label"><span>Oportunidades ocupadas · simulación local</span><strong>{percent}%</strong></div>
+        <div className="draw-carousel-progress" role="progressbar" aria-label="Ocupación de oportunidades de prueba"
+          aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
+          <div className="draw-carousel-progress-paid" style={{ width: stats.paidPercent + "%" }} />
+          <div className="draw-carousel-progress-separated" style={{ width: (progress - stats.paidPercent) + "%" }} />
+        </div>
+        <div className="draw-carousel-counts">
+          <span><strong>{(progress - stats.paidPercent).toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> separadas o con abono</span>
+          <span><strong>{stats.paidPercent.toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> pagadas al 100 %</span>
+        </div>
+        {stats.occupied === 0 && <p className="draw-start-note">¡Sé de los primeros en elegir tus números!</p>}
         <Link href="/numeros" onClick={() => chooseDraw(draw.id)} className="f-button f-button-primary">Conocer este sorteo <span aria-hidden="true">↗</span></Link>
       </div>
       <div className="draw-carousel-art" aria-hidden="true">
@@ -49,6 +59,6 @@ export function DrawCarousel() {
         aria-current={i === currentIndex ? "true" : undefined}
         className={i === currentIndex ? "active" : ""} onClick={() => setIndex(i)} />)}
     </div>}
-    <p className="draw-carousel-disclaimer">Porcentajes de prueba calculados únicamente con datos de este navegador. No representan ventas reales ni sorteos autorizados.</p>
+    <p className="draw-carousel-disclaimer">El avance empieza en 0 % y solo cambia con reservas o pagos registrados en esta demo local. Separadas no significa pagadas; no son ventas globales ni sorteos autorizados.</p>
   </section>;
 }
