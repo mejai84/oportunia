@@ -17,3 +17,27 @@ h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:"Outfit",system-ui,sans-serif;line-
 @media(max-width:980px){.hero-grid{gap:30px}.nav-link{padding:9px 8px;font-size:12px}.steps-grid{grid-template-columns:repeat(2,1fr)}.admin-metrics{grid-template-columns:repeat(2,1fr)}.number-grid{grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}.number-cell{font-size:10px}}
 @media(max-width:740px){.container{width:min(100% - 26px,1200px)}.header-inner{align-items:flex-start;flex-direction:column;gap:8px;padding:13px 0}.nav-links{width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:4px}.nav-link{white-space:nowrap}.hero{padding:50px 0}.hero-grid,.two-col-layout{grid-template-columns:1fr}.hero h1{font-size:clamp(2.9rem,11vw,4.4rem)}.prize-card{max-width:480px}.metrics-grid{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.section-space{padding-top:60px}.callout{align-items:flex-start;flex-direction:column;padding:27px}.page-space{padding-top:35px}.panel{padding:19px}.sticky-panel{position:static}.footer{margin-top:45px}.info-grid.three{grid-template-columns:repeat(2,1fr)}.number-cell{font-size:11px;padding:9px 0}}
 @media(max-width:440px){.steps-grid{grid-template-columns:1fr}.admin-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.metric-card{padding:15px}.metric-card strong{font-size:22px}.number-grid{grid-template-columns:repeat(5,1fr)}.number-cell{font-size:12px}.number-search{flex-direction:column}.number-search input{width:100%}.panel-heading{flex-wrap:wrap}.selected-grid{grid-template-columns:repeat(5,1fr)}.prize-price strong{font-size:23px}}
+
+/* OPR-UX-002: elección opcional y seguimiento de compras (solo demo local). */
+.selection-mode-panel{margin-bottom:24px}.selection-mode-panel h2{font-size:1.25rem;margin-bottom:16px}
+.selection-mode-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.selection-mode-option{display:flex;align-items:flex-start;gap:12px;padding:18px;border:1px solid #344968;background:#15233a;border-radius:15px;cursor:pointer}
+.selection-mode-option.selected{border-color:#79c8ff;background:#1d3957}
+.selection-mode-option input{margin-top:4px;accent-color:#81d0ff;flex-shrink:0}
+.selection-mode-option span{display:flex;flex-direction:column;gap:5px}.selection-mode-option strong{font-size:14px}.selection-mode-option small{font-size:12px;color:#b4c4d9;line-height:1.5}
+.auto-allocation-panel{display:flex;flex-direction:column;gap:12px;min-height:300px;justify-content:center}
+.auto-allocation-panel h2{margin:0}.auto-allocation-panel p{margin:0;color:#b8cbe0}.auto-allocation-panel .alert{margin-top:10px}
+.auto-allocation-icon{font-size:48px;color:#92d2ff;line-height:1}
+.auto-allocation-summary{display:flex;flex-direction:column;gap:8px;border:1px dashed #53769b;border-radius:12px;padding:22px;background:#1b2e48}
+.auto-allocation-summary strong{font-size:18px;color:#c9e9ff}.auto-allocation-summary span{font-size:12px;color:#a9c4df}
+.sales-progress-panel{border-color:#43678a;background:linear-gradient(140deg,#1b3353,#111d34 70%)}
+.sales-progress-panel .panel-heading{align-items:center}.sales-progress-panel .panel-heading h2{margin:9px 0 0}
+.sales-progress-percent{font:900 clamp(2rem,5vw,3rem) "Outfit",sans-serif;color:#a7e4ff;white-space:nowrap}
+.sales-progress-track{height:15px}.sales-progress-track .progress-fill{transition:width .3s ease}
+.sales-progress-status{margin:19px 0 8px;color:#e4f3ff}
+.sales-progress-disclaimer{font-size:11px;color:#a9bdd4;margin:13px 0 0}
+.sales-updates{margin-top:22px;border-top:1px solid #3d5776;padding-top:22px}
+.sales-updates h3{margin-bottom:13px}.sales-update-list{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:13px}
+.sales-update-list li{display:flex;gap:13px;align-items:flex-start}.sales-update-percent{flex-shrink:0;min-width:51px;padding:5px 8px;text-align:center;background:#294a70;border-radius:9px;color:#b6e2ff;font-weight:900;font-size:12px}
+.sales-update-list strong{font-size:13px}.sales-update-list p{font-size:12px;color:#b2c3d9;margin:4px 0 0}
+@media(max-width:740px){.selection-mode-options{grid-template-columns:1fr}.sales-progress-panel .panel-heading{align-items:flex-start}.sales-progress-percent{font-size:2rem}}

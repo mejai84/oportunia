@@ -4,8 +4,9 @@
 
 - Página comercial móvil en / y /embudo, pensada para campañas de Facebook, Instagram y TikTok.
 - Presentación transparente del premio proyectado y del precio de $50.000 por oportunidad.
-- CTA a /numeros, donde la demo permite escoger 10 números de cuatro cifras.
-- Simulador de abonos: 10 elegidos + hasta 40 aleatorios, habilitación solo al confirmar $50.000.
+- CTA a /numeros, donde la demo permite escoger 10 números de cuatro cifras o solicitar 10 automáticos disponibles.
+- Simulador de abonos: 10 iniciales (elegidos o automáticos) + hasta 40 aleatorios, habilitación solo al confirmar $50.000.
+- Portal Mi cuenta: barra de avance de colocación (porcentaje únicamente) y mensajes por hitos de demo. No hay conteo global de ventas ni notificaciones enviadas.
 - Preguntas frecuentes, condiciones visibles y CTA móvil.
 - Formulario de solicitud de información, desactivado por defecto.
 - Atribución UTM: source, medium, campaign, content y term.
@@ -16,7 +17,7 @@
 
 Anuncio con UTMs → /embudo → conocer la propuesta → simular abonos → elegir números en /numeros → /pagos y /mi-cuenta (solo demo).
 
-El formulario es opcional: no es una compra ni crea reservas. Nunca se habilitan números por registrarse como interesado.
+El formulario es opcional: no es una compra ni crea reservas. El porcentaje de avance en Mi cuenta es de prueba, no debe presentarse en anuncios como progreso real. Nunca se habilitan números por registrarse como interesado.
 
 ## Seguridad
 

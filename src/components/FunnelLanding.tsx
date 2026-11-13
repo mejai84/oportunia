@@ -10,7 +10,7 @@ const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
 const faqs = [
   {
     question: "¿Cómo se distribuyen los 50 números?",
-    answer: "Tú eliges 10 números únicos de cuatro cifras. Los otros 40 se asignan aleatoriamente conforme se confirmen los abonos. Al completar el valor total recibes los 50.",
+    answer: "Puedes escoger 10 números de cuatro cifras o solicitar que el sistema los asigne automáticamente. Los otros 40 se asignan al confirmar los abonos. Solo el pago completo habilita los 50.",
   },
   {
     question: "¿Puedo pagar por cuotas?",
@@ -81,10 +81,10 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
           <div className="f-eyebrow"><span className="f-live-dot" /> OPORTUNIA · EXPERIENCIA DEMOSTRATIVA</div>
-          <h1>Tu próximo <span className="f-highlight">iPhone 18</span> podría comenzar con <em>10 números elegidos por ti.</em></h1>
-          <p className="f-hero-description">Conoce una nueva forma de organizar tus oportunidades: escoge tus favoritos, simula pagos por cuotas y descubre cómo se asignarían los demás números.</p>
+          <h1>Tu próximo <span className="f-highlight">iPhone 18</span> podría comenzar con <em>10 números a tu manera.</em></h1>
+          <p className="f-hero-description">Conoce una nueva forma de organizar tus oportunidades: escoge tus favoritos o recíbelos automáticamente, simula pagos por cuotas y descubre cómo se asignarían los demás números.</p>
           <div className="f-hero-actions">
-            <Link href="/numeros" className="f-button f-button-primary">Elegir mis 10 números <span aria-hidden="true">↗</span></Link>
+            <Link href="/numeros" className="f-button f-button-primary">Elegir o recibir mis números <span aria-hidden="true">↗</span></Link>
             <a href="#como-funciona" className="f-button f-button-outline">Así funciona <span aria-hidden="true">↓</span></a>
           </div>
           <div className="f-hero-foot"><span>✓ Sin pagos reales</span><span>✓ 10.000 números únicos</span><span>✓ Prueba gratuita</span></div>
@@ -114,7 +114,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="container f-stats" aria-label="Características de la propuesta">
       <div><strong>200</strong><span>Oportunidades proyectadas</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
-      <div><strong>10 + 40</strong><span>Elegidos y aleatorios</span></div>
+      <div><strong>10 + 40</strong><span>Iniciales a tu elección + aleatorios</span></div>
       <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
     </section>
 
@@ -124,7 +124,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <p>Un proceso transparente, desde la elección hasta la habilitación.</p>
       </div>
       <div className="f-steps">
-        <article><span className="f-step-icon">01 <b>◇</b></span><h3>Elige 10 números</h3><p>Escoge tus favoritos entre 0000 y 9999. Nadie más podrá seleccionar los mismos dentro de la demostración de tu navegador.</p></article>
+        <article><span className="f-step-icon">01 <b>◇</b></span><h3>Escoge o recibe 10 números</h3><p>Elige tus 10 favoritos o deja que Oportunia los asigne automáticamente entre los disponibles en esta demostración.</p></article>
         <article><span className="f-step-icon">02 <b>◫</b></span><h3>Define tus cuotas</h3><p>Simula pagar de contado o mediante abonos. El primer abono mínimo del prototipo es de $10.000.</p></article>
         <article><span className="f-step-icon">03 <b>✧</b></span><h3>Recibe aleatorios</h3><p>Al aprobar cada abono de prueba se asignan más números, hasta completar los 40 aleatorios.</p></article>
         <article><span className="f-step-icon">04 <b>✓</b></span><h3>Habilita los 50</h3><p>Solo con $50.000 confirmados se considera habilitada la oportunidad. Un pago parcial no da derecho a jugar.</p></article>
@@ -150,7 +150,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
           <div className="f-demo-total"><strong>{chosen + random}</strong><span>de 50 números asignados</span></div>
           <div className="f-progress"><div style={{ width: String((chosen + random) / 50 * 100) + "%" }} /></div>
           <div className="f-demo-breakdown">
-            <div><span className="f-demo-dot selected" /><span>Elegidos por ti</span><strong>{chosen} / 10</strong></div>
+            <div><span className="f-demo-dot selected" /><span>10 números iniciales</span><strong>{chosen} / 10</strong></div>
             <div><span className="f-demo-dot random" /><span>Asignados al azar</span><strong>{random} / 40</strong></div>
             <div><span className="f-demo-dot remaining" /><span>Pendientes</span><strong>{50 - chosen - random}</strong></div>
           </div>
@@ -195,11 +195,11 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
 
     <section className="container f-last-section">
       <div className="f-last-card"><div className="f-last-light" /><span className="f-kicker">PRUEBA LA EXPERIENCIA</span>
-        <h2>Los números que tú elijas. <span>Las reglas, siempre claras.</span></h2>
-        <p>Explora cómo se vería tu oportunidad sin hacer ningún pago.</p>
-        <Link className="f-button f-button-primary" href="/numeros">Probar selección de números ↗</Link>
+        <h2>Tú eliges cómo empezar. <span>Las reglas, siempre claras.</span></h2>
+        <p>Escoge tus números o deja que el sistema los asigne, sin hacer ningún pago.</p>
+        <Link className="f-button f-button-primary" href="/numeros">Probar asignación de números ↗</Link>
       </div>
     </section>
-    <div className="f-mobile-action"><Link href="/numeros" className="f-button f-button-primary">Elegir mis 10 números ↗</Link></div>
+    <div className="f-mobile-action"><Link href="/numeros" className="f-button f-button-primary">Elegir o recibir números ↗</Link></div>
   </div>;
 }

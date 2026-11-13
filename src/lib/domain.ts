@@ -167,8 +167,8 @@ export function createOpportunity(
 ): DemoState {
   if (state.opportunities.length >= MAX_OPPORTUNITIES) throw new Error("No quedan oportunidades disponibles.");
   const name = input.customer.name.trim();
-  const phone = input.customer.phone.replace(/\\s/g, "");
-  if (name.length < 3 || !/^\\+?[0-9]{7,15}$/.test(phone)) {
+  const phone = input.customer.phone.replace(/\s/g, "");
+  if (name.length < 3 || !/^\+?[0-9]{7,15}$/.test(phone)) {
     throw new Error("Ingresa nombre y celular válidos.");
   }
   const selectionMode = input.selectionMode ?? "manual";
