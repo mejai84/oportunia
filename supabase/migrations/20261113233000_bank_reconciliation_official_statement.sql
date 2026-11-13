@@ -6,6 +6,9 @@ create table public.bank_recon_claims (
   bank text not null check (bank in ('BANCOLOMBIA','NEQUI')),
   account_alias text not null check (account_alias ~ '^[A-Z0-9_-]{3,40}$'),
   customer_label text not null check (char_length(btrim(customer_label)) between 2 and 120),
+  customer_user_id uuid references auth.users(id) on delete set null,
+  origin_channel text not null default 'OTRO' check (origin_channel in ('BANCOLOMBIA','NEQUI','BRE-B','DAVIPLATA','PSE','OTRO')),
+  customer_order_reference text check (customer_order_reference is null or char_length(customer_order_reference) between 4 and 80),
   claimed_reference text not null check (claimed_reference ~ '^[A-Z0-9][A-Z0-9._/-]{3,99}$'),
   expected_amount_cop bigint not null check (expected_amount_cop between 1000 and 100000000),
   status text not null default 'pending' check (status in ('pending','matched','rejected')),
@@ -14,6 +17,16 @@ create table public.bank_recon_claims (
   unique (bank,account_alias,claimed_reference)
 );
 comment on table public.bank_recon_claims is 'Reportes operativos administrativos, NO pagos comprobados ni ventas reales.';
+create table public.bank_recon_claim_events (
+  id bigint generated always as identity primary key,
+  claim_id uuid not null references public.bank_recon_claims(id) on delete restrict,
+  actor_id uuid not null references auth.users(id),
+  event_type text not null check(event_type in ('submitted','matched_statement','rejected')),
+  message text not null check(char_length(message) between 6 and 350),
+  created_at timestamptz not null default now()
+);
+comment on table public.bank_recon_claim_events is 'Historial inmutable de reportes del cliente y decisiones administrativas.';
+create index bank_recon_claim_events_claim_idx on public.bank_recon_claim_events(claim_id,created_at);
 create table public.bank_recon_movements (
   id uuid primary key default gen_random_uuid(),
   bank text not null check (bank in ('BANCOLOMBIA','NEQUI')),
@@ -51,14 +64,20 @@ create index bank_recon_claims_status_idx on public.bank_recon_claims(status,cre
 create index bank_recon_movements_status_idx on public.bank_recon_movements(status,movement_date desc);
 create index bank_recon_audit_created_idx on public.bank_recon_audit(created_at desc);
 
+alter table public.bank_recon_claim_events enable row level security;
 alter table public.bank_recon_claims enable row level security;
 alter table public.bank_recon_movements enable row level security;
 alter table public.bank_recon_audit enable row level security;
-revoke all on public.bank_recon_claims,public.bank_recon_movements,public.bank_recon_audit from public,anon,authenticated;
-grant select on public.bank_recon_claims,public.bank_recon_movements,public.bank_recon_audit to authenticated;
+revoke all on public.bank_recon_claims,public.bank_recon_claim_events,public.bank_recon_movements,public.bank_recon_audit from public,anon,authenticated;
+grant select on public.bank_recon_claims,public.bank_recon_claim_events,public.bank_recon_movements,public.bank_recon_audit to authenticated;
 grant usage,select on sequence public.bank_recon_audit_id_seq to postgres;
-create policy "admin reads recon claims" on public.bank_recon_claims for select to authenticated
-  using (exists(select 1 from public.oportunia_admins a where a.user_id=(select auth.uid())));
+create policy "own customer claim or admin reads" on public.bank_recon_claims for select to authenticated
+  using (customer_user_id=(select auth.uid()) or exists(select 1 from public.oportunia_admins a where a.user_id=(select auth.uid())));
+create policy "own claim event or admin reads" on public.bank_recon_claim_events for select to authenticated
+  using (
+    exists(select 1 from public.oportunia_admins a where a.user_id=(select auth.uid()))
+    or exists(select 1 from public.bank_recon_claims c where c.id=claim_id and c.customer_user_id=(select auth.uid()))
+  );
 create policy "admin reads recon movements" on public.bank_recon_movements for select to authenticated
   using (exists(select 1 from public.oportunia_admins a where a.user_id=(select auth.uid())));
 create policy "admin reads recon audit" on public.bank_recon_audit for select to authenticated
@@ -155,6 +174,8 @@ begin
   insert into public.bank_recon_audit(actor_id,action,claim_id,movement_id,detail)
   values(v_actor,'movement_matched',p_claim_id,p_movement_id,
     jsonb_build_object('amount_cop',v_movement.amount_cop,'source',v_movement.source_label));
+  insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+  values(p_claim_id,v_actor,'matched_statement','La referencia coincide con un abono del extracto registrado por administración.');
   return jsonb_build_object('status','matched','movement_id',p_movement_id,'claim_id',p_claim_id);
 end; $$;
 
@@ -182,6 +203,8 @@ begin
     if v_rows<>1 then raise exception 'Reporte inexistente o ya procesado'; end if;
     insert into public.bank_recon_audit(actor_id,action,claim_id,detail)
     values(v_actor,'claim_rejected',p_id,jsonb_build_object('reason',btrim(p_reason)));
+    insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+    values(p_id,v_actor,'rejected',btrim(p_reason));
   else
     raise exception 'Tipo no valido';
   end if;
@@ -195,3 +218,45 @@ grant execute on function public.create_bank_recon_claim(text,text,text,text,big
 grant execute on function public.import_bank_recon_movements(jsonb,text) to authenticated;
 grant execute on function public.match_bank_recon_movement(uuid,uuid) to authenticated;
 grant execute on function public.close_bank_recon_item(text,uuid,text) to authenticated;
+
+
+-- Client creates their own claim; authentication identity is always auth.uid().
+-- No app secrets, bank login credentials, financial confirmation or numbers allocation.
+create function public.submit_customer_bank_recon_claim(
+  p_bank text, p_origin_channel text, p_customer_label text,
+  p_reference text, p_amount_cop bigint, p_order_reference text default null
+) returns uuid language plpgsql security definer set search_path='' as $$
+declare
+  v_actor uuid:=auth.uid(); v_id uuid;
+  v_bank text:=upper(btrim(coalesce(p_bank,'')));
+  v_channel text:=upper(btrim(coalesce(p_origin_channel,'')));
+  v_reference text:=upper(btrim(coalesce(p_reference,'')));
+  v_label text:=btrim(coalesce(p_customer_label,''));
+  v_order text:=nullif(btrim(coalesce(p_order_reference,'')),'');
+  v_alias text;
+begin
+  if v_actor is null then raise exception 'Inicia sesión para registrar el reporte'; end if;
+  if v_bank not in ('BANCOLOMBIA','NEQUI') then raise exception 'Cuenta de destino inválida'; end if;
+  if v_channel not in ('BANCOLOMBIA','NEQUI','BRE-B','DAVIPLATA','PSE','OTRO') then raise exception 'Canal inválido'; end if;
+  if char_length(v_label) not between 2 and 120 then raise exception 'Nombre inválido'; end if;
+  if v_reference !~ '^[A-Z0-9][A-Z0-9._/-]{3,99}$' then raise exception 'Referencia inválida'; end if;
+  if p_amount_cop not between 1000 and 100000000 then raise exception 'Valor de reporte inválido'; end if;
+  if v_order is not null and char_length(v_order) not between 4 and 80 then raise exception 'Código de oportunidad inválido'; end if;
+  if (select count(*) from public.bank_recon_claims
+      where customer_user_id=v_actor and created_at>now()-interval '24 hours')>=20 then
+    raise exception 'Límite de reportes del día alcanzado';
+  end if;
+  v_alias:=case when v_bank='BANCOLOMBIA' then 'BANCOLOMBIA_PRINCIPAL' else 'NEQUI_PRINCIPAL' end;
+  insert into public.bank_recon_claims
+    (bank,account_alias,customer_label,customer_user_id,origin_channel,
+    customer_order_reference,claimed_reference,expected_amount_cop,created_by)
+  values (v_bank,v_alias,v_label,v_actor,v_channel,v_order,v_reference,p_amount_cop,v_actor)
+  returning id into v_id;
+  insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+  values(v_id,v_actor,'submitted','Recibimos tu referencia y quedó pendiente de conciliación.');
+  insert into public.bank_recon_audit(actor_id,action,claim_id,detail)
+  values(v_actor,'claim_created',v_id,jsonb_build_object('customer_submitted',true));
+  return v_id;
+end; $$;
+revoke all on function public.submit_customer_bank_recon_claim(text,text,text,text,bigint,text) from public,anon,authenticated;
+grant execute on function public.submit_customer_bank_recon_claim(text,text,text,text,bigint,text) to authenticated;
