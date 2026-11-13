@@ -8,6 +8,8 @@ import "./apple-light.css";
 import "./responsive.css";
 import "./admin-media.css";
 import "./admin-dashboard.css";
+import "./bank-reconciliation.css";
+import "./customer-bank-reports.css";
 import "./brand.css";
 import "./oportunia-green.css";
 

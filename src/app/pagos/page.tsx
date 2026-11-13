@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { CustomerBankReports } from "@/components/CustomerBankReports";
 import { useApp } from "@/components/AppProvider";
 import { isReservationExpired, money, PRICE, shortId, type Method } from "@/lib/domain";
 const methods: Method[] = ["Bre-B", "Nequi", "Bancolombia", "DaviPlata", "PSE", "Efectivo"];
@@ -49,6 +50,8 @@ export default function PagosPage() {
       <h1>Reporta un <span className="gradient-text">abono.</span></h1>
       <p className="muted">Esta pantalla registra referencias de prueba en este navegador, sin conexiones a bancos. No confirma transferencias de Bancolombia, Nequi, Bre-B ni DaviPlata, ni constituye pago recibido. No envíes dinero por esta pantalla.</p>
     </div>
+    <div id="reportar-transferencia"><CustomerBankReports mode="full" linkedOrderReference={orderId} /></div>
+    <div className="page-title top-gap"><span className="overline">HERRAMIENTA DE DEMOSTRACIÓN</span><h2>Simulación de cuotas y números en este navegador</h2><p className="muted">Este formulario inferior no envía referencias a la conciliación bancaria. Para dejar un rastro centralizado utiliza el formulario superior, iniciando sesión.</p></div>
     <div className="two-col-layout"><section className="panel">
       <h2>Nuevo reporte de pago</h2>
       {!hydrated ? <p className="muted">Cargando…</p> : state.opportunities.length === 0 ?

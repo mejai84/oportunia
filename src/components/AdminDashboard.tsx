@@ -78,7 +78,7 @@ export function AdminDashboard({ state, drawId, onOpenTab }: {
     <section className="op-dash-hero">
       <div><span className="op-dash-kicker">◆ CENTRO DE CONTROL · VISTA PRIVADA</span><h2>Oportunia <em>Analytics</em></h2>
         <p>Resumen operativo para decidir con claridad. Las cifras de oportunidades y pagos son exclusivamente pruebas guardadas en este navegador.</p></div>
-      <button type="button" className="op-dash-cta" onClick={() => onOpenTab("verificacion")}>Ver conciliación ↗</button>
+      <button type="button" className="op-dash-cta" onClick={() => window.location.assign("/admin/conciliacion")}>Abrir conciliación ↗</button>
     </section>
     <div className="op-dash-kpis">
       <article className="op-dash-kpi"><span>Aprobado en simulación</span><strong>{money(summary.simulatedApprovedAmount)}</strong><small>No equivale a recaudo bancario</small><b aria-hidden="true">◈</b></article>
