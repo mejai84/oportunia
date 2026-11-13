@@ -11,6 +11,9 @@ export type ImportRow = {
 export type ReconClaim = {
   id: string; bank: ReconBank; account_alias: string;
   customer_label: string; claimed_reference: string;
+  customer_user_id?: string | null;
+  origin_channel?: string;
+  customer_order_reference?: string | null;
   expected_amount_cop: number; status: "pending" | "matched" | "rejected";
   created_at: string;
 };
