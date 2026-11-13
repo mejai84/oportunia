@@ -98,8 +98,10 @@ function FollowUpWorkspace(){
     if(!window.confirm("¿Confirmas "+label+" esta tarea? El cambio quedará registrado en la auditoría interna."))return;
     setBusy(true);setError("");setNotice("");
     try{
-      const {error:writeError}=await client.from("crm_followups").update({status:next}).eq("id",task.id).eq("status","pending");
+      const {data:changed,error:writeError}=await client.from("crm_followups")
+        .update({status:next}).eq("id",task.id).eq("status","pending").select("id").maybeSingle();
       if(writeError)throw writeError;
+      if(!changed)throw new Error("Esta tarea ya fue procesada por otro administrador. Actualiza la agenda.");
       await refresh();
       setNotice("Estado actualizado y auditado. No se ha enviado ninguna notificación externa.");
     }catch(e){setError(e instanceof Error?e.message:"No se pudo actualizar la tarea.");}
