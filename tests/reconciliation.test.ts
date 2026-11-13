@@ -31,7 +31,7 @@ test("rejects debit, negative, ambiguous amount and missing unique transaction r
 
 test("rejects duplicate reference reused with different amount and malformed quotes", () => {
   assert.throws(() => parseBankCsv(header+"\n"+base+"\n"+base.replace(";50000;",";60000;")),/duplicada/);
-  assert.throws(() => parseBankCsv(header+"\n"+base.replace('"; Bre-B"','; Bre-B"')+"\n"),/Comillas/);
+  assert.throws(() => parseBankCsv(header+"\n"+base.replace('Bre-B"','Bre-B')+"\n"),/comillas/i);
 });
 
 test("only proposes one pending exact account, reference and amount match", () => {
