@@ -11,6 +11,7 @@ import "./admin-dashboard.css";
 import "./bank-reconciliation.css";
 import "./customer-bank-reports.css";
 import "./crm-numbers.css";
+import "./notifications-followups.css";
 import "./brand.css";
 import "./oportunia-green.css";
 

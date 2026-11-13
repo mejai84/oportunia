@@ -75,7 +75,7 @@ function CrmWorkspace() {
     <div className="crm-top"><div><span className="overline">ADMINISTRACIÓN · CLIENTES</span>
       <h1>CRM de <span className="gradient-text">Oportunia.</span></h1>
       <p>Directorio centralizado de cuentas registradas, reportes bancarios declarados y seguimiento interno. No son ventas confirmadas.</p></div>
-      <Link className="btn btn-secondary" href="/admin">Volver al dashboard</Link>
+      <div className="row-actions"><Link className="btn btn-primary" href="/admin/seguimiento">Agenda de seguimiento ↗</Link><Link className="btn btn-secondary" href="/admin">Volver al dashboard</Link></div>
     </div>
     <div className="crm-kpis">
       <article><span>Cuentas registradas</span><strong>{metrics.registered}</strong><small>Usuarios de Supabase</small></article>
