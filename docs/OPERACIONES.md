@@ -1,7 +1,7 @@
 # OPR-OPS-001 · Manual de despliegue y operación
 
 **Fecha:** 2026-11-13 | **Plataformas:** GitHub Actions, Vercel, Supabase  
-**Estado:** despliegue confirmado por integración Vercel; URL pública y smoke tests pendientes.
+**Estado:** despliegue confirmado; URL pública y contenido de landing observados; smoke tests funcionales restantes pendientes.
 
 ## 1. Inventario de ambientes
 
@@ -9,7 +9,7 @@
 |---|---|---|
 | Repositorio | GitHub mejai84/oportunia, rama main | Confirmado |
 | Integración continua | GitHub Actions | Confirmado, ver ejecución por commit |
-| Web | Vercel, commit 80e7140 | Integración Vercel: Deployment has completed; falta smoke test y URL pública |
+| Web | https://oportunia-chi.vercel.app/ | Página de bienvenida observada en navegador; resto de smoke tests pendiente |
 | Datos de interesados | Supabase qsclrpmkgcjobtupicyx | Tabla funnel_leads creada y RLS activo |
 | Transacciones reales | No disponible | Bloqueado |
 
@@ -42,12 +42,12 @@ Nunca incluir secretos en Git, archivos públicos o NEXT_PUBLIC. El código actu
 
 ## 4. Checklist de aceptación posdespliegue
 
-- [ ] El estado en Vercel es Ready, sin bloqueo de seguridad.
-- [ ] La URL pública está identificada y HTTPS funciona.
-- [ ] La página muestra claramente "MODO DEMOSTRACIÓN".
+- [x] El despliegue del commit 80e7140 figura Ready en Vercel. La integración del commit documental posterior también indica éxito. No se inspeccionaron todos los logs del último despliegue.
+- [x] La URL pública https://oportunia-chi.vercel.app/ carga en navegador mediante HTTPS.
+- [x] La página muestra claramente "MODO DEMOSTRACIÓN".
 - [ ] El simulador muestra 20/50 no elegible con COP 20.000.
 - [ ] El simulador muestra 50/50 elegible con COP 50.000, solo en demo.
-- [ ] El formulario no acepta datos si FUNNEL_LEADS_ENABLED=false.
+- [ ] El formulario aparece deshabilitado visualmente; **pendiente** probar que la API rechace solicitudes (503).
 - [ ] No hay errores graves de consola ni fallos de navegación.
 - [ ] El despliegue coincide con el commit validado.
 - [ ] Se ha registrado evidencia de prueba y responsable.
@@ -81,7 +81,9 @@ Referencia: [INC-2026-11-13-001](INCIDENTES/INC-2026-11-13-001.md).
 - Estado de GitHub Actions: success.
 - Estado de integración Vercel en GitHub: success, descripción **Deployment has completed**.
 - Consola del despliegue: https://vercel.com/jaimes-projects-705b34e5/oportunia/iwuWH1ytjgr1tad4zKP3HcFBbVGZ
-- URL pública y pruebas de aceptación: **pendientes**. No se declara listo para operación comercial.
+- URL pública: https://oportunia-chi.vercel.app/ (landing observada en navegador el 2026-11-13).
+- Informe de verificación parcial: [OPR-QA-001](PRUEBAS/QA-2026-11-13-001.md).
+- Pruebas de aceptación de flujos internos: **pendientes**. No se declara listo para operación comercial.
 
 ## 7. Operación posterior
 
