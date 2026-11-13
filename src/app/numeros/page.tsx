@@ -1,15 +1,16 @@
 "use client";
 import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
-import { CUSTOM_NUMBERS, MAX_OPPORTUNITIES, normalizeNumber, reservedNumbers, type Plan, type SelectionMode } from "@/lib/domain";
+import { CUSTOM_NUMBERS, MAX_OPPORTUNITIES, activeOrders, drawCatalog, findDraw, normalizeNumber, reservedNumbers, type Plan, type SelectionMode } from "@/lib/domain";
 const plans: { value: Plan; title: string; detail: string }[] = [
   { value: "contado", title: "Pago completo", detail: "1 pago de $50.000" },
   { value: "dos-cuotas", title: "2 cuotas", detail: "2 pagos de $25.000" },
   { value: "tres-cuotas", title: "3 cuotas", detail: "$20.000 + $15.000 + $15.000" },
 ];
 export default function NumerosPage() {
-  const { state, hydrated, createOrder } = useApp();
+  const { state, hydrated, createOrder, activeDrawId } = useApp();
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>([]);
   const [selectionMode, setSelectionMode] = useState<SelectionMode>("manual");
@@ -20,8 +21,13 @@ export default function NumerosPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const taken = useMemo(() => reservedNumbers(state), [state]);
-  const soldOut = state.opportunities.length >= MAX_OPPORTUNITIES;
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const draw = findDraw(state, activeDrawId)?.enabled
+    ? findDraw(state, activeDrawId)
+    : drawCatalog(state).find((item) => item.enabled);
+  const drawId = draw?.id ?? activeDrawId;
+  const taken = useMemo(() => reservedNumbers(state, drawId), [state, drawId]);
+  const soldOut = !draw || activeOrders(state, drawId).length >= MAX_OPPORTUNITIES;
   function addNumber(raw: string) {
     setError("");
     const n = normalizeNumber(raw);
@@ -34,15 +40,17 @@ export default function NumerosPage() {
   }
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError("");
-    if (soldOut) return setError("No quedan oportunidades disponibles.");
+    if (soldOut) return setError("Este sorteo no está disponible.");
+    if (!termsAccepted) return setError("Debes aceptar las reglas antes de reservar.");
     try {
-      createOrder({ customer: { name, phone, email }, selected: selectionMode === "manual" ? selected : [], selectionMode, plan });
+      createOrder({ customer: { name, phone, email }, selected: selectionMode === "manual" ? selected : [], selectionMode, plan, drawId, termsAccepted });
       router.push("/pagos");
     } catch (e) { setError(e instanceof Error ? e.message : "No se pudo crear la orden."); }
   }
   return <div className="container page-space">
     <div className="page-title"><span className="overline">PASO 01 · PERSONALIZA TU OPORTUNIDAD</span>
       <h1>10 números <span className="gradient-text">a tu manera.</span></h1>
+      <p className="draw-selected">Sorteo seleccionado: <strong>{draw?.title ?? "Sin sorteo habilitado"}</strong></p>
       <p className="muted">Escoge tus 10 favoritos o deja que Oportunia los asigne automáticamente. Los otros 40 se asignarán con los abonos aprobados.</p>
     </div>
     <section className="panel selection-mode-panel" aria-labelledby="selection-mode-heading">
@@ -106,10 +114,18 @@ export default function NumerosPage() {
           <label>Nombre completo<input required minLength={3} value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre y apellido" /></label>
           <label>Celular<input required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>
           <label>Correo (opcional)<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ejemplo.com" /></label>
+          <div className="reservation-rule"><strong>Reserva de 24 horas</strong>
+            <p>Si no se confirma el primer abono en 24 horas, los diez números reservados se liberan. Podrás recuperar los que sigan disponibles y reemplazar los ocupados.</p>
+          </div>
+          <label className="terms-accept"><input type="checkbox" checked={termsAccepted} required
+            onChange={(e) => setTermsAccepted(e.target.checked)} />
+            <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">reglas de la demostración</Link>.
+              Entiendo que <strong>si no pago la totalidad de la oportunidad, ninguno de mis números participa en el sorteo</strong>.</span>
+          </label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || (selectionMode === "manual" && selected.length !== 10)}>Crear oportunidad de prueba →</button>
+          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Crear oportunidad de prueba →</button>
         </form>
-        <p className="small muted">No se cobra dinero. Los números quedan reservados solo en este navegador de demostración.</p>
+        <p className="small muted">No se cobra dinero. La reserva de prueba dura 24 horas y solo existe en este navegador.</p>
       </section>
     </div></div>
   </div>;

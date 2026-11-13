@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 const links = [
   { href: "/", label: "Inicio" }, { href: "/numeros", label: "Elegir números" },
   { href: "/pagos", label: "Reportar pago" }, { href: "/mi-cuenta", label: "Mi cuenta" },
-  { href: "/admin", label: "Administración" },
+  { href: "/acceso", label: "Acceso" }, { href: "/admin", label: "Administración" },
 ];
 
 export function SiteHeader() {
@@ -14,9 +14,9 @@ export function SiteHeader() {
     return <header className="site-header f-site-header"><div className="container header-inner">
       <Link href="/" className="brand" aria-label="Oportunia, inicio"><span className="brand-icon">✦</span><span>oportunia<span className="brand-dot">.</span></span></Link>
       <nav className="f-header-nav" aria-label="Navegación del embudo">
-        <a href="#como-funciona">Cómo funciona</a><a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
+        <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a><a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
       </nav>
-      <Link className="f-header-cta" href="/numeros">Probar ahora ↗</Link>
+      <Link className="f-header-cta" href="/acceso">Mi cuenta ↗</Link>
     </div></header>;
   }
   return <header className="site-header"><div className="container header-inner">

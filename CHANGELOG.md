@@ -1,3 +1,13 @@
+## [Demo multisorteos y reservas] — 2026-11-13
+
+- Administrador de prueba: crear sorteos ocultos, habilitarlos, deshabilitarlos y administrarlos por separado.
+- Portada: carrusel de sorteos activos, porcentaje por sorteo, diseño claro y animaciones respetuosas con movimiento reducido.
+- Reserva inicial: vence en 24 horas sin abono aprobado; libera números; recuperación con reemplazos.
+- Aceptación expresa de reglas en creación y renovación; advertencia de no participación sin pago completo.
+- Pantalla informativa de acceso por celular; **no envía códigos de WhatsApp ni autentica usuarios**.
+- Abonos parciales confirmados no se liberan hasta acordar política de cuotas y reembolsos.
+- Todo continúa como demo local sin pagos reales. Ver OPR-UX-003.
+
 # Registro de cambios — Oportunia
 
 Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de código; no implican publicación web verificada.

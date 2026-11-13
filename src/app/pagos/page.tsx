@@ -2,7 +2,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
-import { money, PRICE, shortId, type Method } from "@/lib/domain";
+import { isReservationExpired, money, PRICE, shortId, type Method } from "@/lib/domain";
 const methods: Method[] = ["Bre-B", "Nequi", "PSE", "Efectivo"];
 export default function PagosPage() {
   const { state, hydrated, sendPayment } = useApp();
@@ -17,6 +17,7 @@ export default function PagosPage() {
       setOrderId(state.opportunities[state.opportunities.length - 1].id);
   }, [hydrated, orderId, state.opportunities]);
   const order = state.opportunities.find((o) => o.id === orderId);
+  const expired = order ? isReservationExpired(order) : false;
   const pending = state.reports.filter((r) => r.orderId === orderId && r.status === "pendiente")
     .reduce((sum, r) => sum + r.amount, 0);
   const balance = order ? PRICE - order.paid - pending : 0;
@@ -45,12 +46,13 @@ export default function PagosPage() {
             <div className="info-tile"><span className="small muted">Abonado y aprobado</span><strong>{money(order?.paid || 0)}</strong></div>
             <div className="info-tile"><span className="small muted">Saldo para reportar</span><strong>{money(balance)}</strong></div>
           </div>
+          {expired && <div className="alert alert-warning">Esta reserva inicial venció a las 24 horas. Debes recuperar tus números antes de crear otro reporte de pago. <Link href={"/recuperar?orden=" + encodeURIComponent(orderId)}>Recuperar números →</Link></div>}
           <label>Valor del abono (COP)<input type="number" min={1000} max={balance} step={1000} value={amount} onChange={(e) => setAmount(Number(e.target.value))} /></label>
           <label>Método de pago (simulado)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
           <label>Referencia de prueba<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. DEMO-123456" /></label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
           {success && <div className="alert alert-success" role="status">{success}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!order || balance <= 0}>Enviar reporte →</button>
+          <button type="submit" className="btn btn-primary full" disabled={!order || expired || balance <= 0}>Enviar reporte →</button>
         </form>}
     </section><div className="stack">
       <section className="panel"><h2>¿Qué ocurre después?</h2><div className="timeline">
@@ -59,7 +61,7 @@ export default function PagosPage() {
         <div><span>03</span><p>Se asignan números aleatorios según el total abonado.</p></div>
         <div><span>04</span><p>Con $50.000 confirmados, los 50 números quedan habilitados.</p></div>
       </div></section>
-      <div className="alert alert-warning"><strong>Importante:</strong> los números asignados por pagos parciales NO participan en el sorteo.</div>
+      <div className="alert alert-warning"><strong>Importante:</strong> los números asignados por pagos parciales NO participan en el sorteo. La reserva inicial sin pago confirmado vence a las 24 horas.</div>
       <Link className="btn btn-secondary full" href="/mi-cuenta">Ver mi cuenta y números →</Link>
     </div></div>
   </div>;

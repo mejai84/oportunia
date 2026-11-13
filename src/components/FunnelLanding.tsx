@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { money } from "@/lib/domain";
+import { money, drawCatalog } from "@/lib/domain";
+import { useApp } from "@/components/AppProvider";
+import { DrawCarousel } from "@/components/DrawCarousel";
 import { campaignFromSearch } from "@/lib/funnel";
 
 const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
@@ -14,7 +16,7 @@ const faqs = [
   },
   {
     question: "¿Puedo pagar por cuotas?",
-    answer: "La demostración permite simular pago completo, dos cuotas o tres cuotas. Por ejemplo, $20.000, $15.000 y $15.000. No se reciben transferencias reales.",
+    answer: "La demostración permite simular pago completo, dos cuotas o tres cuotas. Por ejemplo, $20.000, $15.000 y $15.000. No se reciben transferencias reales. La reserva inicial sin abono aprobado vence en 24 horas.",
   },
   {
     question: "¿Los números que tengo asignados ya están jugando?",
@@ -25,6 +27,10 @@ const faqs = [
     answer: "La propuesta contempla usar un resultado oficial de la Lotería de Medellín después del cierre de la comercialización y la cobranza. La fecha y el mecanismo definitivos dependerán de las autorizaciones y del reglamento. Todavía no hay fecha confirmada.",
   },
   {
+    question: "¿Qué pasa si mi reserva vence?",
+    answer: "Después de 24 horas sin confirmar el primer abono, los números se liberan. Puedes recuperar los que sigan disponibles y reemplazar los ocupados. Las cuotas ya abonadas requieren reglas de vencimiento independientes.",
+  },
+  {
     question: "¿Ya puedo comprar una oportunidad?",
     answer: "No. Este sitio es un prototipo para evaluar el proceso. La comercialización, los pagos y el sorteo real no están habilitados.",
   },
@@ -33,6 +39,8 @@ const faqs = [
 type Props = { leadCaptureEnabled: boolean };
 
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
+  const { state, chooseDraw } = useApp();
+  const featuredDraw = drawCatalog(state).find((draw) => draw.enabled);
   const [amount, setAmount] = useState(20000);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -81,10 +89,10 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
           <div className="f-eyebrow"><span className="f-live-dot" /> OPORTUNIA · EXPERIENCIA DEMOSTRATIVA</div>
-          <h1>Tu próximo <span className="f-highlight">iPhone 18</span> podría comenzar con <em>10 números a tu manera.</em></h1>
+          <h1>Tu próximo <span className="f-highlight">{featuredDraw?.prize || "gran premio"}</span> podría comenzar con <em>10 números a tu manera.</em></h1>
           <p className="f-hero-description">Conoce una nueva forma de organizar tus oportunidades: escoge tus favoritos o recíbelos automáticamente, simula pagos por cuotas y descubre cómo se asignarían los demás números.</p>
           <div className="f-hero-actions">
-            <Link href="/numeros" className="f-button f-button-primary">Elegir o recibir mis números <span aria-hidden="true">↗</span></Link>
+            <Link href="/numeros" onClick={() => { if (featuredDraw) chooseDraw(featuredDraw.id); }} className="f-button f-button-primary">Elegir o recibir mis números <span aria-hidden="true">↗</span></Link>
             <a href="#como-funciona" className="f-button f-button-outline">Así funciona <span aria-hidden="true">↓</span></a>
           </div>
           <div className="f-hero-foot"><span>✓ Sin pagos reales</span><span>✓ 10.000 números únicos</span><span>✓ Prueba gratuita</span></div>
@@ -111,8 +119,9 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div className="f-hero-glow" />
     </section>
 
+    <DrawCarousel />
     <section className="container f-stats" aria-label="Características de la propuesta">
-      <div><strong>200</strong><span>Oportunidades proyectadas</span></div>
+      <div><strong>200</strong><span>Oportunidades por sorteo (demo)</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
       <div><strong>10 + 40</strong><span>Iniciales a tu elección + aleatorios</span></div>
       <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
