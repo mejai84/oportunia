@@ -1,5 +1,52 @@
-# Oportunia
+# Oportunia — primera versión Next.js
 
-Plataforma de demostración para gestión de oportunidades, selección de números, abonos y administración.
+Demo funcional de una plataforma independiente de oportunidades y sorteos, preparada para conectar posteriormente a Vercel, Supabase y n8n.
 
-> Proyecto en construcción. No procesa pagos reales ni habilita sorteos. Cualquier operación comercial requiere validación jurídica y autorizaciones aplicables en Colombia.
+## Ejecutar localmente
+
+1. Instalar Node.js 22.
+2. Ejecutar npm install.
+3. Ejecutar npm run dev.
+4. Abrir http://localhost:3000.
+
+No se necesitan variables de entorno para la demo. Para preparar Supabase, copiar .env.example a .env.local y completar las variables públicas de un proyecto independiente.
+
+## Pantallas incluidas
+
+- / — bienvenida y explicación.
+- /numeros — selección de 10 números entre 0000 y 9999 (buscador y cuadrícula paginada).
+- /pagos — reportes de abonos simulados.
+- /mi-cuenta — números reservados/asignados y saldo.
+- /admin — dashboard, aprobación/rechazo de pagos, cartera y control de cierre.
+
+## Flujo de prueba
+
+1. Crear una oportunidad y elegir exactamente 10 números disponibles.
+2. Reportar un primer abono de $20.000.
+3. En /admin → Pagos, aprobarlo.
+4. En /mi-cuenta se ven 10 elegidos + 10 aleatorios, pero no participa.
+5. Repetir con $15.000: 10 + 25, aún no participa.
+6. Repetir con $15.000: 10 + 40, habilitada al completar $50.000.
+
+Los números se mantienen únicos en el navegador de demo. Los datos se guardan en localStorage: no son compartidos, seguros ni persistentes entre dispositivos. El panel administrativo no tiene autenticación. NO usar para cobrar, vender o sortear.
+
+## Preparación Supabase
+
+El esquema SQL inicial está en supabase/migrations/20261113000100_initial_oportunia.sql.
+No se ha aplicado a ninguna base de datos. Incluye RLS habilitado sin políticas de acceso: denegación por defecto. Antes de conectar datos reales hay que implementar Auth, roles, políticas RLS, asignaciones atómicas y auditoría.
+
+## Despliegue Vercel
+
+Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. No existe todavía un despliegue ni una conexión a Supabase.
+
+## Pruebas
+
+- npm run typecheck
+- npm test
+- npm run build
+
+## Estado legal y funcional
+
+**Solo prototipo.** El esquema de financiación, la asignación progresiva, la fecha del sorteo condicionada a ventas y el plazo de siete días requieren validación del reglamento y de las autorizaciones aplicables en Colombia. Si vencen los siete días con saldos impagos, el sistema entra en revisión, no adjudica ni decide automáticamente sobre esos números.
+
+Consultar docs/ARQUITECTURA.md para los requisitos pendientes de producción.
