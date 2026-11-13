@@ -1,11 +1,12 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { useApp } from "@/components/AppProvider";
+import { AdminAccessGate } from "@/components/AdminAccessGate";
 import { AdminDrawContentEditor } from "@/components/AdminDrawContentEditor";
 import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
 type Tab = "resumen" | "pagos" | "clientes" | "sorteo" | "sorteos" | "contenido";
 const phaseNames = { venta: "En comercialización", cobranza: "Cobranza: 7 días", revision: "Revisión por impagos", listo: "Listo para programar" };
-export default function AdminPage() {
+function LocalAdminPage() {
   const { state, hydrated, approve, reject, schedule, reset, activeDrawId, chooseDraw, addDraw, toggleDraw, editDraw } = useApp();
   const [tab, setTab] = useState<Tab>("resumen");
   const [error, setError] = useState("");
@@ -174,3 +175,5 @@ export default function AdminPage() {
     }}>Reiniciar datos de la demo</button></div>
   </div>;
 }
+
+export default function AdminPage(){return <AdminAccessGate><LocalAdminPage/></AdminAccessGate>;}

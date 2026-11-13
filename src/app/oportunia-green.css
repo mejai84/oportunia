@@ -1,0 +1,78 @@
+/* Oportunia · identidad aprobada, guía visual 2026-11-13.
+   Tokens y capas finales tras estilos heredados. */
+:root{--bg:#f8faf8;--panel:#ffffff;--panel2:#eef8f0;--line:#dceadf;--text:#123b2d;--muted:#536e60;--blue:#087a42;--gold:#e5ac23;--green:#0a7a3d;--radius:22px;--brand-deep:#07572f;--brand:#0a7a3d;--brand-bright:#22c55e;--brand-lime:#a3e635;--brand-gold:#fbbf24}
+body{background:#f8faf8;color:#17382c}
+.site-header{background:#fffffff5;border-color:#d9e9df;box-shadow:0 5px 25px #064b2c09}
+.site-header .brand{color:#07572f;font-weight:900}
+.site-header .brand-dot{color:#f1b829}
+.nav-link{color:#466b57}.nav-link:hover,.nav-link.active{background:#e7f8e9;color:#07572f}
+.f-header-nav{color:#456c58}.f-header-nav a:hover{color:#086a37}
+.f-header-cta{background:#edf9ef;border-color:#c5e7ce;color:#086c39}
+.footer{background:linear-gradient(115deg,#07572f,#0c8245);color:#f1fff3;border-color:#08653a}
+.footer-inner{align-items:center}
+input:focus,select:focus{border-color:#17a658;box-shadow:0 0 0 4px #17a65824}
+.btn-primary,.f-button-primary{background:linear-gradient(115deg,#0a8341,#075b33);color:#fff;border-color:#087b3c;box-shadow:0 10px 26px #07683b29}
+.btn-primary:hover:not(:disabled),.f-button-primary:hover:not(:disabled){box-shadow:0 12px 28px #08723b3d}
+.btn-secondary,.f-button-outline{background:#fff;border-color:#b8dec3;color:#09663b}
+.btn-ghost{color:#0b7241;border-color:#cae6d2}
+.gradient-text,.f-highlight{background:linear-gradient(115deg,#08713b,#29bc39,#93d824);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.overline,.eyebrow,.f-kicker{color:#0b7540}
+.funnel{--f-ink:#143b2a;--f-sky:#0a8442;--f-lilac:#8cda45;--f-gold:#e5ac23;color:#143c2b}
+.f-hero{background:radial-gradient(ellipse at 80% 25%,#cbf6ca 0,transparent 49%),radial-gradient(ellipse at 9% 85%,#eaffd3 0,transparent 46%),#fcfffb}
+.f-hero-copy h1{color:#133d2a}.f-hero-copy h1 em{color:#185d36}
+.f-hero-description,.f-hero-foot,.f-section-head p,.f-demo-copy>p,.f-conversion-copy>p,.f-faq-grid>div>p,.f-last-card>p{color:#536e60}
+.f-eyebrow{background:#e9f9e9;border-color:#c4eecb;color:#0b7a40}
+.f-live-dot{background:#2bc75c;box-shadow:0 0 0 4px #2bc75c2b}
+.f-disclosure{color:#56745e}
+.f-hero-glow{background:#a3e63533}
+.f-showcase{background:linear-gradient(148deg,#fff,#e7f9e6 75%);border-color:#d2ebd6;box-shadow:0 25px 70px #0b7a3b18}
+.f-showcase:before{background:radial-gradient(circle at 50% 42%,#a3e63538,transparent 60%)}
+.f-showcase-kicker{color:#0c7842}.f-showcase-demo{color:#075d36;border-color:#b9e0c4;background:#f6fff7}
+.f-showcase-bottom{border-color:#d2e7d5}.f-showcase-bottom span,.f-showcase-bottom small{color:#52745e}.f-showcase-bottom strong{color:#0b6039}.f-showcase-rule{background:#d1e8d7}
+.f-phone-stage{height:340px}
+.f-phone-stage .f-hero-upload{max-height:340px;filter:drop-shadow(0 18px 25px #066b3b2b)}
+.f-stats{border-color:#d8e9dc;box-shadow:0 12px 35px #065b3510}.f-stats>div{border-color:#e0ebe2}.f-stats strong{color:#0b643a}.f-stats span{color:#58715e}
+.f-steps article{border-color:#d9e9dc;box-shadow:0 12px 30px #065b3510}
+.f-steps article:hover{box-shadow:0 20px 45px #065b351e}
+.f-step-icon{color:#0b7941}.f-step-icon b{background:#e9f8ec;color:#0b7d43}
+.f-steps p{color:#55715d}
+.f-demo-section{background:linear-gradient(140deg,#edf9ec,#f6fbf2);border-color:#d8ebdc}
+.f-example-label{color:#1d6442}.f-amount{color:#315e44;border-color:#cbe5d1}
+.f-amount.active{background:#0b7b40;color:#fff;border-color:#0b7b40}
+.f-demo-card{border-color:#d2e8d7;box-shadow:0 18px 48px #07663b13}
+.f-demo-card-header{color:#52735f}.f-demo-total strong{color:#0a6239}.f-demo-total span{color:#607a66}
+.f-progress{background:#e0eee3}.f-progress>div{background:linear-gradient(90deg,#087e3d,#9ee42a)}
+.f-demo-breakdown>div{color:#54705c}.f-demo-breakdown strong{color:#0d6039}
+.f-demo-dot.selected{background:#0b8843}.f-demo-dot.random{background:#a3d829}
+.f-conversion-points{color:#0a7741}
+.f-lead-card{border-color:#d7e9d9;box-shadow:0 16px 45px #08683a10}
+.f-lead-form>label:not(.f-check){color:#365e45}.f-lead-form input:not([type=checkbox]){border-color:#cce6d2}
+.f-faq-section{border-color:#d9eadd}.f-faq-list details{background:#f9fdf9;border-color:#dbeade}
+.f-faq-list details p{color:#54725e}.f-faq-list summary span{color:#0b8645}
+.f-last-card{background:linear-gradient(125deg,#dff8e5,#f4ffe8 75%,#fff);border-color:#cde9d2}
+.f-last-card h2 span{color:#0a7c3d}.f-last-light{background:#b7f07840}
+.f-mobile-action{border-color:#d4e8d9}
+.draw-carousel-card{background:linear-gradient(130deg,#fff,#ecf9ed);border-color:#d4e9d9;box-shadow:0 24px 65px #07653c14}
+.draw-carousel-header p,.draw-carousel-description{color:#57715f}
+.draw-carousel-edition{color:#0a7e3e}.draw-carousel-copy h3{color:#104b2d}.draw-carousel-title{color:#3b7450}
+.draw-carousel-art{background:radial-gradient(circle at 50% 45%,#c8f6c5,#eaf8e9 64%,#f4fff2)}
+.draw-carousel-art .draw-prize-upload{max-height:370px;filter:drop-shadow(0 18px 24px #075a3b2b)}
+.draw-art-caption,.draw-art-caption strong{color:#146e3c}
+.draw-carousel-controls button{color:#086f3d;border-color:#c7e5cd}.draw-carousel-controls button:hover{background:#e8f9e9}
+.draw-carousel-dots button.active{background:#0a8140}
+.draw-carousel-disclaimer{color:#4f6f58}
+.number-cell.chosen,.selected-slot.filled{background:#dff8e3;border-color:#67c47b;color:#086b39}
+.number-cell:hover:not(:disabled){background:#e8f9e9;border-color:#75ce85}
+.legend-dot.chosen{background:#17a451}
+.plan-option.selected,.selection-mode-option.selected{background:#ecfaee;border-color:#62c780}
+.progress-fill,.segmented-progress-paid{background:linear-gradient(90deg,#0b8342,#75d83a)}
+.sales-progress-panel{background:linear-gradient(130deg,#fff,#eaf8ed 80%);border-color:#d2ead8}
+.sales-progress-percent,.sales-update-percent{color:#0a7b3d}
+.sales-update-percent{background:#e5f7e8}
+.tab.active{background:#e4f8e7;color:#087440}
+.data-table th{background:#f0f8f0;color:#456a4f}
+.timeline span{background:#e7f7ea;color:#0b7c40}
+.counter-pill{background:#e5f8e8;color:#0b783e}
+.terms-accept input{accent-color:#0b8844}.terms-accept a{color:#086b39}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline-color:#078a48}
+@media(max-width:740px){.f-hero{background-attachment:scroll}.f-showcase{box-shadow:0 14px 38px #0b6a3b16}}

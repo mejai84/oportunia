@@ -1,3 +1,11 @@
+## [Identidad verde y catálogo Supabase] — 2026-11-13
+- Paleta corporativa verde/dorado y logotipo con trébol y órbita.
+- Imágenes ilustrativas separadas de portada y premio; catálogo informativo en Supabase.
+- Endpoint público de solo lectura /api/catalog con RLS y caché breve.
+- Editor de sorteos y dos imágenes en /admin/catalogo con Auth + membresía administrativa; /admin ahora exige acceso.
+- Retirado banner global de «modo demostración» y reformulado marketing sin afirmar que existen ventas.
+- Pendiente: autorizar usuario administrador, revisar UI móvil, implementar pagos/reservas reales y cumplir requisitos legales.
+
 ## [Editor de contenido e imágenes de sorteos (demo local)] — 2026-11-13
 
 - Pestaña «Contenido e imágenes» en /admin para editar nombre, premio y descripción de cada sorteo.
