@@ -3,7 +3,7 @@ import { FunnelLanding } from "@/components/FunnelLanding";
 
 export const metadata: Metadata = {
   title: "Oportunia | Conoce cómo funcionan tus 50 números",
-  description: "Explora la demostración de Oportunia: elige 10 números, simula cuotas y descubre cuándo se habilitaría una oportunidad. No se reciben pagos reales.",
+  description: "Conoce Oportunia: descubre cómo se asignan 50 números por oportunidad, consulta las cuotas previstas y explora próximos premios y reglas.",
   robots: { index: false, follow: false },
 };
 

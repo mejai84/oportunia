@@ -33,7 +33,7 @@ export default function RecuperarPage() {
     catch (e) { setError(e instanceof Error ? e.message : "No fue posible renovar."); }
   }
   return <div className="container page-space">
-    <div className="page-title"><span className="overline">RECUPERAR RESERVA · DEMO</span>
+    <div className="page-title"><span className="overline">RECUPERAR SELECCIÓN LOCAL</span>
       <h1>Conserva los que <span className="gradient-text">siguen libres.</span></h1>
       <p className="muted">Si otro comprador ya tomó alguno de tus números anteriores, elige otro para completar diez.</p>
     </div>
@@ -69,14 +69,14 @@ export default function RecuperarPage() {
         <div className="chips">{selected.map((n) => <button type="button" className="chip chip-blue" key={n}
           title={"Quitar " + n} onClick={() => setSelected((prev) => prev.filter((x) => x !== n))}>{n} ×</button>)}</div>
         <div className="reservation-rule top-gap"><strong>Una nueva reserva de 24 horas</strong>
-          <p>Al confirmar, comienza otro plazo de 24 horas para que se apruebe el primer abono de prueba.</p></div>
+          <p>Al confirmar, comienza otro plazo de 24 horas para que se apruebe el primer abono previsto.</p></div>
         <form className="form-stack top-gap" onSubmit={submit}>
           <label className="terms-accept"><input type="checkbox" required checked={accepted}
             onChange={(e) => setAccepted(e.target.checked)} />
-            <span>Acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">reglas de la demostración</Link>
+            <span>Acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">condiciones de la vista previa</Link>
               y entiendo que <strong>sin pagar el 100 % no participo en el sorteo</strong>.</span></label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
-          <button className="btn btn-primary full" disabled={selected.length !== 10 || !accepted}>Renovar reserva de prueba</button>
+          <button className="btn btn-primary full" disabled={selected.length !== 10 || !accepted}>Renovar selección local</button>
         </form>
       </section>
     </div>}

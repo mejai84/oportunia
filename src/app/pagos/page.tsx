@@ -41,13 +41,13 @@ export default function PagosPage() {
     try {
       sendPayment({ orderId, amount, method, reference });
       setReference("");
-      setSuccess("Reporte registrado. Un administrador debe aprobarlo para asignar los números.");
+      setSuccess("Referencia guardada localmente. No es comprobante de pago ni genera participación.");
     } catch (e) { setError(e instanceof Error ? e.message : "No se pudo reportar el abono."); }
   }
   return <div className="container page-space">
-    <div className="page-title"><span className="overline">PASO 02 · PAGOS DE PRUEBA</span>
+    <div className="page-title"><span className="overline">PASO 02 · CONSULTA DE ABONOS</span>
       <h1>Reporta un <span className="gradient-text">abono.</span></h1>
-      <p className="muted">Simula un pago y apruébalo en Administración. No transfieras dinero a través de esta demostración.</p>
+      <p className="muted">Esta pantalla permite explorar cómo se registrarían los abonos. Los reportes son locales y no verifican transferencias ni constituyen pagos recibidos. No envíes dinero por esta pantalla.</p>
     </div>
     <div className="two-col-layout"><section className="panel">
       <h2>Nuevo reporte de pago</h2>
@@ -64,15 +64,15 @@ export default function PagosPage() {
           {expired && <div className="alert alert-warning">Esta reserva inicial venció a las 24 horas. Debes recuperar tus números antes de crear otro reporte de pago. <Link href={"/recuperar?orden=" + encodeURIComponent(orderId)}>Recuperar números →</Link></div>}
           <p className="small muted">Plan seleccionado: <strong>{order?.plan === "contado" ? "Pago completo" : order?.plan === "dos-cuotas" ? "Dos cuotas" : "Tres cuotas"}</strong>. El valor sugerido corresponde al saldo o a la próxima cuota.</p>
           <label>Valor del abono (COP)<input type="number" min={1000} max={balance} step={1000} value={amount} onChange={(e) => setAmount(Number(e.target.value))} /></label>
-          <label>Método de pago (simulado)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
-          <label>Referencia de prueba<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. DEMO-123456" /></label>
+          <label>Método previsto (solo vista previa)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
+          <label>Referencia ilustrativa<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. REFERENCIA-123456" /></label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
           {success && <div className="alert alert-success" role="status">{success}</div>}
           <button type="submit" className="btn btn-primary full" disabled={!order || expired || balance <= 0}>Enviar reporte →</button>
         </form>}
     </section><div className="stack">
       <section className="panel"><h2>¿Qué ocurre después?</h2><div className="timeline">
-        <div><span>01</span><p>Envías una referencia de pago de prueba.</p></div>
+        <div><span>01</span><p>Registras una referencia ilustrativa en este navegador.</p></div>
         <div><span>02</span><p>Un administrador revisa y aprueba el reporte.</p></div>
         <div><span>03</span><p>Se asignan números aleatorios según el total abonado.</p></div>
         <div><span>04</span><p>Con $50.000 confirmados, los 50 números quedan habilitados.</p></div>
