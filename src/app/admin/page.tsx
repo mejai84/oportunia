@@ -2,13 +2,15 @@
 import { useState, type FormEvent } from "react";
 import { useApp } from "@/components/AppProvider";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
+import { AdminDashboard } from "@/components/AdminDashboard";
+import Link from "next/link";
 import { AdminDrawContentEditor } from "@/components/AdminDrawContentEditor";
 import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
-type Tab = "resumen" | "pagos" | "clientes" | "sorteo" | "sorteos" | "contenido";
+type Tab = "dashboard" | "resumen" | "pagos" | "verificacion" | "clientes" | "sorteo" | "sorteos" | "contenido";
 const phaseNames = { venta: "En comercialización", cobranza: "Cobranza: 7 días", revision: "Revisión por impagos", listo: "Listo para programar" };
 function LocalAdminPage() {
   const { state, hydrated, approve, reject, schedule, reset, activeDrawId, chooseDraw, addDraw, toggleDraw, editDraw } = useApp();
-  const [tab, setTab] = useState<Tab>("resumen");
+  const [tab, setTab] = useState<Tab>("dashboard");
   const [error, setError] = useState("");
   const [date, setDate] = useState("");
   const [success, setSuccess] = useState("");
@@ -42,9 +44,10 @@ function LocalAdminPage() {
   }
   function handleReview(id: string, accept: boolean) {
     setError(""); setSuccess("");
+    if (accept && !window.confirm("APROBACIÓN DE SIMULACIÓN: este reporte NO fue verificado contra una cuenta bancaria. ¿Deseas aprobar solo los datos de prueba de este navegador?")) return;
     try {
       if (accept) approve(id); else reject(id);
-      setSuccess(accept ? "Abono aprobado. Números asignados." : "Reporte rechazado.");
+      setSuccess(accept ? "Reporte aprobado solamente en esta simulación local; no es un pago bancario verificado." : "Reporte de prueba rechazado.");
     } catch (e) { setError(e instanceof Error ? e.message : "Error al procesar el reporte."); }
   }
   function handleSchedule() {
@@ -55,28 +58,39 @@ function LocalAdminPage() {
   return <div className="container page-space">
     <div className="page-title"><span className="overline">PANEL DE CONTROL · ACCESO RESTRINGIDO</span>
       <h1>Centro de <span className="gradient-text">administración.</span></h1>
-      <p className="muted">Herramientas de gestión y consulta. El catálogo y las opiniones se administran en Supabase; las oportunidades y abonos de esta sección todavía son datos locales.</p>
+      <p className="muted">Panel de operaciones, catálogo y seguimiento. El catálogo y las opiniones se administran en Supabase; las oportunidades y abonos son datos de simulación locales.</p>
     </div>
-    <div className="alert alert-warning admin-warning"><strong>Estado de integración:</strong> el acceso está restringido a administradores autorizados. Las operaciones de números y abonos de esta sección siguen siendo locales y no representan ventas ni pagos reales.</div>
+    <div className="alert alert-warning admin-warning"><strong>Estado financiero:</strong> Bancolombia, Nequi, Bre-B y DaviPlata NO están conectados para verificar movimientos. Las aprobaciones de números y abonos son solo simulaciones guardadas en este navegador.</div>
+    <div className="row-actions top-gap" style={{flexWrap:"wrap",marginBottom:16}}><Link className="btn btn-secondary btn-small" href="/admin/catalogo">Catálogo e imágenes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/opiniones">Opiniones y resultados ↗</Link><Link className="btn btn-secondary btn-small" href="/acceso">Mi acceso ↗</Link></div>
     <div className="draw-account-switch admin-draw-switch"><label htmlFor="admin-draw">Administrar sorteo</label>
       <select id="admin-draw" value={draw.id} onChange={(e) => chooseDraw(e.target.value)}>{draws.map((d) => <option key={d.id} value={d.id}>{d.title}{d.enabled ? " · visible" : " · oculto"}</option>)}</select>
     </div>
     <div className="admin-metrics">
       <div className="metric-card"><span>Oportunidades ocupadas</span><strong>{active.length} <small>/ {MAX_OPPORTUNITIES}</small></strong></div>
       <div className="metric-card"><span>Completamente pagadas</span><strong>{fullyPaid}</strong></div>
-      <div className="metric-card"><span>Recaudo confirmado</span><strong>{money(collected)}</strong></div>
+      <div className="metric-card"><span>Abonos aprobados (demo)</span><strong>{money(collected)}</strong></div>
       <div className="metric-card"><span>Reportes pendientes</span><strong>{pendingReports.length}</strong></div>
     </div>
     <div className="tabs" role="tablist" aria-label="Secciones administrativas">
-      {(["resumen", "pagos", "clientes", "sorteo", "sorteos", "contenido"] as Tab[]).map((t) =>
+      {(["dashboard", "resumen", "pagos", "verificacion", "clientes", "sorteo", "sorteos", "contenido"] as Tab[]).map((t) =>
         <button type="button" role="tab" aria-selected={tab === t} key={t}
           className={"tab" + (tab === t ? " active" : "")} onClick={() => setTab(t)}>
-          {t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos" : t === "clientes" ? "Clientes" : t === "sorteos" ? "Gestionar sorteos" : t === "contenido" ? "Contenido e imágenes" : "Cierre"}
+          {t === "dashboard" ? "Dashboard" : t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos (demo)" : t === "verificacion" ? "Conciliación" : t === "clientes" ? "Clientes" : t === "sorteos" ? "Gestionar sorteos" : t === "contenido" ? "Contenido e imágenes" : "Cierre"}
         </button>)}
     </div>
     {error && <div className="alert alert-error" role="alert">{error}</div>}
     {success && <div className="alert alert-success" role="status">{success}</div>}
     {!hydrated ? <p>Cargando…</p> : <>
+      {tab === "dashboard" && <AdminDashboard state={state} drawId={draw.id} onOpenTab={setTab} />}
+      {tab === "verificacion" && <section className="op-verification">
+        <div className="op-verify-lead"><h2>Conciliación bancaria: todavía no está conectada</h2><p>Oportunia no puede confirmar ingresos a Bancolombia, Nequi, Bre-B ni DaviPlata desde el navegador. Ningún reporte, captura o referencia escrita por un comprador es prueba suficiente de recepción del dinero.</p></div>
+        <div className="op-verify-grid">
+          <article className="op-verify-card"><h3>Estado de los canales</h3><div className="op-verify-tag">Sin conexión bancaria</div><p>Nequi, Bancolombia, Bre-B y DaviPlata: sin API de movimientos autorizada ni mecanismo de conciliación implementado. No se almacenan credenciales bancarias en esta aplicación.</p><p>Los reportes se guardan exclusivamente en este navegador.</p></article>
+          <article className="op-verify-card"><h3>Proceso seguro recomendado</h3><ul><li>Obtener movimientos reales desde el banco, por un canal oficial y autorizado.</li><li>Comparar importe, fecha, destinatario e identificador de transacción único.</li><li>Marcar como coincidencia, diferencia o pendiente, evitando referencias duplicadas.</li><li>Exigir una segunda confirmación antes de contabilizar un pago.</li><li>Conservar trazabilidad de responsable, evidencia y fecha de conciliación.</li></ul></article>
+          <article className="op-verify-card"><h3>Controles pendientes para producción</h3><p>Se requiere un libro centralizado de órdenes, reportes, movimientos bancarios y pagos conciliados en Supabase; validación en servidor, RLS por roles y transacciones atómicas antes de asignar números.</p></article>
+          <article className="op-verify-card"><h3>Qué puedes usar ahora</h3><p>El administrador permite explorar en modo demo la gestión de reportes y la lógica de los 50 números. No publiques resultados de simulación como pagos o ventas reales.</p><button type="button" className="btn btn-secondary" onClick={() => setTab("pagos")}>Ver reportes de prueba ↗</button></article>
+        </div>
+      </section>}
       {tab === "resumen" && <div className="two-col-layout">
         <section className="panel"><h2>Estado general</h2><div className="summary-rows">
           <div><span>Fase del sorteo</span><strong>{phaseNames[phase]}</strong></div>
@@ -96,7 +110,7 @@ function LocalAdminPage() {
         </div></section>
       </div>}
       {tab === "pagos" && <section className="panel">
-        <div className="panel-heading"><div><h2>Reportes de pagos</h2><p className="small muted">Aprobar es una simulación, no confirma una transferencia real.</p></div><span className="counter-pill">{pendingReports.length} pendientes</span></div>
+        <div className="panel-heading"><div><h2>Reportes de pago simulados</h2><p className="small muted">No existe verificación bancaria. Aprobar solo modifica el estado de la demo local.</p></div><span className="counter-pill">{pendingReports.length} pendientes</span></div>
         {reports.length === 0 ? <div className="empty-state"><span>▤</span><p>No hay reportes todavía.</p></div> :
           <div className="table-scroll"><table className="data-table">
             <thead><tr><th>Orden</th><th>Valor</th><th>Método</th><th>Referencia</th><th>Estado</th><th>Acción</th></tr></thead>
@@ -104,7 +118,7 @@ function LocalAdminPage() {
               <tr key={r.id}><td>{shortId(r.orderId)}</td><td>{money(r.amount)}</td><td>{r.method}</td>
                 <td>{r.reference}</td><td><span className={"tag " + (r.status === "aprobado" ? "tag-green" : r.status === "rechazado" ? "tag-red" : "tag-amber")}>{r.status}</span></td>
                 <td>{r.status === "pendiente" ? <div className="row-actions">
-                  <button className="btn btn-small btn-primary" onClick={() => handleReview(r.id, true)}>Aprobar</button>
+                  <button className="btn btn-small btn-primary" onClick={() => handleReview(r.id, true)}>Aprobar (demo)</button>
                   <button className="btn btn-small btn-ghost" onClick={() => handleReview(r.id, false)}>Rechazar</button>
                 </div> : "—"}</td>
               </tr>)}</tbody>
