@@ -3,7 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
 import { isReservationExpired, money, PRICE, shortId, type Method } from "@/lib/domain";
-const methods: Method[] = ["Bre-B", "Nequi", "PSE", "Efectivo"];
+const methods: Method[] = ["Bre-B", "Nequi", "Bancolombia", "DaviPlata", "PSE", "Efectivo"];
 export default function PagosPage() {
   const { state, hydrated, sendPayment } = useApp();
   const [orderId, setOrderId] = useState("");
@@ -41,13 +41,13 @@ export default function PagosPage() {
     try {
       sendPayment({ orderId, amount, method, reference });
       setReference("");
-      setSuccess("Referencia guardada localmente. No es comprobante de pago ni genera participación.");
+      setSuccess("Referencia guardada solo en este navegador. No fue verificada por el banco y no genera participación.");
     } catch (e) { setError(e instanceof Error ? e.message : "No se pudo reportar el abono."); }
   }
   return <div className="container page-space">
     <div className="page-title"><span className="overline">PASO 02 · CONSULTA DE ABONOS</span>
       <h1>Reporta un <span className="gradient-text">abono.</span></h1>
-      <p className="muted">Esta pantalla permite explorar cómo se registrarían los abonos. Los reportes son locales y no verifican transferencias ni constituyen pagos recibidos. No envíes dinero por esta pantalla.</p>
+      <p className="muted">Esta pantalla registra referencias de prueba en este navegador, sin conexiones a bancos. No confirma transferencias de Bancolombia, Nequi, Bre-B ni DaviPlata, ni constituye pago recibido. No envíes dinero por esta pantalla.</p>
     </div>
     <div className="two-col-layout"><section className="panel">
       <h2>Nuevo reporte de pago</h2>
@@ -64,8 +64,8 @@ export default function PagosPage() {
           {expired && <div className="alert alert-warning">Esta reserva inicial venció a las 24 horas. Debes recuperar tus números antes de crear otro reporte de pago. <Link href={"/recuperar?orden=" + encodeURIComponent(orderId)}>Recuperar números →</Link></div>}
           <p className="small muted">Plan seleccionado: <strong>{order?.plan === "contado" ? "Pago completo" : order?.plan === "dos-cuotas" ? "Dos cuotas" : "Tres cuotas"}</strong>. El valor sugerido corresponde al saldo o a la próxima cuota.</p>
           <label>Valor del abono (COP)<input type="number" min={1000} max={balance} step={1000} value={amount} onChange={(e) => setAmount(Number(e.target.value))} /></label>
-          <label>Método previsto (solo vista previa)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
-          <label>Referencia ilustrativa<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. REFERENCIA-123456" /></label>
+          <label>Canal declarado (simulación, sin verificación bancaria)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
+          <label>Referencia declarada (no verificada)<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. REFERENCIA-123456" /></label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
           {success && <div className="alert alert-success" role="status">{success}</div>}
           <button type="submit" className="btn btn-primary full" disabled={!order || expired || balance <= 0}>Enviar reporte →</button>

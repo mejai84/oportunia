@@ -7,6 +7,7 @@ import "./funnel.css";
 import "./apple-light.css";
 import "./responsive.css";
 import "./admin-media.css";
+import "./admin-dashboard.css";
 import "./brand.css";
 import "./oportunia-green.css";
 
