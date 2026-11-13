@@ -1,11 +1,12 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { useApp } from "@/components/AppProvider";
+import { AdminDrawContentEditor } from "@/components/AdminDrawContentEditor";
 import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
-type Tab = "resumen" | "pagos" | "clientes" | "sorteo" | "sorteos";
+type Tab = "resumen" | "pagos" | "clientes" | "sorteo" | "sorteos" | "contenido";
 const phaseNames = { venta: "En comercialización", cobranza: "Cobranza: 7 días", revision: "Revisión por impagos", listo: "Listo para programar" };
 export default function AdminPage() {
-  const { state, hydrated, approve, reject, schedule, reset, activeDrawId, chooseDraw, addDraw, toggleDraw } = useApp();
+  const { state, hydrated, approve, reject, schedule, reset, activeDrawId, chooseDraw, addDraw, toggleDraw, editDraw } = useApp();
   const [tab, setTab] = useState<Tab>("resumen");
   const [error, setError] = useState("");
   const [date, setDate] = useState("");
@@ -66,10 +67,10 @@ export default function AdminPage() {
       <div className="metric-card"><span>Reportes pendientes</span><strong>{pendingReports.length}</strong></div>
     </div>
     <div className="tabs" role="tablist" aria-label="Secciones administrativas">
-      {(["resumen", "pagos", "clientes", "sorteo", "sorteos"] as Tab[]).map((t) =>
+      {(["resumen", "pagos", "clientes", "sorteo", "sorteos", "contenido"] as Tab[]).map((t) =>
         <button type="button" role="tab" aria-selected={tab === t} key={t}
           className={"tab" + (tab === t ? " active" : "")} onClick={() => setTab(t)}>
-          {t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos" : t === "clientes" ? "Clientes" : t === "sorteos" ? "Gestionar sorteos" : "Cierre"}
+          {t === "resumen" ? "Resumen" : t === "pagos" ? "Pagos" : t === "clientes" ? "Clientes" : t === "sorteos" ? "Gestionar sorteos" : t === "contenido" ? "Contenido e imágenes" : "Cierre"}
         </button>)}
     </div>
     {error && <div className="alert alert-error" role="alert">{error}</div>}
@@ -139,6 +140,7 @@ export default function AdminPage() {
           </div>
         </section>
       </div>}
+      {tab === "contenido" && <AdminDrawContentEditor draw={draw} saveDetails={editDraw} />}
       {tab === "sorteos" && <div className="two-col-layout">
         <section className="panel"><h2>Crear otro sorteo</h2>
           <p className="small muted">Cada sorteo de prueba tiene sus propios números, órdenes y avance. Se crea oculto hasta que lo habilites.</p>
@@ -157,7 +159,7 @@ export default function AdminPage() {
             <div><strong>{d.title}</strong><p className="small muted">{d.prize}</p>
               <span className={"tag " + (d.enabled ? "tag-green" : "tag-amber")}>{d.enabled ? "Visible" : "Oculto"}</span></div>
             <div className="draw-admin-actions">
-              <button type="button" className="btn btn-secondary btn-small" onClick={() => { chooseDraw(d.id); setTab("resumen"); }}>Administrar</button>
+              <button type="button" className="btn btn-secondary btn-small" onClick={() => { chooseDraw(d.id); setTab("contenido"); }}>Editar contenido</button>
               <button type="button" className="btn btn-ghost btn-small" onClick={() => handleToggleDraw(d.id, !d.enabled)}>
                 {d.enabled ? "Deshabilitar" : "Habilitar"}
               </button>

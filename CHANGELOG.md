@@ -1,3 +1,11 @@
+## [Editor de contenido e imágenes de sorteos (demo local)] — 2026-11-13
+
+- Pestaña «Contenido e imágenes» en /admin para editar nombre, premio y descripción de cada sorteo.
+- Dos archivos independientes por sorteo: imagen promocional de portada y fotografía/ilustración del premio para el carrusel.
+- Carga PNG/JPEG/WebP de hasta 6 MB en IndexedDB, con vista previa, sustitución y eliminación; el texto se guarda en el estado local.
+- La landing y el carrusel muestran las imágenes elegidas en ese mismo navegador; mantienen ilustraciones CSS como respaldo.
+- Sin subir archivos a Supabase, sin publicación global y sin acceso administrativo protegido. La fase real requiere Auth/RBAC, Storage, políticas de acceso y auditoría.
+
 ## [Pago completo, avance verificable y responsive] — 2026-11-13
 
 - Pago completo preseleccionado en el formulario y en el simulador; el reporte de pago sugiere el valor correspondiente al plan elegido.

@@ -4,7 +4,7 @@ import {
   EMPTY_STATE, PRICE, approvePayment, assignedCount, createOpportunity,
   isEligible, normalizeNumber, phaseOf, rejectPayment, reportPayment,
   reservedNumbers, reachedSalesUpdates, salesProgressPercent, salesProgressStatus,
-  createDraw, setDrawEnabled, expireUnpaidReservations, renewExpiredOpportunity,
+  createDraw, setDrawEnabled, updateDrawDetails, expireUnpaidReservations, renewExpiredOpportunity,
   previousNumberAvailability, activeOrders, isReservationExpired, drawCatalog, drawProgress,
 } from "../src/lib/domain";
 
@@ -222,4 +222,27 @@ test("las reservas vencidas no se presentan como avance real", () => {
   const later = new Date(date.getTime() + 25 * 3_600_000);
   assert.equal(drawProgress(state, "principal", later).occupied, 0);
   assert.equal(drawProgress(state, "principal", later).paid, 0);
+});
+
+test("el editor de contenido actualiza textos del sorteo sin cambiar su ID, estado ni órdenes", () => {
+  const state = setup();
+  const changed = updateDrawDetails(state, "principal", {
+    title: "  Sorteo especial  ",
+    prize: "  Teléfono de prueba  ",
+    description: "  Edición promocional  ",
+  });
+  assert.equal(changed.draws?.[0].title, "Sorteo especial");
+  assert.equal(changed.draws?.[0].prize, "Teléfono de prueba");
+  assert.equal(changed.draws?.[0].description, "Edición promocional");
+  assert.equal(changed.draws?.[0].enabled, true);
+  assert.equal(changed.draws?.[0].id, "principal");
+  assert.equal(changed.opportunities[0].id, state.opportunities[0].id);
+  assert.equal(state.draws?.[0].title, "Sorteo iPhone 18");
+});
+
+test("el editor rechaza sorteos inexistentes y datos inválidos", () => {
+  const input = { title: "Sorteo válido", prize: "Celular", description: "Demo" };
+  assert.throws(() => updateDrawDetails(EMPTY_STATE, "inexistente", input), /no encontrado/);
+  assert.throws(() => updateDrawDetails(EMPTY_STATE, "principal", { ...input, title: "No" }), /Revisa/);
+  assert.throws(() => updateDrawDetails(EMPTY_STATE, "principal", { ...input, description: "x".repeat(201) }), /Revisa/);
 });

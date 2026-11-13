@@ -27,6 +27,7 @@ No se deben documentar secretos, claves privadas, contraseñas, datos personales
 | [Comunicaciones y avance](COMUNICACIONES.md) | OPR-COM-001 | Porcentaje de colocación, hitos y futuras notificaciones |
 | [Multisorteos, reservas y acceso](MULTISORTEOS-RESERVAS-ACCESO.md) | OPR-UX-003 | Carrusel, reserva de 24 h, recuperación, aceptación y futuro OTP WhatsApp |
 | [Pago por defecto, avance honesto y responsive](PAGO-AVANCE-RESPONSIVE.md) | OPR-UX-004 | Pago completo, porcentajes separados y diseño adaptable a dispositivos |
+| [Contenido e imágenes de sorteos](CONTENIDO-IMAGENES.md) | OPR-UX-005 | Editor local de dos imágenes y textos por sorteo; plan para Storage protegido |
 | [QA responsive pendiente](PRUEBAS/QA-2026-11-13-004.md) | OPR-QA-004 | Matriz de dispositivos y verificación visual manual pendiente |
 | [Seguridad y privacidad](SEGURIDAD.md) | OPR-SEC-001 | Amenazas, controles, riesgo residual y bloqueos de producción |
 | [Despliegue y operación](OPERACIONES.md) | OPR-OPS-001 | Vercel, Supabase, variables, pruebas y rollback |

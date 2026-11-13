@@ -1,20 +1,23 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/components/AppProvider";
 import { drawCatalog, drawProgress } from "@/lib/domain";
+import { useDrawImage } from "@/lib/demoMedia";
 
 export function DrawCarousel() {
   const { state, hydrated, chooseDraw } = useApp();
   const [index, setIndex] = useState(0);
   const draws = drawCatalog(state).filter((draw) => draw.enabled);
+  const currentIndex = Math.min(index, Math.max(0, draws.length - 1));
+  const draw = draws[currentIndex];
+  const prizeImage = useDrawImage(draw?.id, "prize");
   if (!hydrated) return <section id="sorteos" className="container draw-carousel-section"><p className="muted">Cargando sorteos de prueba…</p></section>;
   if (!draws.length) return <section id="sorteos" className="container draw-carousel-section">
     <div className="draw-carousel-empty"><span className="f-kicker">PRÓXIMAS EDICIONES</span><h2>Pronto conocerás nuevos sorteos.</h2>
       <p>En este momento no hay sorteos habilitados en esta demostración.</p></div>
   </section>;
-  const currentIndex = Math.min(index, draws.length - 1);
-  const draw = draws[currentIndex];
   const stats = drawProgress(state, draw.id);
   const progress = stats.occupiedPercent;
   const percent = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 1 }).format(progress);
@@ -48,7 +51,8 @@ export function DrawCarousel() {
       </div>
       <div className="draw-carousel-art" aria-hidden="true">
         <div className="draw-art-halo" />
-        {/iphone|celular|smartphone|teléfono|telefono|móvil|movil/i.test(draw.prize)
+        {prizeImage ? <img className="draw-prize-upload" src={prizeImage} alt="" /> :
+          /iphone|celular|smartphone|teléfono|telefono|móvil|movil/i.test(draw.prize)
           ? <div className="draw-art-phone"><div className="draw-art-camera"><i/><i/><i/></div><span>✦</span></div>
           : <div className="draw-art-gift"><span aria-hidden="true">✧</span><strong>{draw.prize}</strong></div>}
         <div className="draw-art-caption">OPORTUNIA <strong>EDICIÓN {String(currentIndex + 1).padStart(2, "0")}</strong></div>
