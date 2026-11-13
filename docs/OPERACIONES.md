@@ -1,7 +1,7 @@
 # OPR-OPS-001 · Manual de despliegue y operación
 
 **Fecha:** 2026-11-13 | **Plataformas:** GitHub Actions, Vercel, Supabase  
-**Estado:** procedimiento propuesto; aún no se conoce URL pública verificada.
+**Estado:** despliegue confirmado por integración Vercel; URL pública y smoke tests pendientes.
 
 ## 1. Inventario de ambientes
 
@@ -9,7 +9,7 @@
 |---|---|---|
 | Repositorio | GitHub mejai84/oportunia, rama main | Confirmado |
 | Integración continua | GitHub Actions | Confirmado, ver ejecución por commit |
-| Web | Vercel, compilación registrada para b84339d | Resultado final de publicación no verificado |
+| Web | Vercel, commit 80e7140 | Integración Vercel: Deployment has completed; falta smoke test y URL pública |
 | Datos de interesados | Supabase qsclrpmkgcjobtupicyx | Tabla funnel_leads creada y RLS activo |
 | Transacciones reales | No disponible | Bloqueado |
 
@@ -74,6 +74,14 @@ No se dispone todavía de una versión productiva verificada a la cual regresar.
 - Estado de publicación final: **no verificado**, porque el log termina al iniciar despliegue y advertir del bloqueo.
 
 Referencia: [INC-2026-11-13-001](INCIDENTES/INC-2026-11-13-001.md).
+
+## 6.1. Evidencia de despliegue corregido (2026-11-13)
+
+- Commit: 80e714052347f9a4c2d8f6711a484ce764d59dbe (main).
+- Estado de GitHub Actions: success.
+- Estado de integración Vercel en GitHub: success, descripción **Deployment has completed**.
+- Consola del despliegue: https://vercel.com/jaimes-projects-705b34e5/oportunia/iwuWH1ytjgr1tad4zKP3HcFBbVGZ
+- URL pública y pruebas de aceptación: **pendientes**. No se declara listo para operación comercial.
 
 ## 7. Operación posterior
 

@@ -41,7 +41,7 @@ Ese esquema de oportunidades no se ha aplicado a ninguna base de datos. Incluye 
 
 ## Despliegue Vercel
 
-Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. Se recibió un registro de compilación Vercel del 2026-11-13 para el commit b84339d. La compilación terminó, pero Vercel detectó Next.js 15.5.6 vulnerable. **No se ha verificado la publicación final ni la URL pública.** La corrección de dependencias está registrada en docs/INCIDENTES/INC-2026-11-13-001.md. La tabla de captación del embudo existe en Supabase, pero el sitio no tiene configuradas las credenciales de servidor.
+Una vez revisado el código, importar mejai84/oportunia en Vercel como proyecto Next.js y desplegar desde main. El dominio se conectará posteriormente. Se recibió un registro de compilación Vercel del 2026-11-13 para el commit b84339d. La compilación terminó, pero Vercel detectó Next.js 15.5.6 vulnerable. **El nuevo commit 80e7140 fue marcado por la integración Vercel como 'Deployment has completed'; falta probar la URL pública y las pantallas.** La corrección de dependencias está registrada en docs/INCIDENTES/INC-2026-11-13-001.md. La tabla de captación del embudo existe en Supabase, pero el sitio no tiene configuradas las credenciales de servidor.
 
 ## Pruebas
 
