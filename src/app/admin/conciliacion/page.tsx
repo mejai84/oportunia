@@ -11,7 +11,7 @@ import {
 } from "@/lib/reconciliation";
 
 type Section = "movimientos" | "reportes" | "auditoria" | "instrucciones";
-const TEMPLATE = "banco;cuenta;fecha;tipo;valor;referencia;descripcion\nBANCOLOMBIA;AHORROS_PRINCIPAL;2026-11-13;ABONO;50000;MOV0001;Transferencia recibida\n";
+const TEMPLATE = "banco;cuenta;fecha;tipo;valor;referencia;descripcion\nBANCOLOMBIA;BANCOLOMBIA_PRINCIPAL;2026-11-13;ABONO;50000;MOV0001;Transferencia recibida\n";
 const statusLabel: Record<string, string> = {
   unmatched: "Sin conciliar", matched: "Conciliado contra extracto",
   ignored: "Descartado", pending: "Por verificar", rejected: "Rechazado",
@@ -186,7 +186,7 @@ function ReconciliationWorkspace() {
       <section className="bank-panel">
         <header><div><span className="overline">01 · EXTRACTO OFICIAL</span><h2>Importar abonos desde CSV</h2></div>
           <a className="btn btn-secondary btn-small" href={"data:text/csv;charset=utf-8,"+encodeURIComponent(TEMPLATE)} download="oportunia_plantilla_abonos.csv">Descargar plantilla</a></header>
-        <p>Exporta el movimiento desde tu banco, transforma sus columnas a la plantilla y conserva la referencia única de cada abono. Los CSV deben incluir <strong>banco; cuenta; fecha; tipo; valor; referencia; descripcion</strong>. El valor es un entero COP sin separadores. El campo cuenta es un alias interno consistente, no el número bancario completo.</p>
+        <p>Exporta el movimiento desde tu banco, transforma sus columnas a la plantilla y conserva la referencia única de cada abono. Los CSV deben incluir <strong>banco; cuenta; fecha; tipo; valor; referencia; descripcion</strong>. El valor es un entero COP sin separadores. El campo cuenta es un alias interno consistente, no el número bancario completo. Para los reportes de clientes usa BANCOLOMBIA_PRINCIPAL o NEQUI_PRINCIPAL, según la cuenta receptora.</p>
         <label className="bank-file">Archivo CSV normalizado (máximo 300 movimientos)<input type="file" accept=".csv,text/csv,text/plain" disabled={busy} onChange={e=>void selectFile(e)}/></label>
         {parsed.length>0&&<div className="bank-import-preview">
           <strong>Previsualización: {parsed.length} abonos por {money(parsed.reduce((sum,row)=>sum+row.amount_cop,0))}</strong>
@@ -223,7 +223,7 @@ function ReconciliationWorkspace() {
         <p>Este formulario es para administración. Los clientes también pueden registrar y consultar su historial desde <strong>Pagos</strong> y <strong>Mi cuenta</strong>. Un reporte no acredita que haya ingresado dinero.</p>
         <form className="bank-claim-form" onSubmit={e=>void submitClaim(e)}>
           <label>Banco de destino<select value={bank} onChange={e=>setBank(e.target.value as ReconBank)}><option value="BANCOLOMBIA">Bancolombia</option><option value="NEQUI">Nequi</option></select></label>
-          <label>Alias de cuenta<input required minLength={3} maxLength={40} pattern="[A-Za-z0-9_-]{3,40}" value={accountAlias} placeholder="AHORROS_PRINCIPAL" onChange={e=>setAccountAlias(e.target.value.toUpperCase())}/></label>
+          <label>Alias de cuenta<input required minLength={3} maxLength={40} pattern="[A-Za-z0-9_-]{3,40}" value={accountAlias} placeholder="BANCOLOMBIA_PRINCIPAL" onChange={e=>setAccountAlias(e.target.value.toUpperCase())}/></label>
           <label>Cliente / identificación interna<input required minLength={2} maxLength={120} value={customerLabel} onChange={e=>setCustomerLabel(e.target.value)} placeholder="Nombre o código interno"/></label>
           <label>Referencia bancaria informada<input required minLength={4} maxLength={100} pattern="[A-Za-z0-9][A-Za-z0-9._/-]{3,99}" value={claimedReference} onChange={e=>setClaimedReference(e.target.value.toUpperCase())}/></label>
           <label>Importe reportado (COP)<input required type="number" min={1000} max={100000000} step={1} value={expectedAmount} onChange={e=>setExpectedAmount(Number(e.target.value))}/></label>
