@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { MyReviews } from "@/components/MyReviews";
 import { CustomerBankReports } from "@/components/CustomerBankReports";
+import { CustomerProfile } from "@/components/CustomerProfile";
 import { useApp } from "@/components/AppProvider";
 import { assignedCount, isEligible, isReservationExpired, drawCatalog, findDraw, drawIdOf, previousNumberAvailability, money, PRICE, shortId, drawProgress, salesProgressStatus, reachedSalesUpdates } from "@/lib/domain";
 export default function MiCuentaPage() {
@@ -84,6 +85,7 @@ export default function MiCuentaPage() {
           </div>
         </article>;
       })}</div>}
+    <CustomerProfile />
     <CustomerBankReports mode="history" />
     <MyReviews />
   </div>;
