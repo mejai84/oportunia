@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { EMPTY_STATE, DEFAULT_DRAW_ID, approvePayment, createOpportunity, createDraw, setDrawEnabled, expireUnpaidReservations, renewExpiredOpportunity, rejectPayment, reportPayment, setDrawDate, type Customer, type DemoState, type Method, type Plan, type SelectionMode } from "@/lib/domain";
 
 const KEY = "oportunia-demo-v1";
+const DRAW_KEY = "oportunia-selected-draw-v1";
 type Context = {
   state: DemoState; hydrated: boolean;
   activeDrawId: string; chooseDraw: (id: string) => void;
@@ -21,6 +22,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     try {
+      const storedDraw = localStorage.getItem(DRAW_KEY);
+      if (storedDraw) chooseDraw(storedDraw);
       const raw = localStorage.getItem(KEY);
       if (raw) {
         const data: unknown = JSON.parse(raw);
@@ -31,6 +34,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
   }, []);
   useEffect(() => { if (hydrated) localStorage.setItem(KEY, JSON.stringify(state)); }, [state, hydrated]);
+  useEffect(() => { if (hydrated) localStorage.setItem(DRAW_KEY, activeDrawId); }, [activeDrawId, hydrated]);
   useEffect(() => {
     const interval = window.setInterval(() => setState((prev) => expireUnpaidReservations(prev)), 60_000);
     return () => window.clearInterval(interval);
