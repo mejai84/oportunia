@@ -120,7 +120,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 
 
 /* Catálogo estilo escaparate: 5 premios visibles por fila en pantallas amplias. */
-.draw-five-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 4 * 14px)/5);gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:6px 2px 18px;scrollbar-width:thin;scrollbar-color:#a5d9af transparent}
+.draw-five-track{display:grid;grid-auto-flow:column;grid-auto-columns:calc(20% - 11.2px);gap:14px;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:6px 2px 18px;scrollbar-width:thin;scrollbar-color:#a5d9af transparent}
 .draw-mini-card{scroll-snap-align:start;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #d8e9d9;border-radius:22px;box-shadow:0 8px 26px #075e3310;transition:transform .2s ease,box-shadow .2s ease}
 .draw-mini-card:hover{transform:translateY(-3px);box-shadow:0 15px 35px #075e3320}
 .draw-mini-art{height:180px;display:grid;place-items:center;position:relative;padding:26px 12px 10px;background:radial-gradient(circle at 50% 70%,#d7f5d7,#f2fff1 65%,#fff)}
@@ -139,8 +139,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .draw-mini-disclosure{margin:12px 0 0;font-size:11px;color:#57725e;line-height:1.6}
 .draw-row-controls button{color:#086f3d}
 @media(min-width:1101px){.draw-row-controls{display:none}}
-@media(max-width:1100px){.draw-five-track{grid-auto-columns:calc((100% - 2 * 14px)/3)}}
-@media(max-width:740px){.draw-five-track{grid-auto-columns:calc((100% - 14px)/2)}.draw-mini-art{height:170px}.draw-mini-content h3{font-size:16px}}
+@media(max-width:1100px){.draw-five-track{grid-auto-columns:calc(33.333% - 9.333px)}}
+@media(max-width:740px){.draw-five-track{grid-auto-columns:calc(50% - 7px)}.draw-mini-art{height:170px}.draw-mini-content h3{font-size:16px}}
 @media(max-width:480px){.draw-five-track{grid-auto-columns:minmax(205px,75%)}.draw-mini-art{height:195px}.draw-carousel-header{align-items:flex-start}.draw-row-controls{align-self:flex-end}}
 
 /* 10 opiniones en 2 filas de 5, como una app de reseñas tipo Shopify. */
