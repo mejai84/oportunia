@@ -28,6 +28,7 @@ No se deben documentar secretos, claves privadas, contraseñas, datos personales
 | [Seguridad y privacidad](SEGURIDAD.md) | OPR-SEC-001 | Amenazas, controles, riesgo residual y bloqueos de producción |
 | [Despliegue y operación](OPERACIONES.md) | OPR-OPS-001 | Vercel, Supabase, variables, pruebas y rollback |
 | [Informe de verificación pública](PRUEBAS/QA-2026-11-13-001.md) | OPR-QA-001 | Evidencia de landing publicada, pruebas ejecutadas y pendientes |
+| [QA selección automática y avance](PRUEBAS/QA-2026-11-13-002.md) | OPR-QA-002 | Evidencia de CI, despliegue y pruebas manuales pendientes |
 | [Registro de decisiones](DECISIONES/README.md) | OPR-ADR | Decisiones técnicas y de negocio |
 | [Incidente de seguridad Next.js](INCIDENTES/INC-2026-11-13-001.md) | OPR-INC-001 | Análisis del log de Vercel y remediación |
 | [Registro de cambios](../CHANGELOG.md) | OPR-CHG | Historial funcional y técnico |
