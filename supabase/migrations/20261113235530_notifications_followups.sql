@@ -143,16 +143,26 @@ begin
    insert into public.crm_followup_events(followup_id,actor_id,event_type,new_status)
    values(new.id,auth.uid(),'created',new.status);
  elsif new.status is distinct from old.status then
-   new.updated_at:=now();
    insert into public.crm_followup_events(followup_id,actor_id,event_type,old_status,new_status)
    values(new.id,auth.uid(),'status_changed',old.status,new.status);
  end if;
  return new;
 end; $$;
 revoke all on function public.record_crm_followup_change() from public,anon,authenticated;
-create trigger track_crm_followup_before_insert
- before insert on public.crm_followups for each row
+create trigger track_crm_followup_after_insert
+ after insert on public.crm_followups for each row
  execute function public.record_crm_followup_change();
-create trigger track_crm_followup_before_update
+create trigger track_crm_followup_after_update
+ after update of status on public.crm_followups for each row
+ execute function public.record_crm_followup_change();
+
+create function public.touch_crm_followup_updated_at()
+returns trigger language plpgsql set search_path='' as $
+begin
+ new.updated_at:=now();
+ return new;
+end; $;
+revoke all on function public.touch_crm_followup_updated_at() from public,anon,authenticated;
+create trigger touch_crm_followup_before_update
  before update of status on public.crm_followups for each row
- execute function public.record_crm_followup_change();
+ execute function public.touch_crm_followup_updated_at();
