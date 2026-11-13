@@ -14,12 +14,14 @@ Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de
 - Sustitución de dos valores CSS de align-items:start por flex-start.
 
 ### Entrega
-- Integración de Vercel en GitHub confirmó despliegue completado del commit 80e7140. URL pública y smoke tests pendientes.
+- Integración de Vercel en GitHub confirmó despliegue completado del commit 80e7140.
+- URL pública https://oportunia-chi.vercel.app/ observada; landing y avisos de demostración presentes. Pruebas funcionales restantes pendientes.
 
 ### Documentación
 - Línea base profesional SDLC: PRD, arquitectura, seguridad, operaciones, ADR, incidencias y criterios de aceptación.
 - Registro explícito de lo implementado, lo simulado y lo pendiente.
 - Plantilla de revisión de cambios.
+- Informe de QA parcial OPR-QA-001, con evidencias observadas y pruebas pendientes.
 
 ## [0.1.0] — 2026-11-13
 

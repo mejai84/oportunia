@@ -7,7 +7,7 @@
 **Versión documental:** 0.1  
 **Repositorio:** https://github.com/mejai84/oportunia  
 **Base de datos:** Supabase, proyecto qsclrpmkgcjobtupicyx  
-**Entorno web:** Vercel. GitHub registró despliegue completado del commit 80e7140 el 2026-11-13; URL pública y pruebas funcionales todavía pendientes.
+**Entorno web:** Vercel. URL pública observada: https://oportunia-chi.vercel.app/; la landing cargó y mostró contenido de demo el 2026-11-13. Las pruebas funcionales completas siguen pendientes.
 
 ## Política documental
 
@@ -26,6 +26,7 @@ No se deben documentar secretos, claves privadas, contraseñas, datos personales
 | [Embudo](EMBUDO.md) | OPR-FUN-001 | Recorrido de visitantes, atribución, captura y limitaciones |
 | [Seguridad y privacidad](SEGURIDAD.md) | OPR-SEC-001 | Amenazas, controles, riesgo residual y bloqueos de producción |
 | [Despliegue y operación](OPERACIONES.md) | OPR-OPS-001 | Vercel, Supabase, variables, pruebas y rollback |
+| [Informe de verificación pública](PRUEBAS/QA-2026-11-13-001.md) | OPR-QA-001 | Evidencia de landing publicada, pruebas ejecutadas y pendientes |
 | [Registro de decisiones](DECISIONES/README.md) | OPR-ADR | Decisiones técnicas y de negocio |
 | [Incidente de seguridad Next.js](INCIDENTES/INC-2026-11-13-001.md) | OPR-INC-001 | Análisis del log de Vercel y remediación |
 | [Registro de cambios](../CHANGELOG.md) | OPR-CHG | Historial funcional y técnico |
@@ -59,7 +60,7 @@ Los roles a asignar formalmente son: responsable de producto, líder técnico, r
 ## Pendientes transversales
 
 - Añadir y versionar package-lock.json con instalación reproducible; hoy el repositorio no lo incluye.
-- Confirmar URL pública de Vercel y completar smoke tests; el estado de integración confirma despliegue, no aceptación funcional.
+- URL pública confirmada; completar smoke tests de rutas internas, simulador, API, responsive y aceptación funcional.
 - Habilitar controles de ramas y revisiones según permisos del repositorio.
 - Completar matriz de pruebas E2E y control de vulnerabilidades de dependencias.
 - Definir política de conservación, derechos de titulares y gestión de incidentes de datos.
