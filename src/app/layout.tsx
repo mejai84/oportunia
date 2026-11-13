@@ -8,20 +8,20 @@ import "./apple-light.css";
 import "./responsive.css";
 import "./admin-media.css";
 import "./brand.css";
+import "./oportunia-green.css";
 
 export const metadata: Metadata = {
-  title: "Oportunia | Demo de oportunidades",
-  description: "Prototipo de selección de números, abonos y administración. Sin pagos reales.",
+  title: "Oportunia | Sorteos que te acercan a lo que quieres",
+  description: "Descubre los próximos sorteos de Oportunia, conoce las reglas y entérate del lanzamiento.",
   robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return <html lang="es"><body><AppProvider>
-    <div className="demo-strip">MODO DEMOSTRACIÓN · No se reciben pagos ni se realizan sorteos reales</div>
     <SiteHeader /><main>{children}</main>
     <footer className="footer"><div className="container footer-inner">
-      <span>✦ Oportunia · Prototipo independiente</span>
-      <span>Sin pagos reales · Sujeto a autorizaciones y reglamento aplicable</span>
+      <span>♣ Oportunia · Sorteos que te acercan a lo que quieres</span>
+      <span>Inscripciones y pagos aún no habilitados · Sujeto a reglamento y autorizaciones</span>
     </div></footer>
   </AppProvider></body></html>;
 }

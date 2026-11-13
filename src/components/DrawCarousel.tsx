@@ -1,68 +1,41 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
-import Link from "next/link";
-import { useApp } from "@/components/AppProvider";
-import { drawCatalog, drawProgress } from "@/lib/domain";
-import { useDrawImage } from "@/lib/demoMedia";
+import { usePublicDraws } from "@/lib/usePublicDraws";
 
 export function DrawCarousel() {
-  const { state, hydrated, chooseDraw } = useApp();
+  const { draws, loading, error } = usePublicDraws();
   const [index, setIndex] = useState(0);
-  const draws = drawCatalog(state).filter((draw) => draw.enabled);
-  const currentIndex = Math.min(index, Math.max(0, draws.length - 1));
-  const draw = draws[currentIndex];
-  const prizeImage = useDrawImage(draw?.id, "prize");
-  if (!hydrated) return <section id="sorteos" className="container draw-carousel-section"><p className="muted">Cargando sorteos de prueba…</p></section>;
-  if (!draws.length) return <section id="sorteos" className="container draw-carousel-section">
-    <div className="draw-carousel-empty"><span className="f-kicker">PRÓXIMAS EDICIONES</span><h2>Pronto conocerás nuevos sorteos.</h2>
-      <p>En este momento no hay sorteos habilitados en esta demostración.</p></div>
-  </section>;
-  const stats = drawProgress(state, draw.id);
-  const progress = stats.occupiedPercent;
-  const percent = new Intl.NumberFormat("es-CO", { maximumFractionDigits: 1 }).format(progress);
-  return <section id="sorteos" className="container draw-carousel-section" aria-label="Sorteos disponibles en demostración">
-    <div className="draw-carousel-header"><div><span className="f-kicker">EXPLORA LAS EDICIONES</span>
-      <h2>{draws.length === 1 ? "Un sorteo para descubrir." : "Un premio. Muchas posibilidades."}</h2>
-      <p>{draws.length === 1 ? "Conoce la edición disponible." : "Desliza entre los sorteos habilitados y elige el que te interese."}</p></div>
+  const current = Math.min(index, Math.max(0, draws.length - 1));
+  const draw = draws[current];
+  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos">
+    <div className="draw-carousel-header"><div><span className="f-kicker">EXPLORA OPORTUNIA</span>
+      <h2>Premios que ilusionan.</h2>
+      <p>Descubre los próximos sorteos y conoce cómo funcionará cada edición.</p></div>
       {draws.length > 1 && <div className="draw-carousel-controls">
-        <button type="button" aria-label="Sorteo anterior" onClick={() => setIndex((currentIndex + draws.length - 1) % draws.length)}>←</button>
-        <button type="button" aria-label="Sorteo siguiente" onClick={() => setIndex((currentIndex + 1) % draws.length)}>→</button>
+        <button type="button" aria-label="Sorteo anterior" onClick={() => setIndex((current + draws.length - 1) % draws.length)}>←</button>
+        <button type="button" aria-label="Sorteo siguiente" onClick={() => setIndex((current + 1) % draws.length)}>→</button>
       </div>}
     </div>
-    <div className="draw-carousel-card" key={draw.id}>
+    {loading && <p role="status">Consultando próximos sorteos…</p>}
+    {error && <div className="alert alert-warning" role="status">{error} Intenta actualizar la página.</div>}
+    {!loading && !error && !draw && <div className="draw-carousel-empty"><h3>Pronto habrá novedades.</h3><p>Estamos preparando nuevas ediciones.</p></div>}
+    {draw && <div className="draw-carousel-card" key={draw.id}>
       <div className="draw-carousel-copy">
-        <span className="draw-carousel-edition">EDICIÓN {String(currentIndex + 1).padStart(2, "0")} · DEMO</span>
-        <h3>{draw.prize}</h3>
-        <p className="draw-carousel-title">{draw.title}</p>
-        <p className="draw-carousel-description">{draw.description || "Escoge tus diez números o recíbelos automáticamente."}</p>
-        <div className="draw-carousel-progress-label"><span>Oportunidades ocupadas · simulación local</span><strong>{percent}%</strong></div>
-        <div className="draw-carousel-progress" role="progressbar" aria-label="Ocupación de oportunidades de prueba"
-          aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-          <div className="draw-carousel-progress-paid" style={{ width: stats.paidPercent + "%" }} />
-          <div className="draw-carousel-progress-separated" style={{ width: (progress - stats.paidPercent) + "%" }} />
-        </div>
-        <div className="draw-carousel-counts">
-          <span><strong>{(progress - stats.paidPercent).toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> separadas o con abono</span>
-          <span><strong>{stats.paidPercent.toLocaleString("es-CO", { maximumFractionDigits: 1 })}%</strong> pagadas al 100 %</span>
-        </div>
-        {stats.occupied === 0 && <p className="draw-start-note">¡Sé de los primeros en elegir tus números!</p>}
-        <Link href="/numeros" onClick={() => chooseDraw(draw.id)} className="f-button f-button-primary">Conocer este sorteo <span aria-hidden="true">↗</span></Link>
+        <span className="draw-carousel-edition">EDICIÓN {String(current + 1).padStart(2, "0")} · {draw.status === "closed" ? "CERRADA" : "EN PREPARACIÓN"}</span>
+        <h3>{draw.prize}</h3><p className="draw-carousel-title">{draw.title}</p>
+        <p className="draw-carousel-description">{draw.description}</p>
+        <p className="draw-carousel-disclaimer"><strong>Próximamente:</strong> aún no se aceptan compras, reservas ni pagos. Publicaremos fechas y condiciones cuando estén definidas.</p>
+        <a href="#registro" className="f-button f-button-primary">Conocer novedades <span aria-hidden="true">↗</span></a>
       </div>
       <div className="draw-carousel-art" aria-hidden="true">
-        <div className="draw-art-halo" />
-        {prizeImage ? <img className="draw-prize-upload" src={prizeImage} alt="" /> :
-          /iphone|celular|smartphone|teléfono|telefono|móvil|movil/i.test(draw.prize)
-          ? <div className="draw-art-phone"><div className="draw-art-camera"><i/><i/><i/></div><span>✦</span></div>
-          : <div className="draw-art-gift"><span aria-hidden="true">✧</span><strong>{draw.prize}</strong></div>}
-        <div className="draw-art-caption">OPORTUNIA <strong>EDICIÓN {String(currentIndex + 1).padStart(2, "0")}</strong></div>
+        {draw.prize_image_url ? <img className="draw-prize-upload" src={draw.prize_image_url} alt="" /> : <span className="draw-art-gift">✦</span>}
+        <div className="draw-art-caption">OPORTUNIA <strong>PRÓXIMA EDICIÓN</strong></div>
       </div>
-    </div>
-    {draws.length > 1 && <div className="draw-carousel-dots" role="group" aria-label="Seleccionar sorteo">
-      {draws.map((item, i) => <button key={item.id} type="button" aria-label={"Ver " + item.title}
-        aria-current={i === currentIndex ? "true" : undefined}
-        className={i === currentIndex ? "active" : ""} onClick={() => setIndex(i)} />)}
     </div>}
-    <p className="draw-carousel-disclaimer">El avance empieza en 0 % y solo cambia con reservas o pagos registrados en esta demo local. Separadas no significa pagadas; no son ventas globales ni sorteos autorizados.</p>
+    {draws.length > 1 && <div className="draw-carousel-dots" role="group" aria-label="Seleccionar sorteo">
+      {draws.map((d,i)=><button key={d.id} type="button" aria-label={"Ver "+d.title}
+        aria-current={i===current?"true":undefined} className={i===current?"active":""} onClick={()=>setIndex(i)}/>)}
+    </div>}
   </section>;
 }

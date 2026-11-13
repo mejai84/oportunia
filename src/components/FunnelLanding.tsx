@@ -3,9 +3,9 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { money, drawCatalog } from "@/lib/domain";
-import { useApp } from "@/components/AppProvider";
-import { useDrawImage } from "@/lib/demoMedia";
+import { money } from "@/lib/domain";
+import { usePublicDraws } from "@/lib/usePublicDraws";
+
 import { DrawCarousel } from "@/components/DrawCarousel";
 import { campaignFromSearch } from "@/lib/funnel";
 
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     question: "¿Puedo pagar por cuotas?",
-    answer: "La demostración permite simular pago completo, dos cuotas o tres cuotas. Por ejemplo, $20.000, $15.000 y $15.000. No se reciben transferencias reales. La reserva inicial sin abono aprobado vence en 24 horas.",
+    answer: "El simulador permite explorar pago completo, dos cuotas o tres cuotas. Por ejemplo, $20.000, $15.000 y $15.000. Los pagos todavía no están habilitados. La reserva inicial sin abono aprobado vence en 24 horas.",
   },
   {
     question: "¿Los números que tengo asignados ya están jugando?",
@@ -34,16 +34,16 @@ const faqs = [
   },
   {
     question: "¿Ya puedo comprar una oportunidad?",
-    answer: "No. Este sitio es un prototipo para evaluar el proceso. La comercialización, los pagos y el sorteo real no están habilitados.",
+    answer: "Todavía no. Las inscripciones, los pagos y las reservas estarán disponibles únicamente después de publicar las condiciones y autorizaciones correspondientes.",
   },
 ];
 
 type Props = { leadCaptureEnabled: boolean };
 
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
-  const { state, chooseDraw } = useApp();
-  const featuredDraw = drawCatalog(state).find((draw) => draw.enabled);
-  const heroImage = useDrawImage(featuredDraw?.id, "hero");
+  const { draws } = usePublicDraws();
+  const featuredDraw = draws[0];
+  const heroImage = featuredDraw?.hero_image_url || "/raffles/iphone18-hero.svg";
   const [amount, setAmount] = useState(50000);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -91,18 +91,18 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="f-hero">
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
-          <div className="f-eyebrow"><span className="f-live-dot" /> OPORTUNIA · EXPERIENCIA DEMOSTRATIVA</div>
-          <h1>Tu próximo <span className="f-highlight">{featuredDraw?.prize || "gran premio"}</span> podría comenzar con <em>10 números a tu manera.</em></h1>
-          <p className="f-hero-description">Conoce una nueva forma de organizar tus oportunidades: escoge tus favoritos o recíbelos automáticamente, simula pagos por cuotas y descubre cómo se asignarían los demás números.</p>
+          <div className="f-eyebrow"><span className="f-live-dot" /> SORTEOS QUE TE ACERCAN A LO QUE QUIERES</div>
+          <h1>Descubre tu próximo <span className="f-highlight">{featuredDraw?.prize || "gran premio"}</span> con <em>Oportunia.</em></h1>
+          <p className="f-hero-description">Próximamente podrás explorar sorteos, elegir tus números o recibirlos automáticamente y seguir cada edición con reglas claras.</p>
           <div className="f-hero-actions">
-            <Link href="/numeros" onClick={() => { if (featuredDraw) chooseDraw(featuredDraw.id); }} className="f-button f-button-primary">Elegir o recibir mis números <span aria-hidden="true">↗</span></Link>
+            <a href="#sorteos" className="f-button f-button-primary">Ver próximos sorteos <span aria-hidden="true">↗</span></a>
             <a href="#como-funciona" className="f-button f-button-outline">Así funciona <span aria-hidden="true">↓</span></a>
           </div>
-          <div className="f-hero-foot"><span>✓ Sin pagos reales</span><span>✓ 10.000 números únicos</span><span>✓ Prueba gratuita</span></div>
-          <p className="f-disclosure">Premio proyectado, no adquirido ni ofrecido comercialmente. Actividad sujeta a autorización y reglamento aplicable.</p>
+          <div className="f-hero-foot"><span>✓ Reglas claras</span><span>✓ Selección a tu manera</span><span>✓ Información transparente</span></div>
+          <p className="f-disclosure">Premio ilustrativo y sujeto a disponibilidad. Aún no hay venta ni participación habilitada; se publicarán reglamento y autorizaciones antes de la apertura.</p>
         </div>
         <div className="f-showcase">
-          <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO PROYECTADO</span><span className="f-showcase-demo">DEMO</span></div>
+          <div className="f-showcase-top"><span className="f-showcase-kicker">PRÓXIMA EDICIÓN</span><span className="f-showcase-demo">PRÓXIMAMENTE</span></div>
           <div className="f-phone-stage" aria-label="Ilustración decorativa del sorteo">
             {heroImage ? <img className="f-hero-upload" src={heroImage} alt="" /> : <>
               <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
@@ -126,7 +126,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
 
     <DrawCarousel />
     <section className="container f-stats" aria-label="Características de la propuesta">
-      <div><strong>200</strong><span>Oportunidades por sorteo (demo)</span></div>
+      <div><strong>200</strong><span>Oportunidades previstas por sorteo</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
       <div><strong>10 + 40</strong><span>Iniciales a tu elección + aleatorios</span></div>
       <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
@@ -138,9 +138,9 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <p>Un proceso transparente, desde la elección hasta la habilitación.</p>
       </div>
       <div className="f-steps">
-        <article><span className="f-step-icon">01 <b>◇</b></span><h3>Escoge o recibe 10 números</h3><p>Elige tus 10 favoritos o deja que Oportunia los asigne automáticamente entre los disponibles en esta demostración.</p></article>
-        <article><span className="f-step-icon">02 <b>◫</b></span><h3>Define tus cuotas</h3><p>Simula pagar de contado o mediante abonos. El primer abono mínimo del prototipo es de $10.000.</p></article>
-        <article><span className="f-step-icon">03 <b>✧</b></span><h3>Recibe aleatorios</h3><p>Al aprobar cada abono de prueba se asignan más números, hasta completar los 40 aleatorios.</p></article>
+        <article><span className="f-step-icon">01 <b>◇</b></span><h3>Escoge o recibe 10 números</h3><p>Elige tus 10 favoritos o deja que Oportunia los asigne automáticamente entre los disponibles cuando se habilite cada edición.</p></article>
+        <article><span className="f-step-icon">02 <b>◫</b></span><h3>Define tus cuotas</h3><p>Simula pagar de contado o mediante abonos. El primer abono previsto es de $10.000, sujeto al reglamento definitivo.</p></article>
+        <article><span className="f-step-icon">03 <b>✧</b></span><h3>Recibe aleatorios</h3><p>Al confirmar cada abono se asignarían más números, hasta completar los 40 aleatorios.</p></article>
         <article><span className="f-step-icon">04 <b>✓</b></span><h3>Habilita los 50</h3><p>Solo con $50.000 confirmados se considera habilitada la oportunidad. Un pago parcial no da derecho a jugar.</p></article>
       </div>
     </section>
@@ -180,7 +180,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div className="f-conversion-copy">
         <span className="f-kicker">MANTENTE INFORMADO</span>
         <h2>¿Te interesa conocer el lanzamiento?</h2>
-        <p>El formulario está preparado para guardar solicitudes en el proyecto Supabase de Oportunia cuando se habilite el registro con sus condiciones de privacidad.</p>
+        <p>Estamos preparando el lanzamiento. El registro de interesados estará disponible cuando publiquemos las condiciones de privacidad.</p>
         <div className="f-conversion-points"><span>✓ Sin compromisos de compra</span><span>✓ Sin asignación real de números</span><span>✓ Sin cobros</span></div>
       </div>
       <div className="f-lead-card">
@@ -194,26 +194,26 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
           <label className="f-check"><input disabled={!leadCaptureEnabled} type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} /><span>También deseo recibir novedades promocionales (opcional).</span></label>
           {notice && <p role="status" className={"f-lead-notice" + (notice.ok ? " good" : " bad")}>{notice.message}</p>}
           <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Registro aún no habilitado"}</button>
-          <p className="f-lead-legal">Este formulario no representa una compra, una reserva ni la inscripción a un sorteo. El tratamiento de datos deberá ajustarse a la política de privacidad definitiva antes de habilitarse.</p>
+          <p className="f-lead-legal">Este formulario no representa una compra, una reserva ni la inscripción a un sorteo. El registro permanecerá cerrado hasta publicar la política de privacidad y habilitar el tratamiento de datos.</p>
         </form>
       </div>
     </section>
 
     <section className="f-faq-section" id="preguntas">
       <div className="container f-faq-grid">
-        <div><span className="f-kicker">RESPUESTAS CLARAS</span><h2>Preguntas frecuentes.</h2><p>Sin letras pequeñas sobre el funcionamiento del prototipo.</p></div>
+        <div><span className="f-kicker">RESPUESTAS CLARAS</span><h2>Preguntas frecuentes.</h2><p>Información transparente sobre el funcionamiento previsto.</p></div>
         <div className="f-faq-list">{faqs.map((faq) =>
           <details key={faq.question}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
     </section>
 
     <section className="container f-last-section">
-      <div className="f-last-card"><div className="f-last-light" /><span className="f-kicker">PRUEBA LA EXPERIENCIA</span>
+      <div className="f-last-card"><div className="f-last-light" /><span className="f-kicker">CONOCE LA EXPERIENCIA</span>
         <h2>Tú eliges cómo empezar. <span>Las reglas, siempre claras.</span></h2>
-        <p>Escoge tus números o deja que el sistema los asigne, sin hacer ningún pago.</p>
-        <Link className="f-button f-button-primary" href="/numeros">Probar asignación de números ↗</Link>
+        <p>Conoce el proceso de asignación antes de la apertura de los sorteos.</p>
+        <a className="f-button f-button-primary" href="#sorteos">Explorar sorteos ↗</a>
       </div>
     </section>
-    <div className="f-mobile-action"><Link href="/numeros" className="f-button f-button-primary">Elegir o recibir números ↗</Link></div>
+    <div className="f-mobile-action"><a href="#sorteos" className="f-button f-button-primary">Explorar sorteos ↗</a></div>
   </div>;
 }

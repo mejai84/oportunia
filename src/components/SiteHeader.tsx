@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 const links = [
   { href: "/", label: "Inicio" }, { href: "/numeros", label: "Elegir números" },
   { href: "/pagos", label: "Reportar pago" }, { href: "/mi-cuenta", label: "Mi cuenta" },
-  { href: "/acceso", label: "Acceso" }, { href: "/admin", label: "Administración" },
+  { href: "/acceso", label: "Acceso" }, { href: "/admin/catalogo", label: "Administración" },
 ];
 
 export function SiteHeader() {

@@ -58,3 +58,9 @@ Ese esquema de oportunidades no se ha aplicado a ninguna base de datos. Incluye 
 **Solo prototipo.** El esquema de financiación, la asignación progresiva, la fecha del sorteo condicionada a ventas y el plazo de siete días requieren validación del reglamento y de las autorizaciones aplicables en Colombia. Si vencen los siete días con saldos impagos, el sistema entra en revisión, no adjudica ni decide automáticamente sobre esos números.
 
 Consultar docs/README.md para toda la documentación controlada del proyecto.
+
+
+## Identidad visual y catálogo público (2026-11-13)
+La web de marketing adopta el trébol verde, el dorado y fondos claros. El catálogo de ediciones se lee desde `public.draw_catalog` en el proyecto Supabase Oportunia por `GET /api/catalog`, con políticas RLS de lectura de sorteos publicados. El editor protegido está en `/admin/catalogo`: requiere un usuario Supabase Auth registrado en `public.oportunia_admins`. El bucket público `draw-media` admite imágenes JPG/PNG/WebP con escritura solo administrativa.
+
+**La plataforma transaccional sigue pendiente:** las reservas, abonos, selección de números y seguimiento de compras todavía usan estado local del navegador y no son operaciones reales. No aceptar dinero ni adjudicar premios antes de implementar transacciones, auditoría, controles antifraude, privacidad y autorizaciones aplicables. No anunciar porcentajes de ventas no verificados.

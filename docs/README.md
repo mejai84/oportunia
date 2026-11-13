@@ -70,3 +70,5 @@ Los roles a asignar formalmente son: responsable de producto, líder técnico, r
 - Habilitar controles de ramas y revisiones según permisos del repositorio.
 - Completar matriz de pruebas E2E y control de vulnerabilidades de dependencias.
 - Definir política de conservación, derechos de titulares y gestión de incidentes de datos.
+
+| [Identidad y catálogo conectado](IDENTIDAD-CATALOGO-SUPABASE.md) | OPR-BRAND-002 | Identidad verde, catálogo de lectura pública, RLS y administración protegida |
