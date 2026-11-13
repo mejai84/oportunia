@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Oportunia">
+  <defs>
+    <linearGradient id="oportunia" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1777F2"/>
+      <stop offset="54%" stop-color="#4C78F5"/>
+      <stop offset="100%" stop-color="#9654F5"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#oportunia)"/>
+  <path d="M32 11 C35 24 40 29 53 32 C40 35 35 40 32 53 C29 40 24 35 11 32 C24 29 29 24 32 11Z" fill="#FFFFFF"/>
+</svg>

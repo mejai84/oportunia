@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { EMPTY_STATE, DEFAULT_DRAW_ID, approvePayment, createOpportunity, createDraw, setDrawEnabled, expireUnpaidReservations, renewExpiredOpportunity, rejectPayment, reportPayment, setDrawDate, type Customer, type DemoState, type Method, type Plan, type SelectionMode } from "@/lib/domain";
+import { EMPTY_STATE, DEFAULT_DRAW_ID, approvePayment, createOpportunity, createDraw, updateDrawDetails, setDrawEnabled, expireUnpaidReservations, renewExpiredOpportunity, rejectPayment, reportPayment, setDrawDate, type Customer, type DemoState, type Method, type Plan, type SelectionMode } from "@/lib/domain";
 
 const KEY = "oportunia-demo-v1";
 const DRAW_KEY = "oportunia-selected-draw-v1";
@@ -10,6 +10,7 @@ type Context = {
   createOrder: (input: { customer: Customer; selected: string[]; plan: Plan; selectionMode?: SelectionMode; drawId?: string; termsAccepted: boolean }) => string;
   addDraw: (input: { title: string; prize: string; description: string }) => void;
   toggleDraw: (id: string, enabled: boolean) => void;
+  editDraw: (id: string, input: { title: string; prize: string; description: string }) => void;
   renewOrder: (id: string, selected: string[], termsAccepted: boolean) => void;
   sendPayment: (input: { orderId: string; amount: number; method: Method; reference: string }) => void;
   approve: (id: string) => void; reject: (id: string) => void;
@@ -46,6 +47,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
   const addDraw: Context["addDraw"] = (input) => setState((prev) => createDraw(prev, input, crypto.randomUUID()));
   const toggleDraw: Context["toggleDraw"] = (id, enabled) => setState((prev) => setDrawEnabled(prev, id, enabled));
+  const editDraw: Context["editDraw"] = (id, input) => setState((prev) => updateDrawDetails(prev, id, input));
   const renewOrder: Context["renewOrder"] = (id, selected, termsAccepted) => setState((prev) =>
     renewExpiredOpportunity(expireUnpaidReservations(prev), id, selected, termsAccepted));
   const sendPayment: Context["sendPayment"] = (input) => setState(reportPayment(state, input, crypto.randomUUID()));
@@ -53,7 +55,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const reject = (id: string) => setState(rejectPayment(state, id));
   const schedule = (date: string) => setState(setDrawDate(state, date, activeDrawId));
   const reset = () => { setState(EMPTY_STATE); chooseDraw(DEFAULT_DRAW_ID); };
-  return <AppContext.Provider value={{ state, hydrated, activeDrawId, chooseDraw, createOrder, addDraw, toggleDraw, renewOrder, sendPayment, approve, reject, schedule, reset }}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={{ state, hydrated, activeDrawId, chooseDraw, createOrder, addDraw, toggleDraw, editDraw, renewOrder, sendPayment, approve, reject, schedule, reset }}>{children}</AppContext.Provider>;
 }
 export function useApp(): Context {
   const ctx = useContext(AppContext);

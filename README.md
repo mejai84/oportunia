@@ -22,7 +22,7 @@ No se necesitan variables de entorno para la demo. Para preparar Supabase, copia
 - /recuperar — renovar una reserva inicial vencida, recuperar números anteriores libres y sustituir los ocupados.
 - /reglas — reglas provisionales, aceptación obligatoria antes de reservar.
 - /acceso — vista informativa del futuro acceso por celular y código temporal de WhatsApp (sin envíos).
-- /admin — crear, habilitar, pausar y seleccionar sorteos de demostración; cada uno tiene números independientes.
+- /admin — crear, habilitar, pausar y seleccionar sorteos de demostración; cada uno tiene números independientes. La pestaña **Contenido e imágenes** permite editar nombre/premio/descripción y subir por separado imagen de portada e imagen del artículo (solo en el navegador de prueba).
 - /admin — dashboard, aprobación/rechazo de pagos, cartera y control de cierre.
 
 ## Flujo de prueba

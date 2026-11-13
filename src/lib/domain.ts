@@ -120,6 +120,18 @@ export function createDraw(state: DemoState, input: { title: string; prize: stri
   if (findDraw(state, id)) throw new Error("Ya existe ese sorteo.");
   return { ...state, draws: [...drawCatalog(state), { id, title, prize, description, enabled: false, createdAt: now.toISOString() }] };
 }
+/** Solo edita textos del catálogo local; la identidad del sorteo y sus órdenes permanecen intactas. */
+export function updateDrawDetails(
+  state: DemoState, id: string, input: { title: string; prize: string; description: string },
+): DemoState {
+  if (!findDraw(state, id)) throw new Error("Sorteo no encontrado.");
+  const title = input.title.trim(), prize = input.prize.trim(), description = input.description.trim();
+  if (title.length < 5 || title.length > 90 || prize.length < 2 || prize.length > 90 || description.length > 200) {
+    throw new Error("Revisa el nombre, premio y descripción del sorteo.");
+  }
+  return { ...state, draws: drawCatalog(state).map((draw) =>
+    draw.id === id ? { ...draw, title, prize, description } : draw) };
+}
 export function setDrawEnabled(state: DemoState, id: string, enabled: boolean): DemoState {
   if (!findDraw(state, id)) throw new Error("Sorteo no encontrado.");
   return { ...state, draws: drawCatalog(state).map((draw) => draw.id === id ? { ...draw, enabled } : draw) };

@@ -1,9 +1,11 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { money, drawCatalog } from "@/lib/domain";
 import { useApp } from "@/components/AppProvider";
+import { useDrawImage } from "@/lib/demoMedia";
 import { DrawCarousel } from "@/components/DrawCarousel";
 import { campaignFromSearch } from "@/lib/funnel";
 
@@ -41,6 +43,7 @@ type Props = { leadCaptureEnabled: boolean };
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
   const { state, chooseDraw } = useApp();
   const featuredDraw = drawCatalog(state).find((draw) => draw.enabled);
+  const heroImage = useDrawImage(featuredDraw?.id, "hero");
   const [amount, setAmount] = useState(50000);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -100,14 +103,16 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         </div>
         <div className="f-showcase">
           <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO PROYECTADO</span><span className="f-showcase-demo">DEMO</span></div>
-          <div className="f-phone-stage" aria-label="Ilustración decorativa de un teléfono inteligente">
-            <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
-            <div className="f-phone">
-              <div className="f-phone-camera"><span /><span /><span /></div>
-              <div className="f-phone-logo">✦</div>
-            </div>
-            <div className="f-floating-ticket"><small>TUS NÚMEROS</small><strong>0 0 0 7</strong><span>Tu número inicial</span></div>
-            <div className="f-floating-spark">✧</div>
+          <div className="f-phone-stage" aria-label="Ilustración decorativa del sorteo">
+            {heroImage ? <img className="f-hero-upload" src={heroImage} alt="" /> : <>
+              <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
+              <div className="f-phone">
+                <div className="f-phone-camera"><span /><span /><span /></div>
+                <div className="f-phone-logo">✦</div>
+              </div>
+              <div className="f-floating-ticket"><small>TUS NÚMEROS</small><strong>0 0 0 7</strong><span>Tu número inicial</span></div>
+              <div className="f-floating-spark">✧</div>
+            </>}
           </div>
           <div className="f-showcase-bottom">
             <div><span>Una oportunidad</span><strong>$50.000 <small>COP</small></strong></div>
