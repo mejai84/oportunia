@@ -62,7 +62,7 @@ export default function NumerosPage() {
         </label>
         <label className={"selection-mode-option" + (selectionMode === "automatic" ? " selected" : "")}>
           <input type="radio" name="selectionMode" checked={selectionMode === "automatic"} onChange={() => { setSelectionMode("automatic"); setError(""); }} />
-          <span><strong>Que Oportunia los asigne</strong><small>El sistema escogerá 10 números libres al crear la oportunidad de prueba.</small></span>
+          <span><strong>Que Oportunia los asigne</strong><small>El sistema escogerá 10 números libres al crear la selección de vista previa.</small></span>
         </label>
       </div>
     </section>
@@ -91,7 +91,7 @@ export default function NumerosPage() {
       </section> : <section className="panel auto-allocation-panel">
         <span className="auto-allocation-icon" aria-hidden="true">✧</span>
         <h2>Nosotros elegimos los 10 por ti</h2>
-        <p>Al crear la oportunidad, el sistema reservará automáticamente 10 números de cuatro cifras que estén libres en esta demostración.</p>
+        <p>Al crear la oportunidad, el sistema reservará automáticamente 10 números de cuatro cifras que estén libres en esta vista previa.</p>
         <p>Los verás en <strong>Mi cuenta</strong>. Se considerarán asignados después de aprobar el primer abono mínimo de $10.000.</p>
         <div className="alert alert-warning">Los otros 40 números se asignarán con los abonos siguientes. Ninguno participa hasta completar $50.000.</div>
       </section>}
@@ -104,7 +104,7 @@ export default function NumerosPage() {
             disabled={!selected[i]} title={selected[i] ? "Quitar " + selected[i] : "Pendiente"}
             onClick={() => setSelected((prev) => prev.filter((x) => x !== selected[i]))}>{selected[i] || "—"}</button>)}</div>
           : <div className="auto-allocation-summary"><strong>10 números automáticos</strong>
-            <span>Se mostrarán después de crear tu oportunidad de prueba.</span></div>}
+            <span>Se mostrarán después de crear tu selección de vista previa.</span></div>}
         <div className="mini-info"><span>40 números aleatorios</span><strong>Pendientes de abonos</strong></div>
         <div className="divider" /><h3>Forma de pago</h3>
         <div className="plan-options">{plans.map((p) => <label key={p.value} className={"plan-option" + (plan === p.value ? " selected" : "")}>
@@ -120,13 +120,13 @@ export default function NumerosPage() {
           </div>
           <label className="terms-accept"><input type="checkbox" checked={termsAccepted} required
             onChange={(e) => setTermsAccepted(e.target.checked)} />
-            <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">reglas de la demostración</Link>.
+            <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">condiciones de la vista previa</Link>.
               Entiendo que <strong>si no pago la totalidad de la oportunidad, ninguno de mis números participa en el sorteo</strong>.</span>
           </label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Crear oportunidad de prueba →</button>
+          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Crear selección de vista previa →</button>
         </form>
-        <p className="small muted">No se cobra dinero. La reserva de prueba dura 24 horas y solo existe en este navegador.</p>
+        <p className="small muted">Esta selección se guarda solo en este navegador; no constituye una reserva comercial ni participa en un sorteo. No se procesan pagos en esta pantalla.</p>
       </section>
     </div></div>
   </div>;

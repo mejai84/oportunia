@@ -12,12 +12,12 @@ export default function MiCuentaPage() {
   const progressStatus = salesProgressStatus(state, new Date(), activeDraw.id);
   const updates = reachedSalesUpdates(state, activeDraw.id);
   return <div className="container page-space">
-    <div className="page-title"><span className="overline">PORTAL DEL COMPRADOR · DEMO</span>
+    <div className="page-title"><span className="overline">MI CUENTA · SEGUIMIENTO</span>
       <h1>Mis <span className="gradient-text">oportunidades.</span></h1>
-      <p className="muted">Se muestran las oportunidades creadas en este navegador. La versión real requerirá iniciar sesión.</p>
+      <p className="muted">Las selecciones y reportes que aparecen a continuación se guardan en este navegador. Para calificar sorteos debes iniciar sesión.</p>
     </div>
     {!hydrated ? <p>Cargando…</p> : state.opportunities.length === 0 ?
-      <div className="panel empty-state"><span>◇</span><h2>Todavía no tienes oportunidades</h2><p>Escoge tus primeros diez números o deja que el sistema los asigne.</p><Link href="/numeros" className="btn btn-primary">Crear oportunidad de prueba</Link></div> :
+      <div className="panel empty-state"><span>◇</span><h2>Todavía no tienes oportunidades</h2><p>Escoge tus primeros diez números o deja que el sistema los asigne.</p><Link href="/numeros" className="btn btn-primary">Explorar selección de números</Link></div> :
       <div className="stack">
         <div className="draw-account-switch"><label htmlFor="account-draw">Avance del sorteo</label>
           <select id="account-draw" value={activeDraw.id} onChange={(e) => chooseDraw(e.target.value)}>
@@ -26,10 +26,10 @@ export default function MiCuentaPage() {
         </div>
         <section className="panel sales-progress-panel" aria-labelledby="sales-progress-title">
           <div className="panel-heading">
-            <div><span className="overline">SEGUIMIENTO DEL SORTEO · DEMOSTRACIÓN</span><h2 id="sales-progress-title">Ocupación de oportunidades · {activeDraw.title}</h2></div>
+            <div><span className="overline">SEGUIMIENTO LOCAL DE SELECCIONES</span><h2 id="sales-progress-title">Ocupación de oportunidades · {activeDraw.title}</h2></div>
             <strong className="sales-progress-percent">{progressLabel}</strong>
           </div>
-          <div className="progress-track sales-progress-track segmented-progress" role="progressbar" aria-label="Porcentaje de ocupación de prueba"
+          <div className="progress-track sales-progress-track segmented-progress" role="progressbar" aria-label="Porcentaje de ocupación local"
             aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
             <div className="segmented-progress-paid" style={{ width: stats.paidPercent + "%" }} />
             <div className="segmented-progress-reserved" style={{ width: (progress - stats.paidPercent) + "%" }} />

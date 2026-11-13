@@ -21,7 +21,7 @@ export function SiteHeader() {
       <details className="mobile-nav-menu"><summary aria-label="Abrir menú de navegación">Menú <span aria-hidden="true">☰</span></summary>
         <nav aria-label="Navegación móvil">
           <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a>
-          <a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
+          <a href="#opiniones">Opiniones</a><a href="#resultados">Resultados</a><a href="#preguntas">Preguntas</a>
           <Link href="/acceso">Mi cuenta</Link>
         </nav>
       </details>

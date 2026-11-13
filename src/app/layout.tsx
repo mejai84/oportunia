@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <SiteHeader /><main>{children}</main>
     <footer className="footer"><div className="container footer-inner">
       <span>♣ Oportunia · Sorteos que te acercan a lo que quieres</span>
-      <span>Inscripciones y pagos aún no habilitados · Sujeto a reglamento y autorizaciones</span>
+      <span>Sorteos sujetos a reglamento, disponibilidad y autorizaciones. Consulta el estado de cada edición.</span>
     </div></footer>
   </AppProvider></body></html>;
 }
