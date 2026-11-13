@@ -4,9 +4,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Inicio" }, { href: "/numeros", label: "Elegir números" },
-  { href: "/pagos", label: "Reportar pago" }, { href: "/mi-cuenta", label: "Mi cuenta" },
-  { href: "/acceso", label: "Acceso" }, { href: "/admin/catalogo", label: "Administración" },
+  { href: "/", label: "Inicio" }, { href: "/#sorteos", label: "Sorteos" },
+  { href: "/#como-funciona", label: "Cómo funciona" },
+  { href: "/acceso", label: "Mi cuenta" },
 ];
 
 export function SiteHeader() {
@@ -22,7 +22,7 @@ export function SiteHeader() {
         <nav aria-label="Navegación móvil">
           <a href="#sorteos">Sorteos</a><a href="#como-funciona">Cómo funciona</a>
           <a href="#simulador">Simulador</a><a href="#preguntas">Preguntas</a>
-          <Link href="/numeros">Elegir números</Link><Link href="/mi-cuenta">Mi cuenta</Link>
+          <Link href="/acceso">Mi cuenta</Link>
         </nav>
       </details>
     </div></header>;
