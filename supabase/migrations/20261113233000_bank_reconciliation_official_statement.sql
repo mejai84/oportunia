@@ -125,7 +125,142 @@ begin
     if v_alias !~ '^[A-Z0-9_-]{3,40}$' then raise exception 'Alias de cuenta invalido'; end if;
     if v_reference !~ '^[A-Z0-9][A-Z0-9._/-]{3,99}$' then raise exception 'Referencia bancaria invalida'; end if;
     if char_length(v_description)>300 then raise exception 'Descripcion demasiado larga'; end if;
-    if coalesce(v_row->>'movement_date','') !~ '^\\d{4}-\\d{2}-\\d{2}$' then raise exception 'Fecha invalida'; end if;
+    if coalesce(v_row->>'movement_date','') !~ '^[0-9]{4}-[0-9]{2}-[0-9]{2} then raise exception 'Fecha invalida'; end if;
+    v_date:=(v_row->>'movement_date')::date;
+    if v_date > current_date + 1 then raise exception 'Movimiento con fecha futura'; end if;
+    if coalesce(v_row->>'amount_cop','') !~ '^[0-9]{1,9}$' then raise exception 'Valor COP invalido'; end if;
+    v_amount:=(v_row->>'amount_cop')::bigint;
+    if v_amount not between 1000 and 100000000 then raise exception 'Importe fuera de rango'; end if;
+    insert into public.bank_recon_movements
+    (bank,account_alias,transaction_reference,movement_date,amount_cop,description,source_label,imported_by)
+    values(v_bank,v_alias,v_reference,v_date,v_amount,v_description,v_source,v_actor)
+    on conflict (bank,account_alias,transaction_reference) do nothing returning id into v_id;
+    if v_id is null then
+      select movement_date,amount_cop into v_existing from public.bank_recon_movements
+      where bank=v_bank and account_alias=v_alias and transaction_reference=v_reference;
+      if not found or v_existing.movement_date <> v_date or v_existing.amount_cop <> v_amount then
+        raise exception 'Referencia existente con fecha o valor distinto: %', v_reference;
+      end if;
+      v_duplicates:=v_duplicates+1;
+    else
+      v_inserted:=v_inserted+1;
+      insert into public.bank_recon_audit(actor_id,action,movement_id,detail)
+      values(v_actor,'movement_imported',v_id,jsonb_build_object('source',v_source));
+    end if;
+    v_id:=null;
+  end loop;
+  return jsonb_build_object('inserted',v_inserted,'duplicates',v_duplicates);
+end; $$;
+
+create function public.match_bank_recon_movement(p_movement_id uuid,p_claim_id uuid)
+returns jsonb language plpgsql security definer set search_path='' as $$
+declare v_actor uuid:=auth.uid(); v_movement public.bank_recon_movements%rowtype; v_claim public.bank_recon_claims%rowtype;
+begin
+  if v_actor is null or not exists (select 1 from public.oportunia_admins where user_id=v_actor) then
+    raise exception 'Acceso denegado';
+  end if;
+  select * into v_movement from public.bank_recon_movements where id=p_movement_id for update;
+  select * into v_claim from public.bank_recon_claims where id=p_claim_id for update;
+  if not found or v_movement.id is null or v_claim.id is null then raise exception 'No se encontro un registro'; end if;
+  if v_movement.status <> 'unmatched' or v_claim.status <> 'pending' then raise exception 'El movimiento o reporte ya fue procesado'; end if;
+  if v_movement.bank<>v_claim.bank or v_movement.account_alias<>v_claim.account_alias
+    or v_movement.transaction_reference<>v_claim.claimed_reference
+    or v_movement.amount_cop<>v_claim.expected_amount_cop then
+      raise exception 'La referencia, la cuenta receptora o el valor no coinciden';
+  end if;
+  update public.bank_recon_claims set status='matched' where id=p_claim_id;
+  update public.bank_recon_movements set status='matched',matched_claim_id=p_claim_id,
+    reviewed_at=now(),reviewed_by=v_actor where id=p_movement_id;
+  insert into public.bank_recon_audit(actor_id,action,claim_id,movement_id,detail)
+  values(v_actor,'movement_matched',p_claim_id,p_movement_id,
+    jsonb_build_object('amount_cop',v_movement.amount_cop,'source',v_movement.source_label));
+  insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+  values(p_claim_id,v_actor,'matched_statement','La referencia coincide con un abono del extracto registrado por administración.');
+  return jsonb_build_object('status','matched','movement_id',p_movement_id,'claim_id',p_claim_id);
+end; $$;
+
+create function public.close_bank_recon_item(p_kind text,p_id uuid,p_reason text)
+returns void language plpgsql security definer set search_path='' as $$
+declare v_actor uuid:=auth.uid(); v_rows integer;
+begin
+  if v_actor is null or not exists (select 1 from public.oportunia_admins where user_id=v_actor) then
+    raise exception 'Acceso denegado';
+  end if;
+  if char_length(btrim(coalesce(p_reason,''))) not between 10 and 300 then
+    raise exception 'Indica un motivo de 10 a 300 caracteres';
+  end if;
+  if p_kind='movement' then
+    update public.bank_recon_movements set status='ignored',reviewed_at=now(),reviewed_by=v_actor
+    where id=p_id and status='unmatched';
+    get diagnostics v_rows=row_count;
+    if v_rows<>1 then raise exception 'Movimiento inexistente o ya procesado'; end if;
+    insert into public.bank_recon_audit(actor_id,action,movement_id,detail)
+    values(v_actor,'movement_ignored',p_id,jsonb_build_object('reason',btrim(p_reason)));
+  elsif p_kind='claim' then
+    update public.bank_recon_claims set status='rejected'
+    where id=p_id and status='pending';
+    get diagnostics v_rows=row_count;
+    if v_rows<>1 then raise exception 'Reporte inexistente o ya procesado'; end if;
+    insert into public.bank_recon_audit(actor_id,action,claim_id,detail)
+    values(v_actor,'claim_rejected',p_id,jsonb_build_object('reason',btrim(p_reason)));
+    insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+    values(p_id,v_actor,'rejected',btrim(p_reason));
+  else
+    raise exception 'Tipo no valido';
+  end if;
+end; $$;
+
+revoke all on function public.create_bank_recon_claim(text,text,text,text,bigint) from public,anon,authenticated;
+revoke all on function public.import_bank_recon_movements(jsonb,text) from public,anon,authenticated;
+revoke all on function public.match_bank_recon_movement(uuid,uuid) from public,anon,authenticated;
+revoke all on function public.close_bank_recon_item(text,uuid,text) from public,anon,authenticated;
+grant execute on function public.create_bank_recon_claim(text,text,text,text,bigint) to authenticated;
+grant execute on function public.import_bank_recon_movements(jsonb,text) to authenticated;
+grant execute on function public.match_bank_recon_movement(uuid,uuid) to authenticated;
+grant execute on function public.close_bank_recon_item(text,uuid,text) to authenticated;
+
+
+-- Client creates their own claim; authentication identity is always auth.uid().
+-- No app secrets, bank login credentials, financial confirmation or numbers allocation.
+create function public.submit_customer_bank_recon_claim(
+  p_bank text, p_origin_channel text, p_customer_label text,
+  p_reference text, p_amount_cop bigint, p_order_reference text default null
+) returns uuid language plpgsql security definer set search_path='' as $$
+declare
+  v_actor uuid:=auth.uid(); v_id uuid;
+  v_bank text:=upper(btrim(coalesce(p_bank,'')));
+  v_channel text:=upper(btrim(coalesce(p_origin_channel,'')));
+  v_reference text:=upper(btrim(coalesce(p_reference,'')));
+  v_label text:=btrim(coalesce(p_customer_label,''));
+  v_order text:=nullif(btrim(coalesce(p_order_reference,'')),'');
+  v_alias text;
+begin
+  if v_actor is null then raise exception 'Inicia sesión para registrar el reporte'; end if;
+  if v_bank not in ('BANCOLOMBIA','NEQUI') then raise exception 'Cuenta de destino inválida'; end if;
+  if v_channel not in ('BANCOLOMBIA','NEQUI','BRE-B','DAVIPLATA','PSE','OTRO') then raise exception 'Canal inválido'; end if;
+  if char_length(v_label) not between 2 and 120 then raise exception 'Nombre inválido'; end if;
+  if v_reference !~ '^[A-Z0-9][A-Z0-9._/-]{3,99}$' then raise exception 'Referencia inválida'; end if;
+  if p_amount_cop not between 1000 and 100000000 then raise exception 'Valor de reporte inválido'; end if;
+  if v_order is not null and char_length(v_order) not between 4 and 80 then raise exception 'Código de oportunidad inválido'; end if;
+  if (select count(*) from public.bank_recon_claims
+      where customer_user_id=v_actor and created_at>now()-interval '24 hours')>=20 then
+    raise exception 'Límite de reportes del día alcanzado';
+  end if;
+  v_alias:=case when v_bank='BANCOLOMBIA' then 'BANCOLOMBIA_PRINCIPAL' else 'NEQUI_PRINCIPAL' end;
+  insert into public.bank_recon_claims
+    (bank,account_alias,customer_label,customer_user_id,origin_channel,
+    customer_order_reference,claimed_reference,expected_amount_cop,created_by)
+  values (v_bank,v_alias,v_label,v_actor,v_channel,v_order,v_reference,p_amount_cop,v_actor)
+  returning id into v_id;
+  insert into public.bank_recon_claim_events(claim_id,actor_id,event_type,message)
+  values(v_id,v_actor,'submitted','Recibimos tu referencia y quedó pendiente de conciliación.');
+  insert into public.bank_recon_audit(actor_id,action,claim_id,detail)
+  values(v_actor,'claim_created',v_id,jsonb_build_object('customer_submitted',true));
+  return v_id;
+end; $$;
+revoke all on function public.submit_customer_bank_recon_claim(text,text,text,text,bigint,text) from public,anon,authenticated;
+grant execute on function public.submit_customer_bank_recon_claim(text,text,text,text,bigint,text) to authenticated;
+ then raise exception 'Fecha invalida'; end if;
     v_date:=(v_row->>'movement_date')::date;
     if v_date > current_date + 1 then raise exception 'Movimiento con fecha futura'; end if;
     if coalesce(v_row->>'amount_cop','') !~ '^[0-9]{1,9}$' then raise exception 'Valor COP invalido'; end if;
