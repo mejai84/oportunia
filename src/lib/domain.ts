@@ -15,7 +15,7 @@ export const DEFAULT_DRAW_ID = "principal";
 
 export type Plan = "contado" | "dos-cuotas" | "tres-cuotas";
 export type SelectionMode = "manual" | "automatic";
-export type Method = "Bre-B" | "Nequi" | "PSE" | "Efectivo";
+export type Method = "Bre-B" | "Nequi" | "Bancolombia" | "DaviPlata" | "PSE" | "Efectivo";
 export type PaymentStatus = "pendiente" | "aprobado" | "rechazado";
 export type OpportunityStatus = "pendiente" | "financiada" | "pagada" | "vencida";
 export type Draw = { id: string; title: string; prize: string; description: string; enabled: boolean; createdAt: string };
@@ -358,7 +358,7 @@ export function reportPayment(
     .reduce((sum, r) => sum + r.amount, 0);
   if (order.paid + pending + input.amount > PRICE) throw new Error("El abono supera el saldo disponible.");
   if (!input.reference.trim()) throw new Error("Indica una referencia de pago de prueba.");
-  if (!["Bre-B", "Nequi", "PSE", "Efectivo"].includes(input.method)) throw new Error("Método no válido.");
+  if (!["Bre-B", "Nequi", "Bancolombia", "DaviPlata", "PSE", "Efectivo"].includes(input.method)) throw new Error("Método no válido.");
   return {
     ...state,
     reports: [...state.reports, {
