@@ -16,6 +16,8 @@ Plataforma web independiente para presentar, administrar y eventualmente comerci
 - Simulador interactivo de abonos y estado de elegibilidad.
 - Selección demostrativa de diez números de cuatro cifras, manual o automática.
 - Porcentaje de colocación y mensajes de seguimiento por hitos en el portal del comprador (solo datos locales de prueba).
+- Varios sorteos habilitables, carrusel público y números independientes por sorteo.
+- Reserva inicial de 24 h, recuperación de números disponibles y aceptación obligatoria de reglas. Ver OPR-UX-003.
 - Panel de pagos y administración **solo en localStorage**, sin autenticación real.
 - Captura UTM y formulario de interesados preparados, pero **desactivados** hasta cumplir privacidad y antiabuso.
 - Tabla de interesados en Supabase con RLS sin acceso directo público.

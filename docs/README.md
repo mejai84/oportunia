@@ -25,6 +25,7 @@ No se deben documentar secretos, claves privadas, contraseñas, datos personales
 | [Arquitectura](ARQUITECTURA.md) | OPR-ARC-001 | Estado de componentes y requisitos técnicos |
 | [Embudo](EMBUDO.md) | OPR-FUN-001 | Recorrido de visitantes, atribución, captura y limitaciones |
 | [Comunicaciones y avance](COMUNICACIONES.md) | OPR-COM-001 | Porcentaje de colocación, hitos y futuras notificaciones |
+| [Multisorteos, reservas y acceso](MULTISORTEOS-RESERVAS-ACCESO.md) | OPR-UX-003 | Carrusel, reserva de 24 h, recuperación, aceptación y futuro OTP WhatsApp |
 | [Seguridad y privacidad](SEGURIDAD.md) | OPR-SEC-001 | Amenazas, controles, riesgo residual y bloqueos de producción |
 | [Despliegue y operación](OPERACIONES.md) | OPR-OPS-001 | Vercel, Supabase, variables, pruebas y rollback |
 | [Informe de verificación pública](PRUEBAS/QA-2026-11-13-001.md) | OPR-QA-001 | Evidencia de landing publicada, pruebas ejecutadas y pendientes |

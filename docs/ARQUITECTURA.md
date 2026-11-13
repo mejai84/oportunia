@@ -11,6 +11,7 @@
 - 200 oportunidades, COP $50.000 cada una, 50 números de cuatro cifras.
 - El comprador elige 10 de los números 0000 a 9999 **o solicita asignación automática de los 10 iniciales**. La demo evita duplicados dentro del navegador.
 - Los 40 restantes se asignan aleatoriamente según los abonos confirmados.
+- Los sorteos se identifican por drawId, con catálogo local y numeración separada. La reserva inicial expira a las 24 h si no hay abono aprobado; recuperación y aceptación versionada están en demo. La autenticación OTP WhatsApp sigue pendiente. Ver [OPR-UX-003](MULTISORTEOS-RESERVAS-ACCESO.md).
 - En Mi cuenta se muestra un porcentaje de colocación, sin totales de ventas; la demo lo calcula solo desde localStorage. En producción se necesita un agregado global seguro en Supabase, no datos del navegador.
 - Mensajes de avance en interfaz por hitos 25/50/75/90/100 %. Notificaciones externas vía n8n/WhatsApp/email quedan pendientes de consentimiento y backend real.
 - Mínimo primer abono: $10.000. Cada $1.000 confirmado equivale a un número asignado.

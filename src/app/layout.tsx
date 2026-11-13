@@ -4,6 +4,7 @@ import { AppProvider } from "@/components/AppProvider";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 import "./funnel.css";
+import "./apple-light.css";
 
 export const metadata: Metadata = {
   title: "Oportunia | Demo de oportunidades",
