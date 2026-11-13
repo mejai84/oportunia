@@ -7,6 +7,7 @@ Formato inspirado en Keep a Changelog. Las fechas indican registro de cambios de
 ### Seguridad
 - Propuesta de actualización de Next.js 15.5.6 a 15.5.29 y React 19.1.1 a 19.1.5.
 - Auditoría de vulnerabilidades altas/críticas en CI.
+- Override de PostCSS 8.5.23 para corregir vulnerabilidades de dependencia transitiva de Next.js 15.5.x.
 - Registro de incidente OPR-INC-001 por bloqueo de seguridad en Vercel.
 
 ### Correcciones

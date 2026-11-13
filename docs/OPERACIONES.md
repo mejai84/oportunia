@@ -30,7 +30,7 @@ Nunca incluir secretos en Git, archivos públicos o NEXT_PUBLIC. El código actu
 1. Verificar la rama main y el commit exacto a desplegar.
 2. Ejecutar npm install, npm run typecheck, npm test y npm run build en entorno limpio.
 3. Ejecutar npm audit --omit=dev --audit-level=high; no promover cambios con vulnerabilidades altas/críticas sin excepción formal.
-4. Revisar CI y verificar que el proveedor no bloquee la versión de Next.js.
+4. Revisar CI y verificar que el proveedor no bloquee la versión de Next.js. El proyecto fuerza PostCSS 8.5.23 por un hallazgo transitivo de seguridad: no eliminar el override sin comprobar npm audit y build.
 5. Desplegar en Vercel desde main, con variables del entorno correspondiente.
 6. Revisar estado final del despliegue y obtener URL exacta desde Vercel.
 7. Validar HTTPS, /, /embudo, /numeros, /pagos, /mi-cuenta y /admin como **demo**.
