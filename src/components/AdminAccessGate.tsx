@@ -79,9 +79,13 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
         if (!mounted) return;
         if (userError) {
           if (pendingTimer) clearTimeout(pendingTimer);
-          lastUserId.current = null;
-          ++revision;
-          setAccess({ status: "error", user: null });
+          if (userError.name === "AuthSessionMissingError" || userError.message.includes("Auth session missing")) {
+            void check(null);
+          } else {
+            lastUserId.current = null;
+            ++revision;
+            setAccess({ status: "error", user: null });
+          }
         } else {
           void check(data.user);
         }
