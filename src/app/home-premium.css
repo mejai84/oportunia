@@ -165,3 +165,43 @@
 .funnel .o-review-examples-heading strong{color:#17513a}
 .funnel .o-review-example-tag{font-size:10px;color:#785c17;background:#fff3da;border:1px solid #eeddbb;padding:5px 8px;border-radius:9px;font-weight:800}
 .funnel .social-review-card.is-example .social-review-footer small{color:#687f70}
+
+
+/* Consistent fixed media frames and equal-height carousel cards. */
+.funnel .draw-five-track{align-items:stretch;scroll-behavior:smooth;scroll-snap-type:x mandatory}
+.funnel .draw-mini-card{height:100%;min-height:0}
+.funnel .draw-mini-art{width:100%;aspect-ratio:4 / 5;height:auto!important;padding:0!important;display:block;overflow:hidden;flex:none}
+.funnel .draw-mini-art img,.funnel .draw-mini-art img.o-draw-photo{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:none;border-radius:0}
+.funnel .draw-mini-badge{position:absolute;z-index:2;top:12px;left:12px}
+.funnel .o-draw-photo-note{z-index:2}
+.funnel .draw-mini-content{flex:1;display:flex;flex-direction:column;gap:11px}
+.funnel .draw-mini-content h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25;min-height:2.5em;margin:0}
+.funnel .draw-mini-content>p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:4.5em;line-height:1.5;margin:0}
+.funnel .draw-mini-foot{margin-top:auto}
+.funnel .f-phone-stage{aspect-ratio:4 / 3;height:auto;max-height:385px;overflow:hidden}
+.funnel .f-phone-stage .f-hero-upload.o-home-real-photo{width:100%;height:100%;object-fit:cover}
+.funnel .o-hero-trust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:17px 0 0}
+.funnel .o-hero-trust-grid>span{display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #d6eadc;background:#ffffffbb;padding:10px 12px;border-radius:13px;font-size:12px;line-height:1.35;color:#19543b}
+.funnel .o-hero-trust-grid svg{flex-shrink:0;width:22px;height:22px}
+.o-carousel-indicator{display:flex;justify-content:center;flex-wrap:wrap;align-items:center;gap:9px;padding:3px 0 15px}
+.o-carousel-indicator button{width:10px;height:10px;border:0;border-radius:50%;background:#c6dbc9;padding:0;cursor:pointer}
+.o-carousel-indicator button.active{width:26px;border-radius:50px;background:#098d47}
+.o-carousel-indicator button:focus-visible{outline:2px solid #087d41;outline-offset:4px}
+.o-home-cms-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.o-home-cms-tabs button{min-height:42px}
+.o-home-cms-fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.o-home-cms-card{border:1px solid #d5e8de;background:#fcfefc;border-radius:15px;padding:15px}
+.o-home-cms-card>label{display:grid;gap:7px;margin:8px 0}
+.o-home-cms-card input,.o-home-cms-card textarea,.o-home-cms-fieldgrid input,.o-home-cms-fieldgrid textarea{width:100%;border:1px solid #c8ddce;border-radius:9px;padding:10px;color:#154b33;background:#fff}
+.o-home-cms-photo{aspect-ratio:4/5;max-width:220px;width:100%;overflow:hidden;border:1px solid #dce9df;border-radius:12px;background:#eff9ec;margin:9px 0}
+.o-home-cms-photo img{width:100%;height:100%;object-fit:cover}
+.o-home-cms-upload{display:block;max-width:330px}
+.o-home-cms-help{font-size:12px;color:#68816c;line-height:1.5}
+@media(max-width:740px){
+ .funnel .o-hero-trust-grid{grid-template-columns:1fr;gap:8px}
+ .funnel .o-hero-trust-grid>span{min-height:43px;padding:8px 12px;font-size:12px}
+ .funnel .draw-mini-art{aspect-ratio:4 / 5;height:auto!important}
+ .funnel .f-phone-stage{aspect-ratio:4 / 3;height:auto;max-height:none}
+ .o-home-cms-fieldgrid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){.funnel .draw-five-track{scroll-behavior:auto}}
