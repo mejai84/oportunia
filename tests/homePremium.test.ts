@@ -23,23 +23,20 @@ test("premium home preserves four benefits and four navigation steps",()=>{
 test("public hero and prize cards avoid repetitive disclaimers and invented progress",()=>{
  assert.doesNotMatch(home,/Premio ilustrativo|VISTA ILUSTRATIVA|ESTADO DE TU PAGO|¡Pago completo!/i);
  assert.doesNotMatch(home,/Avance de ventas no disponible/);
+ assert.doesNotMatch(home,/Valor de referencia|f-showcase-bottom|Valor por oportunidad/);
  assert.doesNotMatch(home,/PRÓXIMAMENTE|Fecha por anunciar/);
  assert.match(home,/CALCULADORA DE NÚMEROS/);
  assert.match(home,/no procesa transferencias ni acredita pagos/);
- assert.match(cards,/IDEA DE PREMIO/);
+ assert.doesNotMatch(cards,/IDEA DE PREMIO|PRÓXIMAMENTE/);
  assert.doesNotMatch(cards,/CONCEPTO VISUAL|Solo propuesta de diseño|No hay porcentaje de ventas oficiales publicado/);
  assert.doesNotMatch(cards,/Avance: 68/);
 });
-test("genuine reviews take priority and samples are explicitly fictional",()=>{
+test("homepage shows only authentic reviews, without placeholder testimonials",()=>{
  assert.match(reviews,/\.from\("draw_reviews"\)/);
  assert.match(reviews,/\.eq\("status","published"\)/);
  assert.match(reviews,/Opiniones de nuestra comunidad/);
- assert.match(reviews,/Así se verían las opiniones en Oportunia/);
- assert.match(reviews,/SAMPLE_REVIEWS/);
- assert.match(reviews,/Ejemplo ficticio/);
- assert.match(reviews,/no son reseñas enviadas por clientes/);
- assert.match(reviews,/featured.length===0/);
- assert.doesNotMatch(reviews,/COMENTARIO FICTICIO|VISTA ILUSTRATIVA|persona-ficticia/);
+ assert.match(reviews,/featured.length>0/);
+ assert.doesNotMatch(reviews,/SAMPLE_REVIEWS|Así se verían las opiniones en Oportunia|Ejemplo ficticio|Perfil de ejemplo|sin compra verificada/);
  assert.match(reviews,/Resultados y ganadores/);
  assert.doesNotMatch(reviews,/IMAGEN ILUSTRATIVA/);
 });
