@@ -36,7 +36,7 @@ export default function AccesoPage(){
  return <section className="container page-space access-page"><div className="access-card">
   <span className="overline">ACCESO SEGURO · OPORTUNIA</span>
   {user?<><h1>Tu cuenta está activa</h1><p>Sesión iniciada con {user.email||user.phone}.</p>
-   <div className="stack"><Link href="/mi-cuenta" className="btn btn-primary">Ir a mi cuenta</Link><Link href="/admin/catalogo" className="btn btn-secondary">Administración (solo autorizados)</Link>
+   <div className="stack"><Link href="/mi-cuenta" className="btn btn-primary">Ir a mi cuenta</Link><Link href="/admin" className="btn btn-secondary">Abrir panel de administración</Link>
    <button type="button" className="btn btn-ghost" onClick={()=>void client.auth.signOut()}>Cerrar sesión</button></div></>:
    <><h1>{mode==="signup"?"Crear cuenta":mode==="reset"?"Recuperar contraseña":"Bienvenido a Oportunia"}</h1>
     <p className="muted">Accede con tu correo electrónico. El acceso por celular requerirá verificación mediante código SMS y estará disponible al configurar el proveedor.</p>
