@@ -65,6 +65,5 @@ export function DrawCarousel() {
         </div>
       </article>)}
     </div>
-    <p className="draw-mini-disclosure"><strong>Importante:</strong> las tarjetas marcadas «Idea de premio» son propuestas de diseño, no sorteos convocados. La apertura de cualquier edición requiere condiciones y autorizaciones publicadas.</p>
   </section>;
 }
