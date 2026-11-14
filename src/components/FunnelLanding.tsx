@@ -251,7 +251,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <div className="f-conversion-points"><span>✓ Información de lanzamiento</span><span>✓ Sin obligación de compra</span><span>✓ Canales oficiales</span></div>
       </div>
       <div className="f-lead-card">
-        <div className="f-lead-header"><h3>Solicitar información</h3><span className="f-lead-status">{leadCaptureEnabled ? "REGISTRO DISPONIBLE" : "PRÓXIMAMENTE"}</span></div>
+        <div className="f-lead-header"><h3>Solicitar información</h3><span className="f-lead-status">{leadCaptureEnabled ? "REGISTRO DISPONIBLE" : "APERTURA PENDIENTE"}</span></div>
         <form onSubmit={submitLead} className="f-lead-form">
           <label>Nombre completo<input disabled={!leadCaptureEnabled} required minLength={3} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Tu nombre y apellido" /></label>
           <label>Celular de contacto<input disabled={!leadCaptureEnabled} required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>
@@ -260,7 +260,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
           <label className="f-check"><input disabled={!leadCaptureEnabled} required type="checkbox" checked={contactConsent} onChange={(e) => setContactConsent(e.target.checked)} /><span>Autorizo el contacto para responder a esta solicitud de información.</span></label>
           <label className="f-check"><input disabled={!leadCaptureEnabled} type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} /><span>También deseo recibir novedades promocionales (opcional).</span></label>
           {notice && <p role="status" className={"f-lead-notice" + (notice.ok ? " good" : " bad")}>{notice.message}</p>}
-          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Próximamente"}</button>
+          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Registro cerrado"}</button>
           <p className="f-lead-legal">La disponibilidad de este formulario depende de las condiciones de privacidad y tratamiento de datos de Oportunia.</p>
         </form>
       </div>
