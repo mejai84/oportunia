@@ -24,7 +24,7 @@ export default function AccesoPage(){
     const {error}=await client.auth.signUp({email,password});
     setNotice(error?"No se pudo crear la cuenta. Comprueba el correo y la contraseña.":"Revisa tu correo y confirma la cuenta antes de ingresar. El permiso administrativo se asigna solo al correo autorizado después de verificarlo.");
    }else if(mode==="reset"){
-    const {error}=await client.auth.resetPasswordForEmail(email);
+    const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/actualizar-contrasena"});
     setNotice(error?"No se pudo solicitar la recuperación.":"Si existe la cuenta, recibirás un correo de recuperación.");
    }else{
     const {error}=await client.auth.signInWithPassword({email,password});
@@ -42,7 +42,7 @@ export default function AccesoPage(){
     <p className="muted">Accede con tu correo electrónico. El acceso por celular requerirá verificación mediante código SMS y estará disponible al configurar el proveedor.</p>
     <form className="form-stack" onSubmit={submit}>
      <label>Correo electrónico<input required type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="correo@ejemplo.com"/></label>
-     {mode!=="reset"&&<label>Contraseña<input required type="password" minLength={8} autoComplete={mode==="signup"?"new-password":"current-password"} value={password} onChange={e=>setPassword(e.target.value)}/></label>}
+     {mode!=="reset"&&<label>Contraseña<input required type="password" minLength={mode==="signup"?12:8} autoComplete={mode==="signup"?"new-password":"current-password"} value={password} onChange={e=>setPassword(e.target.value)}/></label>}
      <button className="btn btn-primary full" type="submit" disabled={busy}>{busy?"Procesando…":mode==="signup"?"Crear cuenta":mode==="reset"?"Enviar recuperación":"Ingresar"}</button>
     </form>
     {notice&&<p role="status" className="alert alert-warning top-gap">{notice}</p>}
