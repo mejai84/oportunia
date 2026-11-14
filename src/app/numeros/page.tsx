@@ -51,9 +51,9 @@ export default function NumerosPage() {
     <div className="page-title"><span className="overline">PASO 01 · PERSONALIZA TU OPORTUNIDAD</span>
       <h1>10 números <span className="gradient-text">a tu manera.</span></h1>
       <p className="draw-selected">Sorteo seleccionado: <strong>{draw?.title ?? "Sin sorteo habilitado"}</strong></p>
-      <p className="muted">Escoge tus 10 favoritos o deja que Oportunia los asigne automáticamente. Los otros 40 se asignarán con los abonos aprobados.</p>
+      <p className="muted">Descubre cómo elegir tus primeros 10 números o recibirlos automáticamente.</p>
     </div>
-    <section className="panel" style={{marginBottom:20}}><span className="overline">ENSAYO CENTRALIZADO · SUPABASE</span><h2>Prueba la disponibilidad entre dispositivos</h2><p className="muted">Esta selección de navegador es independiente. También existe una modalidad de laboratorio con diez números únicos bloqueados por PostgreSQL y vencimiento de 24 horas; ninguna representa venta ni sorteo real.</p><Link href="/ensayo-reservas" className="btn btn-secondary">Abrir ensayo centralizado de números ↗</Link></section>
+    <section className="panel" style={{marginBottom:20}}><span className="overline">SELECCIÓN EN TU CUENTA</span><h2>Consulta números disponibles desde distintos dispositivos</h2><p className="muted">Puedes guardar diez números en tu cuenta con disponibilidad centralizada y vigencia de 24 horas.</p><Link href="/ensayo-reservas" className="btn btn-secondary">Abrir selección centralizada ↗</Link></section>
     <section className="panel selection-mode-panel" aria-labelledby="selection-mode-heading">
       <h2 id="selection-mode-heading">¿Cómo quieres obtener tus primeros 10 números?</h2>
       <div className="selection-mode-options">
@@ -93,8 +93,8 @@ export default function NumerosPage() {
         <span className="auto-allocation-icon" aria-hidden="true">✧</span>
         <h2>Nosotros elegimos los 10 por ti</h2>
         <p>Al crear la oportunidad, el sistema reservará automáticamente 10 números de cuatro cifras que estén libres en esta vista previa.</p>
-        <p>Los verás en <strong>Mi cuenta</strong>. Se considerarán asignados después de aprobar el primer abono mínimo de $10.000.</p>
-        <div className="alert alert-warning">Los otros 40 números se asignarán con los abonos siguientes. Ninguno participa hasta completar $50.000.</div>
+        <p>Consulta la selección guardada en <strong>Mi cuenta</strong>.</p>
+        <div className="alert alert-warning">Los números adicionales se distribuyen según las condiciones de cada edición.</div>
       </section>}
     </div><div className="stack">
       <section className="panel sticky-panel">
@@ -105,13 +105,13 @@ export default function NumerosPage() {
             disabled={!selected[i]} title={selected[i] ? "Quitar " + selected[i] : "Pendiente"}
             onClick={() => setSelected((prev) => prev.filter((x) => x !== selected[i]))}>{selected[i] || "—"}</button>)}</div>
           : <div className="auto-allocation-summary"><strong>10 números automáticos</strong>
-            <span>Se mostrarán después de crear tu selección de vista previa.</span></div>}
+            <span>Se mostrarán al guardar tu selección.</span></div>}
         <div className="mini-info"><span>40 números aleatorios</span><strong>Pendientes de abonos</strong></div>
         <div className="divider" /><h3>Forma de pago</h3>
         <div className="plan-options">{plans.map((p) => <label key={p.value} className={"plan-option" + (plan === p.value ? " selected" : "")}>
           <input type="radio" name="plan" checked={plan === p.value} onChange={() => setPlan(p.value)} />
           <span><strong>{p.title}{p.value === "contado" && <em className="payment-recommended">Opción principal</em>}</strong><small>{p.detail}</small></span></label>)}</div>
-        <p className="small muted payment-plan-hint">El pago completo viene seleccionado. Puedes cambiarlo a cuotas si lo prefieres. Los números solo participan cuando el 100 % esté confirmado.</p>
+        <p className="small muted payment-plan-hint">Elige una modalidad de referencia. Consulta el reglamento para conocer las condiciones de participación.</p>
         <form onSubmit={submit} className="form-stack">
           <label>Nombre completo<input required minLength={3} value={name} onChange={(e) => setName(e.target.value)} placeholder="Nombre y apellido" /></label>
           <label>Celular<input required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>
@@ -121,13 +121,13 @@ export default function NumerosPage() {
           </div>
           <label className="terms-accept"><input type="checkbox" checked={termsAccepted} required
             onChange={(e) => setTermsAccepted(e.target.checked)} />
-            <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">condiciones de la vista previa</Link>.
+            <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">condiciones de participación</Link>.
               Entiendo que <strong>si no pago la totalidad de la oportunidad, ninguno de mis números participa en el sorteo</strong>.</span>
           </label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Crear selección de vista previa →</button>
+          <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Guardar selección →</button>
         </form>
-        <p className="small muted">Esta selección se guarda solo en este navegador; no constituye una reserva comercial ni participa en un sorteo. No se procesan pagos en esta pantalla.</p>
+        <p className="small muted">Los datos de este formulario se guardan solo en tu navegador. Para mantener una selección en tu cuenta, utiliza la opción centralizada.</p>
       </section>
     </div></div>
   </div>;
