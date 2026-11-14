@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {paymentControlStats,paymentEvidenceLabels,type PaymentControlCase} from "../src/lib/paymentControl";
 
 function sample(evidence_status:PaymentControlCase["evidence_status"]):PaymentControlCase{
- return {id:"1",claim_link_id:"2",claim_id:"3",reservation_id:"4",customer_user_id:"5",
+ return {id:"1",claim_link_id:null,claim_id:"3",reservation_id:null,customer_user_id:"5",
   declared_amount_cop:50000,bank_account_alias:"NEQUI_PRINCIPAL",
   evidence_status,authenticity:"not_verified",bank_provider_event_id:null,
   commercial_eligible:false,created_at:"2026-11-13",updated_at:"2026-11-13"};
