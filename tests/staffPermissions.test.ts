@@ -43,7 +43,7 @@ test("auditor can inspect, never write, and only receives one audit screen",()=>
   assert.equal(permission.endsWith(".write"),false);
  }
  assert.deepEqual(visibleStaffModules("auditor").map(m=>m.href),
-   ["/admin/informes","/admin/auditoria","/admin/numeros"]);
+   ["/admin/seguridad","/admin/informes","/admin/auditoria","/admin/numeros"]);
 });
 test("every module and permission corresponds to the server role names",()=>{
  const paths=staffModules.map(item=>item.href);
@@ -52,4 +52,11 @@ test("every module and permission corresponds to the server role names",()=>{
   assert.ok(staffRoleCapabilities.owner.includes(module.permission));
   assert.equal(module.href.startsWith("/admin"),true);
  }
+});
+
+test("production readiness is visible to owner and auditor only",()=>{
+  for(const role of ["owner","auditor"] as const)
+    assert.ok(visibleStaffModules(role).some(item=>item.href==="/admin/seguridad"));
+  for(const role of ["treasury","support","draws"] as const)
+    assert.ok(!visibleStaffModules(role).some(item=>item.href==="/admin/seguridad"));
 });
