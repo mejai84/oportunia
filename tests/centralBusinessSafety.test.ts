@@ -6,6 +6,7 @@ const read=(p:string)=>readFileSync(p,"utf8");
 const numbers=read("src/app/numeros/page.tsx");
 const central=read("src/app/ensayo-reservas/page.tsx");
 const admin=read("src/app/admin/numeros/page.tsx");
+const adminHome=read("src/app/admin/page.tsx");
 const account=read("src/app/mi-cuenta/page.tsx");
 const review=read("src/components/MyReviews.tsx");
 const moderation=read("src/app/admin/opiniones/page.tsx");
@@ -26,7 +27,7 @@ test("customer account never converts local demo money into a real balance or el
  assert.match(account,/<CustomerPaymentControl\s*\/>/);
  assert.match(account,/<CustomerBankReports mode="history"\s*\/>/);
  assert.doesNotMatch(account,/\bisEligible\(|\bdrawProgress\(|\bapprovePayment\(|\bsalesProgressStatus\(/);
- assert.match(account,/se conservan sin borrar/);
+ assert.match(account,/Se conservan sin borrar/);
 });
 test("password reset emails return to working update-password form",()=>{
  assert.match(access,/resetPasswordForEmail\(email,\{redirectTo:window\.location\.origin\+"\/actualizar-contrasena"\}\)/);
