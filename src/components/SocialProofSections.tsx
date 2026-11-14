@@ -2,27 +2,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from "react";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
+
 type Review={id:string;draw_id:string;user_id:string;rating:number;comment:string;display_name:string;created_at:string;draw_catalog:{title:string;prize_image_url:string|null}|null};
 type Result={id:string;draw_id:string;draw_date:string;winning_number:string;winner_display_name:string;result_source:string;draw_catalog:{title:string;prize_image_url:string|null}|null};
-const EXAMPLE_REVIEWS = [
-  {id:"ejemplo-1",user_id:"persona-ficticia-1",display_name:"María P.",rating:5,comment:"Estuve mirando cómo se escogen los números y me pareció sencillo. Me gusta poder probar antes de decidir.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-2",user_id:"persona-ficticia-2",display_name:"Camilo R.",rating:4,comment:"Lo abrí desde el celular y pude ver los premios sin enredarme. Me gustaría tener un filtro por tipo de premio.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-3",user_id:"persona-ficticia-3",display_name:"Diana M.",rating:5,comment:"El paso a paso está claro. Sobre todo me gustó que expliquen cuándo una reserva todavía no participa.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-4",user_id:"persona-ficticia-4",display_name:"Julián C.",rating:4,comment:"El simulador me ayudó a entender las cuotas. Quedaría mejor si las fechas se ven más grandes cuando estén disponibles.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-5",user_id:"persona-ficticia-5",display_name:"Paola S.",rating:5,comment:"Me parece bueno que el reporte de una transferencia tenga seguimiento. Así uno sabe si sigue pendiente y no se confunde.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-6",user_id:"persona-ficticia-6",display_name:"Andrés V.",rating:5,comment:"Los colores y los iconos hacen que la página sea fácil de recorrer. La sección de cómo funciona es la que más miré.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-7",user_id:"persona-ficticia-7",display_name:"Laura G.",rating:4,comment:"Probé el recorrido de los números. Se entiende, aunque me gustaría que explicaran con un ejemplo el sorteo final.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-8",user_id:"persona-ficticia-8",display_name:"Santiago F.",rating:5,comment:"Se agradece que avisen que por ahora es una demostración. Prefiero esperar a que publiquen todo oficialmente.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-9",user_id:"persona-ficticia-9",display_name:"Natalia D.",rating:4,comment:"La información de pagos se ve ordenada y me gusta que no den por confirmado un abono solo con una referencia.",draw_id:"principal",created_at:"",draw_catalog:null},
-  {id:"ejemplo-10",user_id:"persona-ficticia-10",display_name:"Felipe A.",rating:5,comment:"Me interesa seguir las novedades desde mi cuenta. El diseño se ve limpio y los pasos son fáciles de recordar.",draw_id:"principal",created_at:"",draw_catalog:null}
-] satisfies Review[];
-/** Fisher–Yates shuffle; one review per user in each displayed selection. */
-function uniqueRandom(reviews:Review[],limit:number) {
+
+function uniqueRandom(reviews:Review[],limit:number){
  const shuffled=[...reviews];
  for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
  const seen=new Set<string>();
  return shuffled.filter(r=>{if(seen.has(r.user_id))return false;seen.add(r.user_id);return true;}).slice(0,limit);
 }
+
 export function SocialProofSections(){
  const client=useMemo(()=>oportuniaClient(),[]);
  const [reviews,setReviews]=useState<Review[]>([]);
@@ -30,6 +20,7 @@ export function SocialProofSections(){
  const [ready,setReady]=useState(false);
  const [reviewError,setReviewError]=useState(false);
  const [resultError,setResultError]=useState(false);
+ const [rotation,setRotation]=useState(0);
  useEffect(()=>{
   let live=true;
   void Promise.all([
@@ -40,43 +31,49 @@ export function SocialProofSections(){
    if(a.error)setReviewError(true);else setReviews((a.data||[]) as unknown as Review[]);
    if(b.error)setResultError(true);else setResults((b.data||[]) as unknown as Result[]);
    setReady(true);
-  });
+  }).catch(()=>{if(live){setReviewError(true);setResultError(true);setReady(true);}});
   return()=>{live=false;};
  },[client]);
- const [rotation,setRotation]=useState(0);
- const isExample=ready&&!reviewError&&reviews.length===0;
- const featured=useMemo(()=>reviews.length?uniqueRandom(reviews,10):EXAMPLE_REVIEWS,[reviews,rotation]);
+
+ const featured=useMemo(()=>uniqueRandom(reviews,10),[reviews,rotation]);
  return <>
   <section className="container social-proof-section" id="opiniones">
    <div className="social-proof-heading"><div><span className="f-kicker">TU OPINIÓN IMPORTA</span>
-    <h2>⭐ {isExample?"Así se verán las opiniones":"Lo que dice nuestra comunidad"}</h2>
-    <p>{isExample?"Comentarios de muestra con lenguaje natural para presentar el diseño. Son ficticios: no proceden de clientes ni describen compras reales.":"Valoraciones reales publicadas tras revisión, sin repetir al mismo cliente en cada selección."}</p></div>
+    <h2>⭐ Opiniones de nuestra comunidad</h2>
+    <p>Conoce las valoraciones que comparten los usuarios de Oportunia.</p></div>
    {reviews.length>10&&<button type="button" className="btn btn-secondary" onClick={()=>setRotation(n=>n+1)}>Ver otras opiniones ↻</button>}</div>
    {!ready&&<p role="status">Cargando opiniones…</p>}
-   {reviewError&&<p role="status">No fue posible consultar las opiniones reales. No se muestran testimonios no verificados como auténticos.</p>}
-   {isExample&&<div className="social-example-banner" role="note"><strong>VISTA ILUSTRATIVA</strong> · Los nombres, puntuaciones y comentarios son ejemplos ficticios. No son testimonios de clientes, compras o ganadores.</div>}
-   {ready&&!reviewError&&<div className="social-review-grid">{featured.map(r=><article className={"social-review-card"+(isExample?" is-example":"")} key={r.id}>
-    <div className="social-review-top"><span aria-label={r.rating+" de 5 estrellas"} className="social-stars">{"★".repeat(r.rating)}<span>{"☆".repeat(5-r.rating)}</span></span>
-     <span className={isExample?"social-example-label":"social-verified"}>{isExample?"COMENTARIO FICTICIO":"Opinión publicada"}</span></div>
-    <p className="social-review-text">“{r.comment}”</p>
-    <div className="social-review-footer"><div className="social-avatar">{r.display_name.trim().charAt(0).toUpperCase()}</div>
-    <div><strong>{r.display_name}</strong><small>{isExample?"Perfil ficticio · Vista de demostración":r.draw_catalog?.title||"Sorteo Oportunia"}</small></div>
-    {!isExample&&r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt="" className="social-draw-thumb"/>}</div>
-   </article>)}</div>}
+   {reviewError&&<p role="status">No fue posible consultar las opiniones en este momento.</p>}
+   {ready&&!reviewError&&(featured.length===0?
+    <div className="social-empty"><span className="social-empty-icon">✦</span>
+     <h3>Tu opinión también cuenta.</h3>
+     <p>En esta sección podrás conocer las opiniones que publique nuestra comunidad.</p>
+    </div>:
+    <div className="social-review-grid">{featured.map(r=><article className="social-review-card" key={r.id}>
+     <div className="social-review-top"><span aria-label={r.rating+" de 5 estrellas"} className="social-stars">{"★".repeat(r.rating)}<span>{"☆".repeat(5-r.rating)}</span></span>
+      <span className="social-verified">Opinión publicada</span></div>
+     <p className="social-review-text">“{r.comment}”</p>
+     <div className="social-review-footer"><div className="social-avatar">{r.display_name.trim().charAt(0).toUpperCase()}</div>
+      <div><strong>{r.display_name}</strong><small>{r.draw_catalog?.title||"Comunidad Oportunia"}</small></div>
+      {r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt="" className="social-draw-thumb"/>}
+     </div>
+    </article>)}</div>)}
   </section>
   <section className="container social-proof-section social-results" id="resultados">
-   <div className="social-proof-heading"><div><span className="f-kicker">HISTORIAL TRANSPARENTE</span><h2>Sorteos realizados y ganadores</h2><p>Publicaremos únicamente resultados comprobados, con fecha, número ganador y fuente de verificación.</p></div></div>
-   {resultError&&<p role="status">No fue posible consultar los resultados.</p>}
+   <div className="social-proof-heading"><div><span className="f-kicker">HISTORIAL TRANSPARENTE</span>
+    <h2>Sorteos realizados y ganadores</h2>
+    <p>Consulta resultados con fecha, número ganador y fuente de verificación.</p></div></div>
+   {resultError&&<p role="status">No fue posible consultar el historial de resultados.</p>}
    {ready&&!resultError&&results.length===0&&<div className="social-empty social-empty-result">
-    <span className="social-empty-icon">✦</span><h3>Estamos preparando nuestra primera edición.</h3>
-    <p>Aún no se han registrado sorteos realizados ni ganadores verificados en Oportunia.</p>
-    <div className="social-placeholder"><span>IMAGEN ILUSTRATIVA</span><img src="/raffles/iphone18-product.svg" alt="Ilustración de teléfono del próximo sorteo"/><strong>Próximo sorteo: iPhone 18</strong><small>En preparación · Sin ganador anunciado</small></div>
+    <span className="social-empty-icon">✦</span><h3>Próximamente, nuestros primeros resultados.</h3>
+    <p>Aquí encontrarás el historial de cada sorteo una vez publicado su resultado.</p>
    </div>}
-   {results.length>0&&<div className="social-result-grid">{results.map(r=><article className="social-result-card" key={r.id}>
-    {r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt={"Premio de "+r.draw_catalog.title}/>}
+   {ready&&!resultError&&results.length>0&&<div className="social-result-grid">{results.map(r=><article className="social-result-card" key={r.id}>
+    {r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt={r.draw_catalog.title}/>}
     <div><span className="social-verified">Resultado verificado</span><h3>{r.draw_catalog?.title||"Sorteo Oportunia"}</h3>
-    <p>Número ganador: <strong>{r.winning_number}</strong></p><p>Ganador: <strong>{r.winner_display_name}</strong></p>
-    <small>{new Date(r.draw_date+"T12:00:00").toLocaleDateString("es-CO")} · Fuente: {r.result_source}</small></div>
+     <p>Número ganador: <strong>{r.winning_number}</strong></p><p>Ganador: <strong>{r.winner_display_name}</strong></p>
+     <small>{new Date(r.draw_date+"T12:00:00").toLocaleDateString("es-CO")} · Fuente: {r.result_source}</small>
+    </div>
    </article>)}</div>}
   </section>
  </>;
