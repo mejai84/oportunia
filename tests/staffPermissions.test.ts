@@ -23,7 +23,7 @@ test("treasury cannot modify draws or read CRM notes",()=>{
  assert.equal(canStaffRole("treasury","bank.write"),true);
  assert.equal(canStaffRole("treasury","catalog.write"),false);
  assert.equal(canStaffRole("treasury","crm.read"),false);
- assert.deepEqual(visibleStaffModules("treasury").map(m=>m.href),["/admin/conciliacion"]);
+ assert.deepEqual(visibleStaffModules("treasury").map(m=>m.href),["/admin/control-pagos","/admin/conciliacion"]);
 });
 test("support has customer management and followups, not finance or raffle changes",()=>{
  assert.equal(canStaffRole("support","crm.write"),true);
@@ -43,7 +43,7 @@ test("auditor can inspect, never write, and only receives one audit screen",()=>
   assert.equal(permission.endsWith(".write"),false);
  }
  assert.deepEqual(visibleStaffModules("auditor").map(m=>m.href),
-   ["/admin/seguridad","/admin/informes","/admin/auditoria","/admin/numeros"]);
+   ["/admin/control-pagos","/admin/seguridad","/admin/informes","/admin/auditoria","/admin/numeros"]);
 });
 test("every module and permission corresponds to the server role names",()=>{
  const paths=staffModules.map(item=>item.href);
@@ -59,4 +59,14 @@ test("production readiness is visible to owner and auditor only",()=>{
     assert.ok(visibleStaffModules(role).some(item=>item.href==="/admin/seguridad"));
   for(const role of ["treasury","support","draws"] as const)
     assert.ok(!visibleStaffModules(role).some(item=>item.href==="/admin/seguridad"));
+});
+
+test("payment workflows are owner-only and bank ledger is visible to treasury and auditor",()=>{
+ for(const role of ["owner","treasury","auditor"] as const)
+  assert.ok(visibleStaffModules(role).some(item=>item.href==="/admin/control-pagos"));
+ for(const role of ["support","draws"] as const)
+  assert.ok(!visibleStaffModules(role).some(item=>item.href==="/admin/control-pagos"));
+ for(const role of ["treasury","support","draws","auditor"] as const)
+  assert.ok(!visibleStaffModules(role).some(item=>item.href==="/admin/automatizaciones"));
+ assert.ok(visibleStaffModules("owner").some(item=>item.href==="/admin/automatizaciones"));
 });
