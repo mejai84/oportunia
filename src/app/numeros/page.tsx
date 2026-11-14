@@ -53,6 +53,7 @@ export default function NumerosPage() {
       <p className="draw-selected">Sorteo seleccionado: <strong>{draw?.title ?? "Sin sorteo habilitado"}</strong></p>
       <p className="muted">Escoge tus 10 favoritos o deja que Oportunia los asigne automáticamente. Los otros 40 se asignarán con los abonos aprobados.</p>
     </div>
+    <section className="panel" style={{marginBottom:20}}><span className="overline">ENSAYO CENTRALIZADO · SUPABASE</span><h2>Prueba la disponibilidad entre dispositivos</h2><p className="muted">Esta selección de navegador es independiente. También existe una modalidad de laboratorio con diez números únicos bloqueados por PostgreSQL y vencimiento de 24 horas; ninguna representa venta ni sorteo real.</p><Link href="/ensayo-reservas" className="btn btn-secondary">Abrir ensayo centralizado de números ↗</Link></section>
     <section className="panel selection-mode-panel" aria-labelledby="selection-mode-heading">
       <h2 id="selection-mode-heading">¿Cómo quieres obtener tus primeros 10 números?</h2>
       <div className="selection-mode-options">
