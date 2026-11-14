@@ -179,7 +179,7 @@ begin
    'offset',p_offset,'limit',p_limit,
    'items',coalesce((select jsonb_agg(
        jsonb_build_object('created_at',p.happened_at,'category',p.category,'action',p.action,
-         'actor',p.actor,'reference',p.reference,'detail',p.detail,'source',p.source)
+         'actor',p.actor,'reference',p.reference,'detail',p.detail,'source',p.source,'id',p.source||'/'||p.source_id)
        order by p.happened_at desc,p.source,p.source_id desc) from page p),'[]'::jsonb)
  ) into v_out;
  return v_out;
