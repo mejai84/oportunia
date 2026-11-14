@@ -51,8 +51,8 @@ export const staffModules:readonly StaffModule[]=[
    summary:"Abonos de extractos, coincidencias y auditoría financiera."},
   {href:"/admin/reservas",title:"Reservas centralizadas",section:"Ensayo",icon:"▦",permission:"preview.write",
    summary:"Ensayos, diez números iniciales y hitos adicionales ficticios."},
-  {href:"/admin/numeros",title:"Control de números",section:"Laboratorio",icon:"◫",permission:"preview.read",
-   summary:"Mapa de números y revisión de la simulación local."},
+  {href:"/admin/numeros",title:"Control central de números",section:"Inventario",icon:"◫",permission:"preview.read",
+   summary:"Mapa de números y reservas bloqueadas en PostgreSQL por edición."},
   {href:"/admin/seguimiento",title:"Agenda de seguimiento",section:"Operaciones",icon:"◷",permission:"followups.write",
    summary:"Tareas por cliente, vencimientos y responsables."},
   {href:"/admin/contenido",title:"Contenido web",section:"Contenido",icon:"▧",permission:"catalog.write",
@@ -61,8 +61,8 @@ export const staffModules:readonly StaffModule[]=[
    summary:"Contenido e imágenes de las ediciones."},
   {href:"/admin/opiniones",title:"Opiniones y resultados",section:"Sorteos",icon:"★",permission:"reviews.write",
    summary:"Moderación y registro informativo de resultados."},
-  {href:"/admin",title:"Dashboard y demo local",section:"Propietario",icon:"▥",permission:"admin.dashboard",
-   summary:"Indicadores generales y herramientas de prueba del navegador."},
+  {href:"/admin",title:"Dashboard principal",section:"Propietario",icon:"▥",permission:"admin.dashboard",
+   summary:"Acceso a módulos operativos y diagnóstico central del sistema."},
 ];
 export function visibleStaffModules(role:StaffRole|null):readonly StaffModule[] {
   return staffModules.filter(module=>canStaffRole(role,module.permission));
