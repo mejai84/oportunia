@@ -260,3 +260,63 @@ revoke all on function public.simulate_preview_extra_milestone(uuid) from public
 revoke all on function public.link_preview_claim_for_tracking(uuid,uuid) from public,anon,authenticated;
 grant execute on function public.simulate_preview_extra_milestone(uuid) to authenticated;
 grant execute on function public.link_preview_claim_for_tracking(uuid,uuid) to authenticated;
+
+-- An array result is one JSON value; PostgREST's maximum row limit cannot truncate
+-- the global occupancy and silently display taken numbers as free.
+create function public.get_preview_occupied_numbers(p_draw_id text)
+returns jsonb language plpgsql stable security definer set search_path='' as $function$
+declare v_out jsonb;
+begin
+ if auth.uid() is null then raise exception 'Debes iniciar sesión'; end if;
+ if not exists(select 1 from public.draw_catalog d where d.id=p_draw_id
+       and d.enabled=true and d.status='preview') then
+   raise exception 'La edición de ensayo no está disponible';
+ end if;
+ select coalesce(jsonb_agg(n.number order by n.number),'[]'::jsonb)
+ into v_out
+ from public.preview_reserved_numbers n
+ join public.preview_reservations r on r.id=n.reservation_id
+ where n.draw_id=p_draw_id and r.status='active' and r.expires_at>now();
+ return v_out;
+end; $function$;
+
+-- Administrative aggregates are computed over ALL rows, never a page-limited sample.
+create function public.get_preview_admin_summary(p_draw_id text)
+returns jsonb language plpgsql stable security definer set search_path='' as $function$
+declare v_actor uuid:=auth.uid(); v_summary jsonb;
+begin
+ if v_actor is null or not exists(
+   select 1 from public.oportunia_admins a where a.user_id=v_actor
+ ) then raise exception 'Solo administración puede ver estadísticas completas'; end if;
+ if not exists(select 1 from public.draw_catalog d where d.id=p_draw_id) then
+   raise exception 'Edición inexistente';
+ end if;
+ with counts as (
+  select
+    (select count(*) from public.preview_reservations r
+     where r.draw_id=p_draw_id and r.status='active' and r.expires_at>now()) as active,
+    (select count(*) from public.preview_reservations r
+     where r.draw_id=p_draw_id and
+       (r.status='expired' or (r.status='active' and r.expires_at<=now()))) as expired,
+    (select count(*) from public.preview_reservations r
+     where r.draw_id=p_draw_id and r.status='cancelled') as cancelled,
+    (select count(*) from public.preview_reserved_numbers n
+     join public.preview_reservations r on r.id=n.reservation_id
+     where n.draw_id=p_draw_id and r.status='active' and r.expires_at>now()) as occupied,
+    (select count(*) from public.preview_reserved_numbers n
+     join public.preview_reservations r on r.id=n.reservation_id
+     where n.draw_id=p_draw_id and n.category='extra_demo'
+       and r.status='active' and r.expires_at>now()) as extra
+ )
+ select jsonb_build_object(
+  'active',active, 'expired',expired, 'cancelled',cancelled,
+  'occupied',occupied, 'extra',extra,
+  'free',10000-occupied, 'remaining',greatest(0,200-active)
+ ) into v_summary from counts;
+ return v_summary;
+end; $function$;
+
+revoke all on function public.get_preview_occupied_numbers(text) from public,anon,authenticated;
+revoke all on function public.get_preview_admin_summary(text) from public,anon,authenticated;
+grant execute on function public.get_preview_occupied_numbers(text) to authenticated;
+grant execute on function public.get_preview_admin_summary(text) to authenticated;
