@@ -11,7 +11,7 @@ export function AdminModuleMenu(){
  const [error,setError]=useState(false);
  useEffect(()=>{
   let active=true;
-  void client.rpc("staff_role_for_current_user").then(({data,error:requestError})=>{
+  void Promise.resolve(client.rpc("staff_role_for_current_user")).then(({data,error:requestError})=>{
    if(!active)return;
    if(requestError){setError(true);setRole(null);}
    else {setError(false);setRole(parseStaffRole(data));}
