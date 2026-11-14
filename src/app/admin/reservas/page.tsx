@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCallback,useEffect,useMemo,useState } from "react";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
+import { PreviewProgress } from "@/components/PreviewProgress";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
 import {displayPreviewNumber,effectivePreviewStatus,summarizePreviewReservations,
   type PreviewDraw,type PreviewReservation,type PreviewNumber,type PreviewEvent} from "@/lib/previewReservations";
@@ -18,13 +19,14 @@ function PreviewAdminWorkspace(){
   const [error,setError]=useState("");
   const [filter,setFilter]=useState<"all"|"active"|"expired"|"cancelled">("all");
   const [term,setTerm]=useState("");
+  const [detailsId,setDetailsId]=useState<string|null>(null);
 
   const refresh=useCallback(async()=>{
     const [drawResult,holdResult,numberResult,eventResult]=await Promise.all([
       client.from("draw_catalog").select("id,title,enabled,status").order("display_order",{ascending:true}).limit(25),
       client.from("preview_reservations").select("id,draw_id,user_id,selection_mode,preferred_plan,status,created_at,expires_at,closed_at")
         .order("created_at",{ascending:false}).limit(500),
-      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at").limit(2500),
+      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at,category,milestone").limit(2500),
       client.from("preview_reservation_events").select("id,reservation_id,actor_id,event_type,numbers,created_at")
         .order("created_at",{ascending:false}).limit(1000),
     ]);
@@ -47,10 +49,10 @@ function PreviewAdminWorkspace(){
   return <div className="container page-space central-page">
     <div className="central-head"><div><span className="overline">ADMIN · INVENTARIO DE ENSAYOS</span>
       <h1>Reservas <span className="gradient-text">centralizadas.</span></h1>
-      <p>Auditoría global por sorteo de las diez selecciones iniciales guardadas en PostgreSQL.</p></div>
+      <p>Auditoría global de las diez selecciones iniciales y hasta cuarenta números adicionales estrictamente simulados en PostgreSQL.</p></div>
       <Link className="btn btn-secondary" href="/admin">Volver al panel</Link>
     </div>
-    <div className="central-warning"><strong>Inventario de laboratorio, no ventas:</strong> estos bloqueos son temporales, no se han pagado ni asignado oficialmente y NO afectan las selecciones de la demo local. Los 40 números restantes no se generan aquí.</div>
+    <div className="central-warning"><strong>Inventario de laboratorio, no ventas:</strong> estos bloqueos son temporales, no se han pagado ni asignado oficialmente y NO afectan las selecciones de la demo local. Los 40 números adicionales solo se crean mediante hitos ficticios habilitados para administración, sin pagos ni elegibilidad.</div>
     {error&&<div role="alert" className="alert alert-error">{error}</div>}
     {loading?<section className="central-panel">Consultando reservas…</section>:<>
       <section className="central-panel">
@@ -82,6 +84,13 @@ function PreviewAdminWorkspace(){
               <p className="central-audit-detail">Usuario {r.user_id.slice(0,8)}… · {r.selection_mode==="manual"?"Manual":"Automática"} · Creada {new Date(r.created_at).toLocaleString("es-CO")} · Vence {new Date(r.expires_at).toLocaleString("es-CO")}</p>
               <div className="central-numbers">{nums.map(n=><span key={n}>{displayPreviewNumber(n)}</span>)}</div>
               <small>Eventos auditados: {events.filter(e=>e.reservation_id===r.id).map(e=>e.event_type).join(" · ")||"Sin eventos visibles"}</small>
+              <div className="central-admin-actions">
+                <button type="button" className="btn btn-secondary btn-small" onClick={()=>setDetailsId(old=>old===r.id?null:r.id)}>
+                  {detailsId===r.id?"Ocultar":"Ver"} hitos de simulación y seguimiento
+                </button>
+              </div>
+              {detailsId===r.id&&<PreviewProgress reservationId={r.id}
+                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh();}}/>}
             </article>;
           })}</div>}
         {reservations.length===500&&<p className="muted">Vista limitada a los 500 registros más recientes.</p>}
