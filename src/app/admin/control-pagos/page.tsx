@@ -36,7 +36,7 @@ function Workspace(){
   <div className="payctrl-note"><strong>El registro no verifica dinero auténtico:</strong> Bancolombia y Nequi todavía no están conectados mediante una fuente autorizada. Las coincidencias de extractos son solo cotejos de archivos aportados por operadores. Ninguna acción de esta pantalla acredita participaciones.</div>
   {error&&<div role="alert" className="alert alert-error">{error}</div>}
   {loading?<section className="payctrl-panel">Consultando controles bancarios de Supabase…</section>:<>
-   <div className="payctrl-metrics"><div><strong>{stats.total}</strong><span>Reportes vinculados</span></div>
+   <div className="payctrl-metrics"><div><strong>{stats.total}</strong><span>Reportes de clientes</span></div>
     <div><strong>{stats.reported}</strong><span>Solo declarados</span></div>
     <div><strong>{stats.fileMatched}</strong><span>Cotejados con archivo</span></div>
     <div><strong>{stats.rejected}</strong><span>Rechazados</span></div>
@@ -47,11 +47,11 @@ function Workspace(){
        <option value="all">Todos</option><option value="reported">Declarados</option>
        <option value="file_matched">Coincide con archivo</option><option value="rejected">Rechazados</option>
       </select></label><button className="btn btn-secondary btn-small" type="button" onClick={()=>void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura"))}>Actualizar</button></div></div>
-    {visible.length===0?<p className="muted">Aún no hay referencias vinculadas en el ensayo.</p>:
+    {visible.length===0?<p className="muted">Aún no hay referencias declaradas por clientes.</p>:
      <div className="payctrl-list">{visible.map(c=><article key={c.id}>
       <div className="payctrl-line"><strong>{paymentCOP(c.declared_amount_cop)} reportados</strong>
         <span>{paymentEvidenceLabels[c.evidence_status]}</span></div>
-      <small>ID caso {c.id.slice(0,8)} · Reserva {c.reservation_id.slice(0,8)} · Cuenta receptora {c.bank_account_alias==="BANCOLOMBIA_PRINCIPAL"?"Bancolombia":"Nequi"}</small>
+      <small>ID caso {c.id.slice(0,8)} · {c.reservation_id?"Reserva "+c.reservation_id.slice(0,8):"Sin selección de ensayo vinculada"} · Cuenta receptora {c.bank_account_alias==="BANCOLOMBIA_PRINCIPAL"?"Bancolombia":"Nequi"}</small>
       <div className="payctrl-steps">{events.filter(e=>e.case_id===c.id).map(e=><p key={e.id}>{new Date(e.created_at).toLocaleString("es-CO")}: {e.event_type} · {e.current_status}</p>)}</div>
       <small>Confirmación bancaria: no verificada · Participaciones oficiales: 0</small>
      </article>)}</div>}

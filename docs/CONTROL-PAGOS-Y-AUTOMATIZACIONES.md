@@ -6,7 +6,7 @@ La **verificación bancaria auténtica NO está disponible**. Actualmente los cl
 
 ## Modelo de datos
 
-- `payment_control_cases` conserva la relación única entre la referencia declarada (`bank_recon_claims`), la selección de ensayo (`preview_reservations`) y el propio cliente.
+- `payment_control_cases` registra **todas las referencias declaradas por clientes autenticados** desde el momento de su creación. La selección de ensayo es **opcional**, y puede vincularse posteriormente.
 - `payment_control_case_events` mantiene los cambios de estado; la creación y actualización vienen de triggers de Supabase, no de modificaciones directas del navegador.
 - `authenticity` solo admite `not_verified`, `bank_provider_event_id` solo NULL y `commercial_eligible` solo FALSE. Ni el cliente ni tesorería pueden promover un reporte a pago verificado.
 - `payment_notification_workflows` almacena tres reglas internas: referencia vinculada, coincidencia con extracto aportado, referencia rechazada. El propietario puede activar o desactivar cada una desde `/admin/automatizaciones`; cada modificación queda auditada.
@@ -45,3 +45,7 @@ Para correo y WhatsApp, integrar proveedores oficiales con consentimiento y plan
 ## Dependencias de publicación
 
 Vercel debe desplegar exitosamente el último commit y debe validarse la interfaz móvil y la seguridad mediante varias sesiones. Si permanece `build-rate-limit`, el sistema de base de datos puede estar actualizado sin que las pantallas estén visibles en producción.
+
+## Cobertura ampliada
+
+El registro se crea desde el primer reporte de una referencia bancaria, aunque el cliente aún no haya escogido números ni tenga una reserva de ensayo. El historial registra `submitted` y sigue los cambios de estado. Cuando el usuario asocia la referencia a una reserva, se añade un evento `linked` y una notificación interna. El aviso original de recepción del reporte continúa en el buzón existente; no se duplica. Los reportes creados manualmente por administración sin usuario autenticado no se atribuyen automáticamente a ningún cliente.

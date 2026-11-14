@@ -1,7 +1,7 @@
 /** Payment audit data - no bank provider is integrated, no recorded payment is authentic. */
 export type PaymentEvidenceStatus = "reported"|"file_matched"|"rejected";
 export type PaymentControlCase = {
- id:string;claim_link_id:string;claim_id:string;reservation_id:string;
+ id:string;claim_link_id:string|null;claim_id:string;reservation_id:string|null;
  customer_user_id:string;declared_amount_cop:number;bank_account_alias:string;
  evidence_status:PaymentEvidenceStatus;authenticity:"not_verified";bank_provider_event_id:null;
  commercial_eligible:false;created_at:string;updated_at:string;
