@@ -222,3 +222,15 @@ begin
  if position(v_old in v_def)=0 then raise exception 'Preview summary guard differs';end if;
  execute replace(v_def,v_old,'not public.staff_has_permission(''preview.read'')');
 end; $patch$;
+
+-- Storage policies are separate from public-table RLS. Draws role also needs
+-- permissions on draw-media to upload/edit illustrations from the catalog UI.
+create policy "staff read draw media metadata" on storage.objects for select to authenticated
+ using(bucket_id='draw-media' and public.staff_has_permission('catalog.read'));
+create policy "staff upload draw media" on storage.objects for insert to authenticated
+ with check(bucket_id='draw-media' and public.staff_has_permission('catalog.write'));
+create policy "staff update draw media" on storage.objects for update to authenticated
+ using(bucket_id='draw-media' and public.staff_has_permission('catalog.write'))
+ with check(bucket_id='draw-media' and public.staff_has_permission('catalog.write'));
+create policy "staff delete draw media" on storage.objects for delete to authenticated
+ using(bucket_id='draw-media' and public.staff_has_permission('catalog.write'));
