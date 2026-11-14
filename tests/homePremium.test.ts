@@ -35,7 +35,11 @@ test("only genuine moderated reviews are visible, never invented customer testim
  assert.match(reviews,/\.eq\("status","published"\)/);
  assert.match(reviews,/Opiniones de nuestra comunidad/);
  assert.match(reviews,/Tu opinión también cuenta/);
- assert.doesNotMatch(reviews,/EXAMPLE_REVIEWS|COMENTARIO FICTICIO|VISTA ILUSTRATIVA|Perfil ficticio|persona-ficticia/);
+ assert.match(reviews,/SAMPLE_REVIEWS/);
+ assert.match(reviews,/Ejemplo ficticio/);
+ assert.match(reviews,/no son reseñas enviadas por clientes/);
+ assert.match(reviews,/featured.length===0/);
+ assert.doesNotMatch(reviews,/COMENTARIO FICTICIO|VISTA ILUSTRATIVA|persona-ficticia/);
  assert.match(reviews,/Resultados y ganadores/);
  assert.doesNotMatch(reviews,/IMAGEN ILUSTRATIVA/);
 });
