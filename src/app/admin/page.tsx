@@ -4,6 +4,7 @@ import { useApp } from "@/components/AppProvider";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
 import { AdminDashboard } from "@/components/AdminDashboard";
 import { AdminModuleMenu } from "@/components/AdminModuleMenu";
+import { AdminOwnerOnly } from "@/components/AdminOwnerOnly";
 import Link from "next/link";
 import { AdminDrawContentEditor } from "@/components/AdminDrawContentEditor";
 import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
@@ -62,6 +63,7 @@ function LocalAdminPage() {
       <p className="muted">Panel de operaciones, catálogo y seguimiento. El catálogo y las opiniones se administran en Supabase; las oportunidades y abonos son datos de simulación locales.</p>
     </div>
     <AdminModuleMenu />
+    <AdminOwnerOnly>
     <div className="alert alert-warning admin-warning"><strong>Estado financiero:</strong> Bancolombia, Nequi, Bre-B y DaviPlata NO están conectados para verificar movimientos. Las aprobaciones de números y abonos son solo simulaciones guardadas en este navegador.</div>
 
     <div className="draw-account-switch admin-draw-switch"><label htmlFor="admin-draw">Administrar sorteo</label>
@@ -189,6 +191,7 @@ function LocalAdminPage() {
     <div className="admin-reset"><button type="button" className="btn btn-ghost btn-small" onClick={() => {
       if (window.confirm("¿Borrar todas las selecciones y reportes locales de este navegador?")) { reset(); setSuccess("Datos locales reiniciados."); }
     }}>Reiniciar datos locales</button></div>
+    </AdminOwnerOnly>
   </div>;
 }
 
