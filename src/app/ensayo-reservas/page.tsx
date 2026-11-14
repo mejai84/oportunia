@@ -137,7 +137,7 @@ export default function PreviewReservationsPage(){
     <div className="central-head"><div><span className="overline">TUS NÚMEROS · MI CUENTA</span>
       <h1>Selección <span className="gradient-text">centralizada.</span></h1>
       <p>Selecciona diez números y consulta su disponibilidad desde tu cuenta en distintos dispositivos.</p></div>
-      <Link href="/numeros" className="btn btn-secondary">Ver otras opciones</Link>
+      <Link href="/" className="btn btn-secondary">Volver a oportunidades</Link>
     </div>
     <div className="central-warning"><strong>Selección por 24 horas.</strong> Guardar números en esta sección no constituye una participación oficial. Consulta las condiciones de la edición.</div>
     {!checked?<section className="central-panel">Comprobando sesión…</section>:!userId?
