@@ -35,6 +35,8 @@ export type StaffModule={
 export const staffModules:readonly StaffModule[]=[
   {href:"/admin/equipo",title:"Equipo y permisos",section:"Seguridad",icon:"♙",permission:"staff.manage",
    summary:"Asignar roles por cuenta y revisar quién autorizó cada cambio."},
+  {href:"/admin/informes",title:"Informes y exportaciones",section:"Control",icon:"▤",permission:"audit.read",
+   summary:"Indicadores de Supabase, gráficas y exportaciones CSV auditadas."},
   {href:"/admin/auditoria",title:"Auditoría de operaciones",section:"Control",icon:"☷",permission:"audit.read",
    summary:"Cambios de roles, catálogo, resultados, conciliación y seguimiento."},
   {href:"/admin/clientes",title:"Clientes · CRM",section:"Atención",icon:"♧",permission:"crm.write",
