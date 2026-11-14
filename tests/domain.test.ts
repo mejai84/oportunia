@@ -237,7 +237,7 @@ test("el editor de contenido actualiza textos del sorteo sin cambiar su ID, esta
   assert.equal(changed.draws?.[0].enabled, true);
   assert.equal(changed.draws?.[0].id, "principal");
   assert.equal(changed.opportunities[0].id, state.opportunities[0].id);
-  assert.equal(state.draws?.[0].title, "Sorteo iPhone 18");
+  assert.equal(state.draws?.[0].title, "Edición iPhone 18");
 });
 
 test("el editor rechaza sorteos inexistentes y datos inválidos", () => {
