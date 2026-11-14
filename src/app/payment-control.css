@@ -1,0 +1,32 @@
+/* Operational evidence and in-app automation; no certified bank payment UI. */
+.payctrl-panel{margin:0 0 18px;background:#fff;border:1px solid #dcebe2;border-radius:18px;padding:clamp(16px,3vw,24px);box-shadow:0 10px 29px #1448360d}
+.payctrl-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:16px}
+.payctrl-heading h1{font-size:clamp(30px,4vw,46px);letter-spacing:-.04em;margin:7px 0}.payctrl-heading h2{font-size:23px;margin:6px 0;color:#20533a}
+.payctrl-heading p{color:#688474;font-size:12px;line-height:1.6;max-width:720px}
+.payctrl-note{border:1px solid #e7d4ac;border-radius:13px;padding:14px 17px;background:#fff9e9;font-size:12px;color:#785e35;line-height:1.7;margin-bottom:18px}
+.payctrl-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.payctrl-metrics>div{min-width:0;background:linear-gradient(130deg,#15493f,#1d344c);border:1px solid #3b745b;border-radius:12px;padding:15px;color:white}
+.payctrl-metrics strong{display:block;font-size:28px;margin-bottom:7px}.payctrl-metrics span{color:#b5dacb;font-size:11px;line-height:1.4}
+.payctrl-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:17px}
+.payctrl-two h3{font-size:17px;color:#21523b}.payctrl-two>div,.payctrl-two>section{min-width:0}
+.payctrl-list{display:grid;gap:10px;margin:12px 0}.payctrl-list article{background:#f8fcf9;border:1px solid #dfebe2;padding:14px;border-radius:12px;min-width:0}
+.payctrl-list strong{color:#235740;font-size:13px;overflow-wrap:anywhere}
+.payctrl-list small{display:block;color:#718878;font-size:10px;margin:8px 0;line-height:1.5;overflow-wrap:anywhere}
+.payctrl-list p{color:#627a6d;font-size:12px;line-height:1.6}
+.payctrl-line{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.payctrl-line span{font-size:11px;font-weight:700;color:#99742f;background:#fff0d8;border-radius:9px;padding:5px 8px}
+.payctrl-steps{border-left:2px solid #b5e6c9;padding:1px 0 1px 10px;margin:11px 0}
+.payctrl-steps p{font-size:11px;margin:6px 0;color:#587363}
+.payctrl-new{border-color:#83d6aa!important;background:#f0fcf4!important}
+.payctrl-admin{max-width:1230px}.payctrl-admin .payctrl-metrics{grid-template-columns:repeat(5,minmax(0,1fr))}
+.payctrl-admin .payctrl-panel h2{font-size:20px;color:#1f533a}
+.payctrl-actions{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.payctrl-actions label{display:grid;gap:6px;font-size:11px;color:#466b54;font-weight:700}
+.payctrl-actions select{border:1px solid #d3e8db;border-radius:9px;background:#fff;padding:9px;color:#215c3d}
+.payctrl-footer{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+.payctrl-workflows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.payctrl-workflows article{border:1px solid #daeadf;background:#f6faf8;border-radius:14px;padding:16px}
+.payctrl-workflows p{font-size:12px;color:#6a806f;line-height:1.65}
+.payctrl-workflows small{display:block;font-size:10px;color:#769383;line-height:1.6;margin-bottom:12px}
+@media(max-width:890px){.payctrl-admin .payctrl-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.payctrl-workflows{grid-template-columns:1fr}}
+@media(max-width:650px){.payctrl-two{grid-template-columns:1fr}.payctrl-metrics,.payctrl-admin .payctrl-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.payctrl-metrics>div{padding:12px}.payctrl-metrics strong{font-size:22px}}
