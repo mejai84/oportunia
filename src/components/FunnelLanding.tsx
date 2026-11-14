@@ -11,7 +11,7 @@ import { HomeBenefits, HomeParticipation, HomeIcon } from "@/components/HomeMark
 import { SocialProofSections } from "@/components/SocialProofSections";
 import { campaignFromSearch } from "@/lib/funnel";
 import { selectPrizeImage } from "@/lib/prizePhotography";
-import { useHomeContent } from "@/lib/homeContent";
+import { useHomeContent } from "@/lib/useHomeContent";
 
 const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
 
