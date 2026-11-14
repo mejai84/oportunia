@@ -13,6 +13,7 @@ import "./customer-bank-reports.css";
 import "./crm-numbers.css";
 import "./notifications-followups.css";
 import "./central-reservations.css";
+import "./preview-progress.css";
 import "./brand.css";
 import "./oportunia-green.css";
 
