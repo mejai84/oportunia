@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     "question": "¿Cómo sé si una oportunidad está disponible?",
-    "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Idea de premio» muestran posibles premios para el futuro."
+    "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Opción de premio» son alternativas para futuras ediciones."
   },
   {
     "question": "¿Cuánto cuesta una oportunidad?",
