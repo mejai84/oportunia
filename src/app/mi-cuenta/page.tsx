@@ -19,12 +19,12 @@ export default function MiCuentaPage() {
   return <div className="container page-space">
     <div className="page-title"><span className="overline">MI CUENTA · SEGUIMIENTO</span>
       <h1>Mis <span className="gradient-text">oportunidades.</span></h1>
-      <p className="muted">Las selecciones y reportes que aparecen a continuación se guardan en este navegador. Para calificar sorteos debes iniciar sesión.</p>
+      <p className="muted">Las selecciones y reportes que aparecen a continuación se guardan en este navegador. Para calificar ediciones debes iniciar sesión.</p>
     </div>
     {!hydrated ? <p>Cargando…</p> : state.opportunities.length === 0 ?
       <div className="panel empty-state"><span>◇</span><h2>Todavía no tienes oportunidades</h2><p>Escoge tus primeros diez números o deja que el sistema los asigne.</p><Link href="/numeros" className="btn btn-primary">Explorar selección de números</Link></div> :
       <div className="stack">
-        <div className="draw-account-switch"><label htmlFor="account-draw">Avance del sorteo</label>
+        <div className="draw-account-switch"><label htmlFor="account-draw">Avance de la edición</label>
           <select id="account-draw" value={activeDraw.id} onChange={(e) => chooseDraw(e.target.value)}>
             {drawCatalog(state).map((draw) => <option key={draw.id} value={draw.id}>{draw.title}</option>)}
           </select>
@@ -45,7 +45,7 @@ export default function MiCuentaPage() {
           </div>
           <h3 className="sales-progress-status">{progressStatus.title}</h3>
           <p className="muted small">{progressStatus.message}</p>
-          <p className="sales-progress-disclaimer">Este porcentaje comienza en 0 % y refleja solo ocupación en este navegador: reservas y oportunidades pagadas, sin mezclarlas con ventas confirmadas. No representa cifras reales ni confirma una fecha de sorteo.</p>
+          <p className="sales-progress-disclaimer">Este porcentaje comienza en 0 % y refleja solo ocupación en este navegador: reservas y oportunidades pagadas, sin mezclarlas con ventas confirmadas. No representa cifras reales ni confirma una fecha de selección del ganador.</p>
           <div className="sales-updates">
             <h3>Novedades del proceso</h3>
             {updates.length ? <ul className="sales-update-list">{updates.slice(0, 3).map((update) =>
@@ -63,7 +63,7 @@ export default function MiCuentaPage() {
         const reports = state.reports.filter((r) => r.orderId === o.id);
         return <article className="panel account-card" key={o.id}>
           <div className="panel-heading">
-            <div><span className="small muted">{orderDraw?.title || "Sorteo"} · Oportunidad {shortId(o.id)}</span><h2>{o.customer.name}</h2></div>
+            <div><span className="small muted">{orderDraw?.title || "Edición"} · Oportunidad {shortId(o.id)}</span><h2>{o.customer.name}</h2></div>
             <span className={"tag " + (eligible ? "tag-green" : expired ? "tag-red" : "tag-amber")}>{eligible ? "HABILITADA" : expired ? "RESERVA VENCIDA" : "NO PARTICIPA AÚN"}</span>
           </div>
           {!eligible && <div className="eligibility-warning" role="note"><strong>Importante: tus números NO participan.</strong> Solo podrás participar cuando el 100 % de la oportunidad esté pagado y confirmado.</div>}

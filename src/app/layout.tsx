@@ -24,8 +24,8 @@ import "./oportunia-green.css";
 import "./home-premium.css";
 
 export const metadata: Metadata = {
-  title: "Oportunia | Sorteos que te acercan a lo que quieres",
-  description: "Descubre los próximos sorteos de Oportunia, conoce las reglas y entérate del lanzamiento.",
+  title: "Oportunia | Oportunidades de ganar premios",
+  description: "Descubre las oportunidades de Oportunia, conoce los premios y consulta las condiciones de cada edición.",
   robots: { index: false, follow: false },
 };
 
@@ -33,8 +33,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return <html lang="es"><body><AppProvider>
     <SiteHeader /><main>{children}</main>
     <footer className="footer"><div className="container footer-inner">
-      <span>♣ Oportunia · Sorteos que te acercan a lo que quieres</span>
-      <span>Sorteos sujetos a reglamento, disponibilidad y autorizaciones. Consulta el estado de cada edición.</span>
+      <span>♣ Oportunia · Oportunidades de ganar premios</span>
+      <span>Las oportunidades están sujetas a reglamento y autorizaciones aplicables. Consulta las condiciones de cada edición.</span>
     </div></footer>
   </AppProvider></body></html>;
 }

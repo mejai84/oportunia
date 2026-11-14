@@ -5,7 +5,7 @@ import { usePublicDraws, type PublicDraw } from "@/lib/usePublicDraws";
 import { HomeIcon } from "@/components/HomeMarketingSections";
 
 type DrawCard = PublicDraw & { illustrative?: boolean };
-/* Ideas de premios identificadas como tales; no se presentan como sorteos confirmados. */
+/* Ideas de premios identificadas como tales; no se presentan como ediciones anunciadas. */
 const EXAMPLE_DRAWS: DrawCard[] = [
   {id:"concepto-consola",title:"Concepto: Consola",prize:"Consola de videojuegos",description:"Una propuesta de premio para quienes disfrutan jugar.",status:"preview",display_order:2,hero_image_url:null,prize_image_url:"/raffles/concept-console.svg",illustrative:true},
   {id:"concepto-televisor",title:"Concepto: Smart TV",prize:"Smart TV 55″",description:"Una idea para futuras ediciones de entretenimiento en casa.",status:"preview",display_order:3,hero_image_url:null,prize_image_url:"/raffles/concept-tv.svg",illustrative:true},
@@ -28,7 +28,7 @@ export function DrawCarousel() {
     const gap=Number.parseFloat(getComputedStyle(track).columnGap)||16;
     track.scrollBy({left:direction*(width+gap),behavior:"smooth"});
   }
-  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos y posibles premios">
+  return <section id="sorteos" className="container draw-carousel-section" aria-label="Oportunidades y posibles premios">
     <div className="draw-carousel-header">
       <div><span className="f-kicker"><HomeIcon name="sparkles" size={17}/> EXPLORA OPORTUNIA</span>
       <h2>Premios que <span className="f-highlight">emocionan.</span></h2>
@@ -40,7 +40,7 @@ export function DrawCarousel() {
     </div>
     {loading&&<p role="status">Consultando el catálogo…</p>}
     {error&&<div className="alert alert-warning" role="status">{error}</div>}
-    <div className="draw-five-track" ref={trackRef} aria-label="Premios y propuestas de sorteo">
+    <div className="draw-five-track" ref={trackRef} aria-label="Premios y próximas ediciones">
       {cards.map((draw,i)=><article className={"draw-mini-card"+(draw.illustrative?" is-concept":"")} key={draw.id}>
         <div className="draw-mini-art">
           <span className={"draw-mini-badge"+(draw.illustrative?" is-concept":"")}>

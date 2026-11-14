@@ -61,7 +61,7 @@ export function CustomerPaymentControl(){
  return <section className="payctrl-panel" aria-label="Mis reportes vinculados y notificaciones automáticas">
   <div className="payctrl-heading"><div><span className="overline">MI CUENTA · SEGUIMIENTO BANCARIO</span>
    <h2>Mis referencias y avisos</h2>
-   <p>Historial centralizado, vinculado a tu usuario. No constituye prueba de abono ni participación de sorteo.</p></div>
+   <p>Historial centralizado, vinculado a tu usuario. No constituye prueba de abono ni participación oficial.</p></div>
    <Link className="btn btn-secondary btn-small" href="/ensayo-reservas">Ver mis ensayos</Link>
   </div>
   <div className="payctrl-note"><strong>No hay confirmación bancaria automática.</strong> Una coincidencia con un extracto cargado no demuestra que el banco recibió el pago. Oportunia no envía SMS, correos ni WhatsApp desde este módulo.</div>

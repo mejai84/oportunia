@@ -43,14 +43,14 @@ export function MyReviews(){
   if(!error)setExisting(true);
   setBusy(false);
  }
- return <section className="panel review-account-panel"><span className="overline">TU EXPERIENCIA</span><h2>Califica un sorteo</h2>
-  {!user?<p>Inicia sesión para calificar cada sorteo con tu cuenta verificada. <a href="/acceso">Ingresar</a></p>:
+ return <section className="panel review-account-panel"><span className="overline">TU EXPERIENCIA</span><h2>Comparte tu opinión</h2>
+  {!user?<p>Inicia sesión para calificar cada edición desde tu cuenta. <a href="/acceso">Ingresar</a></p>:
   <form className="form-stack" onSubmit={submit}>
-   <label>Sorteo<select required value={drawId} onChange={e=>{setDrawId(e.target.value);setNotice("");}}>{draws.map(d=><option key={d.id} value={d.id}>{d.title}</option>)}</select></label>
+   <label>Edición<select required value={drawId} onChange={e=>{setDrawId(e.target.value);setNotice("");}}>{draws.map(d=><option key={d.id} value={d.id}>{d.title}</option>)}</select></label>
    <fieldset className="rating-stars-field"><legend>Tu calificación</legend><div className="rating-stars">{[1,2,3,4,5].map(n=><button type="button" key={n} aria-label={n+" estrellas"} aria-pressed={rating===n} onClick={()=>setRating(n)}>{n<=rating?"★":"☆"}</button>)}</div></fieldset>
    <label>Nombre público o alias<input required minLength={2} maxLength={70} value={displayName} onChange={e=>setDisplayName(e.target.value)} placeholder="Ej.: María G." /></label>
-   <label>Tu opinión<textarea required minLength={12} maxLength={700} rows={4} value={comment} onChange={e=>setComment(e.target.value)} placeholder="Cuéntanos qué te pareció el sorteo, sin incluir datos personales." /></label>
-   <p className="small muted">Una opinión por persona y sorteo. La publicación está sujeta a moderación. No afirmes haber ganado o recibido pagos si no ocurrió.</p>
+   <label>Tu opinión<textarea required minLength={12} maxLength={700} rows={4} value={comment} onChange={e=>setComment(e.target.value)} placeholder="Cuéntanos qué te pareció la edición, sin incluir datos personales." /></label>
+   <p className="small muted">Una opinión por persona y edición. La publicación está sujeta a moderación. No afirmes haber ganado o recibido pagos si no ocurrió.</p>
    <button type="submit" disabled={busy||!drawId} className="btn btn-primary">{busy?"Guardando…":existing?"Actualizar opinión":"Enviar opinión"}</button>
    {notice&&<p role="status" className="small">{notice}</p>}
   </form>}

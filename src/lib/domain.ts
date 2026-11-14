@@ -19,7 +19,7 @@ export type Method = "Bre-B" | "Nequi" | "Bancolombia" | "DaviPlata" | "PSE" | "
 export type PaymentStatus = "pendiente" | "aprobado" | "rechazado";
 export type OpportunityStatus = "pendiente" | "financiada" | "pagada" | "vencida";
 export type Draw = { id: string; title: string; prize: string; description: string; enabled: boolean; createdAt: string };
-export const DEFAULT_DRAW: Draw = { id: DEFAULT_DRAW_ID, title: "Sorteo iPhone 18", prize: "iPhone 18", description: "Una oportunidad, cincuenta números.", enabled: true, createdAt: "2026-11-13T00:00:00.000Z" };
+export const DEFAULT_DRAW: Draw = { id: DEFAULT_DRAW_ID, title: "Edición iPhone 18", prize: "iPhone 18", description: "Una oportunidad, cincuenta números.", enabled: true, createdAt: "2026-11-13T00:00:00.000Z" };
 export type DrawMilestone = { soldOutAt: string | null; deadlineAt: string | null; drawDate: string | null };
 export type Phase = "venta" | "cobranza" | "revision" | "listo";
 
@@ -115,25 +115,25 @@ export function previousNumberAvailability(state: DemoState, orderId: string, no
 export function createDraw(state: DemoState, input: { title: string; prize: string; description: string }, id: string, now = new Date()): DemoState {
   const title = input.title.trim(), prize = input.prize.trim(), description = input.description.trim();
   if (title.length < 5 || title.length > 90 || prize.length < 2 || prize.length > 90 || description.length > 200) {
-    throw new Error("Revisa el nombre, premio y descripción del sorteo.");
+    throw new Error("Revisa el nombre, premio y descripción de la edición.");
   }
-  if (findDraw(state, id)) throw new Error("Ya existe ese sorteo.");
+  if (findDraw(state, id)) throw new Error("Ya existe esa edición.");
   return { ...state, draws: [...drawCatalog(state), { id, title, prize, description, enabled: false, createdAt: now.toISOString() }] };
 }
 /** Solo edita textos del catálogo local; la identidad del sorteo y sus órdenes permanecen intactas. */
 export function updateDrawDetails(
   state: DemoState, id: string, input: { title: string; prize: string; description: string },
 ): DemoState {
-  if (!findDraw(state, id)) throw new Error("Sorteo no encontrado.");
+  if (!findDraw(state, id)) throw new Error("Edición no encontrada.");
   const title = input.title.trim(), prize = input.prize.trim(), description = input.description.trim();
   if (title.length < 5 || title.length > 90 || prize.length < 2 || prize.length > 90 || description.length > 200) {
-    throw new Error("Revisa el nombre, premio y descripción del sorteo.");
+    throw new Error("Revisa el nombre, premio y descripción de la edición.");
   }
   return { ...state, draws: drawCatalog(state).map((draw) =>
     draw.id === id ? { ...draw, title, prize, description } : draw) };
 }
 export function setDrawEnabled(state: DemoState, id: string, enabled: boolean): DemoState {
-  if (!findDraw(state, id)) throw new Error("Sorteo no encontrado.");
+  if (!findDraw(state, id)) throw new Error("Edición no encontrada.");
   return { ...state, draws: drawCatalog(state).map((draw) => draw.id === id ? { ...draw, enabled } : draw) };
 }
 
@@ -209,7 +209,7 @@ export function renewExpiredOpportunity(
 ): DemoState {
   const order = state.opportunities.find((o) => o.id === orderId);
   if (!order || !isReservationExpired(order, now) || order.paid !== 0) throw new Error("Solo puedes renovar una reserva vencida sin abonos aprobados.");
-  if (!findDraw(state, drawIdOf(order))?.enabled) throw new Error("Este sorteo no está habilitado.");
+  if (!findDraw(state, drawIdOf(order))?.enabled) throw new Error("Esta edición no está habilitada.");
   if (!termsAccepted) throw new Error("Debes aceptar las reglas antes de renovar.");
   const normalized = selected.map(normalizeNumber);
   if (normalized.length !== CUSTOM_NUMBERS || normalized.some((n) => n === null) || new Set(normalized).size !== CUSTOM_NUMBERS) {
@@ -217,7 +217,7 @@ export function renewExpiredOpportunity(
   }
   const taken = reservedNumbers(state, drawIdOf(order), now);
   if (normalized.some((n) => taken.has(n!))) throw new Error("Algunos números ya están ocupados. Escoge reemplazos.");
-  if (activeOrders(state, drawIdOf(order), now).length >= MAX_OPPORTUNITIES) throw new Error("El cupo del sorteo ya está completo.");
+  if (activeOrders(state, drawIdOf(order), now).length >= MAX_OPPORTUNITIES) throw new Error("El cupo de la edición ya está completo.");
   const opportunities = state.opportunities.map((o) => o.id !== orderId ? o : ({
     ...o, previousSelected: [...o.selected], selected: normalized as string[], selectionMode: "manual" as SelectionMode,
     status: "pendiente" as OpportunityStatus, expiredAt: undefined,
@@ -299,7 +299,7 @@ export function createOpportunity(
   rng: () => number = Math.random,
 ): DemoState {
   const drawId = input.drawId || DEFAULT_DRAW_ID;
-  if (!findDraw(state, drawId)?.enabled) throw new Error("El sorteo no está habilitado.");
+  if (!findDraw(state, drawId)?.enabled) throw new Error("La edición no está habilitada.");
   if (!input.termsAccepted) throw new Error("Debes aceptar las reglas para reservar.");
   if (activeOrders(state, drawId, now).length >= MAX_OPPORTUNITIES) throw new Error("No quedan oportunidades disponibles.");
   const name = input.customer.name.trim();
@@ -412,7 +412,7 @@ export function rejectPayment(state: DemoState, reportId: string, now = new Date
 }
 
 export function setDrawDate(state: DemoState, value: string, drawId = DEFAULT_DRAW_ID): DemoState {
-  if (phaseOf(state, new Date(), drawId) !== "listo") throw new Error("El sorteo no está listo: faltan oportunidades completamente pagadas.");
+  if (phaseOf(state, new Date(), drawId) !== "listo") throw new Error("La edición aún no está lista: faltan oportunidades completamente pagadas.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || Number.isNaN(new Date(value + "T12:00:00").getTime())) {
     throw new Error("Fecha no válida.");
   }

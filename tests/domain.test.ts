@@ -131,7 +131,7 @@ test("el administrador crea, activa y pausa sorteos independientes", () => {
   assert.equal(drawCatalog(state)[1].enabled, false);
   assert.throws(() => createOpportunity(state, {
     customer, selected, plan: "contado", termsAccepted: true, drawId: "segundo",
-  }, "orden-b", date), /no está habilitado/);
+  }, "orden-b", date), /no está habilitad[oa]/);
   state = setDrawEnabled(state, "segundo", true);
   state = createOpportunity(state, { customer, selected, plan: "contado", termsAccepted: true }, "orden-a", date);
   state = createOpportunity(state, {
@@ -237,12 +237,12 @@ test("el editor de contenido actualiza textos del sorteo sin cambiar su ID, esta
   assert.equal(changed.draws?.[0].enabled, true);
   assert.equal(changed.draws?.[0].id, "principal");
   assert.equal(changed.opportunities[0].id, state.opportunities[0].id);
-  assert.equal(state.draws?.[0].title, "Sorteo iPhone 18");
+  assert.equal(state.draws?.[0].title, "Edición iPhone 18");
 });
 
 test("el editor rechaza sorteos inexistentes y datos inválidos", () => {
   const input = { title: "Sorteo válido", prize: "Celular", description: "Demo" };
-  assert.throws(() => updateDrawDetails(EMPTY_STATE, "inexistente", input), /no encontrado/);
+  assert.throws(() => updateDrawDetails(EMPTY_STATE, "inexistente", input), /no encontrad[oa]/);
   assert.throws(() => updateDrawDetails(EMPTY_STATE, "principal", { ...input, title: "No" }), /Revisa/);
   assert.throws(() => updateDrawDetails(EMPTY_STATE, "principal", { ...input, description: "x".repeat(201) }), /Revisa/);
 });
