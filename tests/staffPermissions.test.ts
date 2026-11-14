@@ -43,7 +43,7 @@ test("auditor can inspect, never write, and only receives one audit screen",()=>
   assert.equal(permission.endsWith(".write"),false);
  }
  assert.deepEqual(visibleStaffModules("auditor").map(m=>m.href),
-   ["/admin/auditoria","/admin/numeros"]);
+   ["/admin/informes","/admin/auditoria","/admin/numeros"]);
 });
 test("every module and permission corresponds to the server role names",()=>{
  const paths=staffModules.map(item=>item.href);
