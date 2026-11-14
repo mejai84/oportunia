@@ -124,7 +124,7 @@ export function AdminDashboard({ state, drawId, onOpenTab }: {
           remote === "error" ? <p role="alert" className="op-no-data">No se pudieron consultar los indicadores remotos. Verifica conexión y permisos.</p> :
           <div className="op-remote-grid"><div><strong>{remote.catalog}</strong><span>Ediciones</span></div><div><strong>{remote.visible}</strong><span>Visibles</span></div><div><strong>{remote.pendingReviews}</strong><span>Opiniones pendientes</span></div><div><strong>{remote.verifiedResults}</strong><span>Resultados verificados</span></div><div><strong>{remote.accounts}</strong><span>Cuentas registradas</span></div><div><strong>{remote.paymentReports}</strong><span>Referencias reportadas</span></div></div>}
         <p className="op-caption">Estos indicadores proceden de Supabase (no representan ventas). Las cifras financieras anteriores son simulaciones del navegador.</p>
-        <div className="op-dash-footer"><Link href="/admin/clientes">Abrir CRM ↗</Link><Link href="/admin/numeros">Auditar números demo ↗</Link><Link href="/admin/seguimiento">Agenda de seguimiento ↗</Link></div>
+        <div className="op-dash-footer"><Link href="/admin/clientes">Abrir CRM ↗</Link><Link href="/admin/numeros">Auditar números demo ↗</Link><Link href="/admin/seguimiento">Agenda de seguimiento ↗</Link><Link href="/admin/reservas">Ensayo de reservas centralizadas ↗</Link></div>
       </section>
       <section className="op-dash-card op-dash-wide">
         <header className="op-card-header"><div><span className="op-dash-kicker">OPERACIONES RECIENTES</span><h3>Últimos reportes de prueba</h3></div><button className="op-link-button" type="button" onClick={() => onOpenTab("pagos")}>Revisar todos ↗</button></header>

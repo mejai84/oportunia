@@ -35,6 +35,7 @@ function NumberControl() {
       <p>Mapa local de asignaciones y comprobación de duplicados por edición. No es un inventario central de oportunidades vendidas.</p></div>
       <Link href="/admin" className="btn btn-secondary">Volver al dashboard</Link>
     </div>
+    <div className="row-actions" style={{marginBottom:14}}><Link href="/admin/reservas" className="btn btn-primary btn-small">Ver reservas centralizadas de prueba ↗</Link></div>
     <div className="nums-warning"><strong>Simulación local:</strong> este mapa únicamente observa órdenes en el navegador actual. No consulta reservas globales ni garantiza disponibilidad ante otros compradores. No permite asignar números ni habilitar sorteos reales.</div>
     <section className="nums-toolbar">
       <label>Sorteo que deseas analizar
@@ -87,7 +88,7 @@ function NumberControl() {
           {audit.anomalies.length>30&&<p>Se muestran las primeras 30 inconsistencias.</p>}
         </section>
         <section className="nums-detail"><h3>Próxima etapa de producción</h3>
-          <p>La disponibilidad auténtica requiere una tabla central en PostgreSQL, reservas con vencimiento y transacciones que bloqueen duplicados entre todos los dispositivos.</p></section>
+          <p>Existe un módulo separado de ensayos centralizados que bloquea diez números por usuario en PostgreSQL y controla vencimientos. Esta vista sigue mostrando exclusivamente la simulación del navegador; las reservas, pagos y participaciones oficiales aún no están habilitados.</p></section>
       </aside>
     </div>
   </div>;
