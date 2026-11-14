@@ -66,9 +66,10 @@ export default function PreviewReservationsPage(){
     setEvents((d.data||[]) as PreviewEvent[]);
   },[client]);
   const loadTaken=useCallback(async(draw:string)=>{
-    const {data,error:rpcError}=await client.rpc("list_preview_taken_numbers",{p_draw_id:draw});
+    const {data,error:rpcError}=await client.rpc("get_preview_occupied_numbers",{p_draw_id:draw});
     if(rpcError)throw new Error("No se pudo consultar el inventario global de esta edición.");
-    setTaken(new Set(((data||[]) as {number:number}[]).map(item=>item.number)));
+    if(!Array.isArray(data) || data.some(n=>!Number.isInteger(n)||n<0||n>9999)) throw new Error("El banco de números devolvió datos incorrectos.");
+    setTaken(new Set(data as number[]));
   },[client]);
   useEffect(()=>{
     let live=true;
