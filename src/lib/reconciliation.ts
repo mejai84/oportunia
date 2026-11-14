@@ -11,6 +11,7 @@ export type ImportRow = {
 export type ReconClaim = {
   id: string; bank: ReconBank; account_alias: string;
   customer_label: string; claimed_reference: string;
+  payment_verification?: "not_verified";
   customer_user_id?: string | null;
   origin_channel?: string;
   customer_order_reference?: string | null;
@@ -20,6 +21,7 @@ export type ReconClaim = {
 export type ReconMovement = ImportRow & {
   id: string; status: "unmatched" | "matched" | "ignored";
   source_label: string; imported_at: string;
+  source_verification?: "operator_uploaded_unverified";
   matched_claim_id: string | null;
 };
 export type ReconAudit = {
