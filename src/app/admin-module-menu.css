@@ -15,3 +15,6 @@
 .admin-module-footnote{margin:17px 0 0;color:#6d7f70;font-size:11px;line-height:1.7}
 @media(max-width:1050px){.admin-module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:610px){.admin-module-grid{grid-template-columns:1fr;gap:9px}.admin-module-link{min-height:102px;padding:13px}.admin-module-menu{margin-top:12px}.admin-module-menu-head{margin-bottom:15px}.admin-module-symbol{flex-basis:33px;width:33px;height:33px}}
+
+.admin-back-row{display:flex;align-items:center;justify-content:flex-start;margin:-8px 0 18px}
+.admin-back-row .btn{font-size:13px}
