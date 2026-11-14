@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     "question": "¿Cómo sé si un sorteo está disponible?",
-    "answer": "Consulta la ficha de cada edición. Solo se considerará abierta cuando se publiquen su reglamento, fecha, condiciones y canales oficiales de pago. Las tarjetas marcadas «Idea de premio» son propuestas visuales, no sorteos activos."
+    "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Idea de premio» muestran posibles premios para el futuro."
   },
   {
     "question": "¿Cuánto cuesta una oportunidad?",
@@ -88,7 +88,7 @@ const faqs = [
   },
   {
     "question": "¿Cómo sé que las opiniones son auténticas?",
-    "answer": "Las reseñas reales proceden de cuentas identificadas y pasan por moderación. Si todavía no existen, los ejemplos de diseño se distinguen expresamente de las opiniones reales."
+    "answer": "Las opiniones se envían desde cuentas registradas, pasan por revisión y se publican en la sección de la comunidad."
   },
   {
     "question": "¿Puedo calificar un sorteo?",
@@ -100,11 +100,11 @@ const faqs = [
   },
   {
     "question": "¿Mis números se guardan si cambio de celular?",
-    "answer": "El catálogo y las opiniones ya usan una base de datos central. El módulo actual de selección y pagos todavía utiliza almacenamiento local del navegador: no garantiza sincronización entre dispositivos ni una reserva comercial."
+    "answer": "Tu cuenta permite consultar los reportes y avisos registrados. Algunas herramientas de cálculo y selección del navegador no representan participaciones oficiales."
   },
   {
     "question": "¿Es posible comprar o pagar en este momento?",
-    "answer": "Todavía no. El módulo de selección y reporte de pagos es una vista previa de funcionamiento; no existe un recaudo real ni una reserva central confirmada. Las ventas se habilitarán tras completar el sistema y los requisitos aplicables."
+    "answer": "La compra de oportunidades estará disponible cuando se anuncie la apertura y se publiquen los medios de pago autorizados. Revisa las condiciones de cada edición."
   },
   {
     "question": "¿Qué debo hacer si tengo una duda o una reclamación?",
@@ -128,7 +128,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
 
   const chosen = amount >= 10000 ? 10 : 0;
   const random = Math.max(0, Math.min(40, Math.floor(amount / 1000) - 10));
-  const eligible = amount === 50000;
+  const fullDistribution = amount === 50000;
 
   async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -165,17 +165,16 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <div className="f-hero-copy">
           <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> SORTEO DESTACADO · EN PREPARACIÓN</div>
           <h1>¡Descubre el próximo <span className="f-highlight">{featuredDraw?.prize || "iPhone 18"}</span>!</h1>
-          <p className="f-hero-description">Explora premios, conoce cómo elegir tus números y sigue cada edición con información clara. <strong>Próximamente.</strong></p>
+          <p className="f-hero-description">Descubre premios, conoce cómo elegir tus números y sigue las novedades de cada edición.</p>
           <div className="f-hero-actions">
             <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> Ver próximos sorteos <HomeIcon name="arrow-right" size={18}/></a>
             <a href="#como-funciona" className="f-button f-button-outline"><HomeIcon name="zap" size={19}/> Cómo funciona</a>
           </div>
           <div className="f-hero-foot"><span><HomeIcon name="shield" size={16}/> Reglas claras</span><span><HomeIcon name="numbers" size={16}/> Números a tu manera</span><span><HomeIcon name="bell" size={16}/> Seguimiento de avisos</span></div>
-          <p className="f-disclosure">Premio ilustrativo y sujeto a disponibilidad. Aún no hay venta ni participación habilitada; se publicarán reglamento y autorizaciones antes de la apertura.</p>
         </div>
         <div className="f-showcase">
           <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO DESTACADO</span><span className="f-showcase-demo">{featuredDraw?.status==="closed"?"EDICIÓN CERRADA":"PRÓXIMAMENTE"}</span></div>
-          <div className="f-phone-stage" aria-label="Ilustración decorativa del sorteo">
+          <div className="f-phone-stage" aria-label="Premio destacado de Oportunia">
             {heroImage ? <img className="f-hero-upload" src={heroImage} alt="" /> : <>
               <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
               <div className="f-phone">
@@ -187,14 +186,13 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
             </>}
           </div>
           <div className="f-showcase-bottom">
-            <div><span>Una oportunidad prevista</span><strong>$50.000 <small>COP</small></strong></div>
+            <div><span>Valor de referencia</span><strong>$50.000 <small>COP</small></strong></div>
             <div className="f-showcase-rule" />
-            <div><span>Modalidad prevista</span><strong>50 <small>números</small></strong></div>
+            <div><span>Modalidad</span><strong>50 <small>números</small></strong></div>
           </div>
           <div className="o-home-hero-status" aria-label="Estado informativo del sorteo">
-            <div><strong>Estado de la edición</strong><span>{featuredDraw?.status==="closed"?"Cerrada":"En preparación"}</span></div>
-            <div className="o-home-hero-status-bar" aria-label="Avance de ventas no disponible" role="img"><span/></div>
-            <p><HomeIcon name="clock" size={15}/> Inscripciones sin abrir <span aria-hidden="true">·</span> Fecha por anunciar</p>
+            <div><strong>Estado de la edición</strong><span>{featuredDraw?.status==="closed"?"Cerrada":"Próximamente"}</span></div>
+            <p><HomeIcon name="clock" size={15}/> {featuredDraw?.status==="closed"?"Consulta el historial de resultados":"Fecha por anunciar"}</p>
           </div>
         </div>
       </div>
@@ -216,19 +214,19 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="f-demo-section" id="simulador">
       <div className="container f-demo-grid">
         <div className="f-demo-copy">
-          <span className="f-kicker">SIMULADOR INTERACTIVO</span>
-          <h2>Mira qué ocurre con <span className="f-highlight">cada abono.</span></h2>
-          <p>Selecciona cuánto habrías pagado. Verás cuántos números se asignarían y si la oportunidad estaría habilitada.</p>
-          <div className="f-example-label">Total abonado (simulación)</div>
+          <span className="f-kicker">CALCULADORA DE NÚMEROS</span>
+          <h2>Descubre cómo se <span className="f-highlight">distribuyen tus números.</span></h2>
+          <p>Elige un importe de referencia y conoce la distribución de 10 números iniciales y hasta 40 adicionales.</p>
+          <div className="f-example-label">Importe de referencia</div>
           <div className="f-amount-options">
             {PAYMENT_EXAMPLES.map((value) => <button key={value} type="button"
               className={"f-amount" + (amount === value ? " active" : "")}
               aria-pressed={amount === value} onClick={() => setAmount(value)}>{money(value)}</button>)}
           </div>
-          <div className="f-example-note">Ejemplo: $20.000 confirmados = 10 iniciales + 10 aleatorios. Aún no participa.</div>
+          <div className="f-example-note">Cálculo orientativo: esta herramienta no procesa transferencias ni acredita pagos.</div>
         </div>
         <div className="f-demo-card">
-          <div className="f-demo-card-header"><span>ESTADO DE TU OPORTUNIDAD</span><span className={"f-state" + (eligible ? " is-ready" : "")}>{eligible ? "✓ HABILITADA" : "◷ NO PARTICIPA"}</span></div>
+          <div className="f-demo-card-header"><span>ESTADO DE TU OPORTUNIDAD</span><span className={"f-state" + (fullDistribution ? " is-ready" : "")}>{fullDistribution ? "50 / 50 NÚMEROS" : "DISTRIBUCIÓN ESTIMADA"}</span></div>
           <div className="f-demo-total"><strong>{chosen + random}</strong><span>de 50 números asignados</span></div>
           <div className="f-progress"><div style={{ width: String((chosen + random) / 50 * 100) + "%" }} /></div>
           <div className="f-demo-breakdown">
@@ -236,9 +234,9 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
             <div><span className="f-demo-dot random" /><span>Asignados al azar</span><strong>{random} / 40</strong></div>
             <div><span className="f-demo-dot remaining" /><span>Pendientes</span><strong>{50 - chosen - random}</strong></div>
           </div>
-          <div className={"f-demo-status" + (eligible ? " is-ready" : "")}>
-            <strong>{eligible ? "¡Pago completo!" : "Falta completar el pago"}</strong>
-            <p>{eligible ? "Los 50 números estarían habilitados, sujeto a las reglas autorizadas." : "Saldo pendiente: " + money(50000 - amount) + ". Ningún número participa todavía."}</p>
+          <div className={"f-demo-status" + (fullDistribution ? " is-ready" : "")}>
+            <strong>{fullDistribution ? "Distribución completa" : "Distribución parcial"}</strong>
+            <p>{fullDistribution ? "Ejemplo de distribución de 50 números." : "Importe adicional de referencia: " + money(50000 - amount) + "."}</p>
           </div>
         </div>
       </div>
@@ -248,7 +246,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div className="f-conversion-copy">
         <span className="f-kicker">MANTENTE INFORMADO</span>
         <h2>¿Te interesa conocer el lanzamiento?</h2>
-        <p>Estamos preparando el lanzamiento. El registro de interesados estará disponible cuando publiquemos las condiciones de privacidad.</p>
+        <p>Descubre las novedades, los premios y las próximas fechas de Oportunia.</p>
         <div className="f-conversion-points"><span>✓ Información de lanzamiento</span><span>✓ Sin obligación de compra</span><span>✓ Canales oficiales</span></div>
       </div>
       <div className="f-lead-card">
@@ -261,8 +259,8 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
           <label className="f-check"><input disabled={!leadCaptureEnabled} required type="checkbox" checked={contactConsent} onChange={(e) => setContactConsent(e.target.checked)} /><span>Autorizo el contacto para responder a esta solicitud de información.</span></label>
           <label className="f-check"><input disabled={!leadCaptureEnabled} type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} /><span>También deseo recibir novedades promocionales (opcional).</span></label>
           {notice && <p role="status" className={"f-lead-notice" + (notice.ok ? " good" : " bad")}>{notice.message}</p>}
-          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Registro aún no habilitado"}</button>
-          <p className="f-lead-legal">Este formulario no representa una compra, una reserva ni la inscripción a un sorteo. El registro permanecerá cerrado hasta publicar la política de privacidad y habilitar el tratamiento de datos.</p>
+          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Próximamente"}</button>
+          <p className="f-lead-legal">La disponibilidad de este formulario depende de las condiciones de privacidad y tratamiento de datos de Oportunia.</p>
         </form>
       </div>
     </section>
