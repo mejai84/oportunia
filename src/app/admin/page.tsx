@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { useApp } from "@/components/AppProvider";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
 import { AdminDashboard } from "@/components/AdminDashboard";
+import { AdminModuleMenu } from "@/components/AdminModuleMenu";
 import Link from "next/link";
 import { AdminDrawContentEditor } from "@/components/AdminDrawContentEditor";
 import { assignedCount, activeOrders, drawProgress, drawCatalog, drawIdOf, findDraw, milestoneOf, isEligible, isReservationExpired, money, phaseOf, PRICE, MAX_OPPORTUNITIES, shortId } from "@/lib/domain";
@@ -60,8 +61,9 @@ function LocalAdminPage() {
       <h1>Centro de <span className="gradient-text">administración.</span></h1>
       <p className="muted">Panel de operaciones, catálogo y seguimiento. El catálogo y las opiniones se administran en Supabase; las oportunidades y abonos son datos de simulación locales.</p>
     </div>
+    <AdminModuleMenu />
     <div className="alert alert-warning admin-warning"><strong>Estado financiero:</strong> Bancolombia, Nequi, Bre-B y DaviPlata NO están conectados para verificar movimientos. Las aprobaciones de números y abonos son solo simulaciones guardadas en este navegador.</div>
-    <div className="row-actions top-gap" style={{flexWrap:"wrap",marginBottom:16}}><Link className="btn btn-secondary btn-small" href="/admin/seguimiento">Agenda de seguimiento ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/clientes">CRM clientes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/reservas">Reservas centralizadas (ensayo) ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/numeros">Control de números ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/conciliacion">Conciliación bancaria ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/catalogo">Catálogo e imágenes ↗</Link><Link className="btn btn-secondary btn-small" href="/admin/opiniones">Opiniones y resultados ↗</Link><Link className="btn btn-secondary btn-small" href="/acceso">Mi acceso ↗</Link></div>
+
     <div className="draw-account-switch admin-draw-switch"><label htmlFor="admin-draw">Administrar sorteo</label>
       <select id="admin-draw" value={draw.id} onChange={(e) => chooseDraw(e.target.value)}>{draws.map((d) => <option key={d.id} value={d.id}>{d.title}{d.enabled ? " · visible" : " · oculto"}</option>)}</select>
     </div>

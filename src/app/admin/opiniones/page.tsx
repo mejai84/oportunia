@@ -1,6 +1,7 @@
 "use client";
 import { useEffect,useMemo,useState,type FormEvent } from "react";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
+import Link from "next/link";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
 type Review={id:string;draw_id:string;display_name:string;rating:number;comment:string;status:string;created_at:string};
 type Draw={id:string;title:string};
@@ -47,6 +48,7 @@ function ContentModeration(){
   setBusy(false);
  }
  return <section className="container page-space">
+    <div className="admin-back-row"><Link href="/admin" className="btn btn-primary">‹ Ver menú de todos los módulos</Link></div>
   <div className="page-title"><span className="overline">MODERACIÓN · OPORTUNIA</span><h1>Opiniones y resultados</h1><p>Publica experiencias auténticas y documenta únicamente sorteos realmente realizados.</p></div>
   <div className="two-col-layout">
    <section className="panel"><h2>Opiniones de clientes</h2><p className="small muted">Una por cuenta y sorteo. Puedes publicar u ocultar; las opiniones no se crean desde administración.</p>

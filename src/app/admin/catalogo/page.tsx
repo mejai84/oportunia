@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState, type FormEvent, type ChangeEvent } from "react";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
+import Link from "next/link";
 import { oportuniaClient, SUPABASE_URL } from "@/lib/oportuniaSupabase";
 type Draw = { id:string; title:string; prize:string; description:string; enabled:boolean; status:string; display_order:number; hero_image_url:string|null; prize_image_url:string|null };
 function CatalogEditor() {
@@ -57,6 +58,7 @@ function CatalogEditor() {
     setBusy(false);
   }
   return <section className="container page-space">
+    <div className="admin-back-row"><Link href="/admin" className="btn btn-primary">‹ Ver menú de todos los módulos</Link></div>
     <div className="page-title"><span className="overline">ADMINISTRACIÓN PROTEGIDA</span><h1>Catálogo e imágenes</h1>
       <p>Gestiona las ediciones públicas y sus dos imágenes independientes en Supabase. <a href="/admin/opiniones">Moderar opiniones y publicar resultados verificados →</a></p></div>
     <div className="alert alert-warning">La publicación de una ficha no habilita pagos ni participación. El catálogo es informativo hasta completar las autorizaciones y la plataforma transaccional.</div>
