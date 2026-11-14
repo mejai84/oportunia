@@ -138,4 +138,4 @@ function CrmWorkspace() {
     </div>}
   </div>;
 }
-export default function AdminCrmPage(){return <AdminAccessGate><CrmWorkspace/></AdminAccessGate>;}
+export default function AdminCrmPage(){return <AdminAccessGate requiredPermission="crm.write"><CrmWorkspace/></AdminAccessGate>;}
