@@ -37,8 +37,8 @@ create index preview_reserved_numbers_reservation_idx on public.preview_reserved
 
 create table public.preview_reservation_events (
   id bigint generated always as identity primary key,
-  reservation_id uuid not null references public.preview_reservations(id) on delete restrict,
-  actor_id uuid not null references auth.users(id) on delete restrict,
+  reservation_id uuid not null references public.preview_reservations(id) on delete cascade,
+  actor_id uuid references auth.users(id) on delete set null,
   event_type text not null check(event_type in ('created','expired','cancelled')),
   numbers integer[] not null,
   created_at timestamptz not null default now(),
