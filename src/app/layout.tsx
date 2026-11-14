@@ -22,6 +22,7 @@ import "./preview-progress.css";
 import "./brand.css";
 import "./oportunia-green.css";
 import "./home-premium.css";
+import "./oportunia-signature.css";
 
 export const metadata: Metadata = {
   title: "Oportunia | Oportunidades de ganar premios",
