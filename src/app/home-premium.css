@@ -1,0 +1,155 @@
+/* Oportunia premium public homepage.
+   No live commercial sale, confirmed payment, winner or invented progress is presented. */
+.funnel .container{max-width:1320px}
+.funnel .f-hero{padding:58px 0 79px;background:
+ radial-gradient(circle at 76% 47%,#c5fba4b3 0,transparent 36%),
+ radial-gradient(ellipse at 15% 14%,#e9fbd7a6 0,transparent 46%),
+ linear-gradient(123deg,#fbfff9 0%,#f0fff0 53%,#eaf9e9 100%)}
+.funnel .f-hero-grid{grid-template-columns:minmax(0,.97fr) minmax(0,1.03fr);gap:clamp(25px,4vw,60px)}
+.funnel .f-hero-copy h1{font-size:clamp(3rem,5.2vw,5.7rem);font-weight:900;letter-spacing:-.065em;line-height:1.035;color:#0a3025;margin:21px 0 17px}
+.funnel .f-hero-copy .f-highlight{background:linear-gradient(110deg,#0c903b 14%,#2fd549 57%,#a6ce20 96%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.funnel .f-hero-description{font-size:clamp(15px,1.45vw,20px);line-height:1.55;color:#315848;max-width:535px}
+.funnel .f-hero-description strong{color:#087841}
+.funnel .f-eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid #bfe6c7;background:#effced;color:#096737;box-shadow:0 5px 12px #06763c0e;font-size:11px}
+.funnel .f-hero-actions{margin:27px 0 22px}
+.funnel .f-hero-actions .f-button{border-radius:100px;min-height:51px;padding:12px 22px}
+.funnel .f-hero-foot{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:19px;color:#285f44}
+.funnel .f-hero-foot>span{display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:750}
+.funnel .f-hero-foot svg{color:#079349}
+.funnel .f-disclosure{color:#56715d;line-height:1.6;max-width:550px}
+.funnel .f-showcase{background:linear-gradient(153deg,#fff 6%,#eaffdf 65%,#ddf8d8);border-color:#c8e8ce;box-shadow:0 21px 66px #137a311f,inset 0 1px #fff;height:auto;min-height:0;padding:clamp(16px,2.3vw,27px);border-radius:30px}
+.funnel .f-showcase:before{background:radial-gradient(circle at 50% 43%,#94f5574d,transparent 60%)}
+.funnel .f-showcase-kicker{font-size:10px;color:#0a7941}
+.funnel .f-showcase-demo{font-size:10px;color:#09693f;background:#e8fbe8;border-color:#b8e3c4}
+.funnel .f-phone-stage{height:clamp(255px,27vw,355px)}
+.funnel .f-phone-stage .f-hero-upload{max-height:100%;width:min(100%,390px);height:100%;object-fit:contain;filter:drop-shadow(0 20px 22px #19733e28)}
+.funnel .f-showcase-bottom{padding-top:16px;border-color:#d0e9d4;gap:13px}
+.funnel .f-showcase-bottom strong{color:#104c32;font-size:clamp(21px,2.3vw,28px)}
+.funnel .f-showcase-bottom span{color:#567d63;font-size:11px}
+.funnel .f-showcase-bottom small{color:#4e795e}
+.funnel .f-showcase-rule{background:#cbe4cc}
+.o-home-hero-status{position:relative;z-index:2;background:#ffffffd9;border:1px solid #d8eadd;border-radius:16px;padding:15px 17px;margin-top:20px}
+.o-home-hero-status>div:first-child{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.o-home-hero-status strong{font-size:12px;color:#214939}
+.o-home-hero-status>div:first-child span{font-size:11px;color:#0c8444;font-weight:850}
+.o-home-hero-status-bar{margin:11px 0 9px;border-radius:50px;background:#e5efe8;height:10px;overflow:hidden}
+.o-home-hero-status-bar span{display:block;width:0;height:100%;background:linear-gradient(90deg,#0b9e43,#b5e822)}
+.o-home-hero-status p{margin:0;font-size:10px;color:#718675;display:flex;align-items:center;flex-wrap:wrap;gap:6px;line-height:1.6}
+.o-home-hero-status p svg{color:#088d45}
+
+/* Four benefit cards with sturdy green SVG icons. */
+.o-home-benefits{position:relative;z-index:4;margin-top:-26px;margin-bottom:61px}
+.o-home-benefits-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #d8e9d9;background:#fff;box-shadow:0 18px 46px #0b7c3520;border-radius:22px;overflow:hidden}
+.o-home-benefit{padding:22px 20px;display:flex;align-items:center;gap:13px;min-width:0;position:relative}
+.o-home-benefit:not(:last-child):after{content:"";height:60%;width:1px;background:#e0eae0;position:absolute;right:0;top:20%}
+.o-home-benefit-icon{display:grid;place-items:center;flex:0 0 47px;width:47px;height:47px;border-radius:14px;background:#e8f9e9;color:#0b9a44}
+.o-home-benefit h2{font:850 14px "Outfit",system-ui,sans-serif;color:#0c3d29;line-height:1.25;letter-spacing:-.01em;margin:0 0 6px}
+.o-home-benefit p{font-size:11px;color:#5a7362;line-height:1.5;margin:0}
+
+/* Three prominent cards in viewport, remaining concepts scroll horizontally. */
+.funnel .draw-carousel-section{padding-top:0;padding-bottom:0}
+.funnel .draw-carousel-header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.funnel .draw-carousel-header .f-kicker{display:inline-flex;align-items:center;gap:7px;color:#087f3f}
+.funnel .draw-carousel-header h2{font-size:clamp(29px,3.1vw,42px);letter-spacing:-.045em;margin:8px 0 9px;color:#113e2a}
+.funnel .draw-carousel-header p{color:#587361;font-size:13px;line-height:1.5;max-width:780px;margin:0}
+.funnel .draw-five-track{grid-auto-columns:calc((100% - 34px)/3);gap:17px;padding:5px 3px 24px}
+.funnel .draw-mini-card{border:1px solid #d5e8d8;border-radius:22px;background:#fff;box-shadow:0 10px 27px #075e3312}
+.funnel .draw-mini-card:hover{transform:translateY(-4px);box-shadow:0 19px 39px #075e3323}
+.funnel .draw-mini-art{height:235px;padding:39px 23px 12px;background:radial-gradient(circle at 52% 70%,#c7f9bb,#efffed 72%,#fff)}
+.funnel .draw-mini-card:nth-child(2n) .draw-mini-art{background:radial-gradient(circle at 50% 75%,#dceaff,#f1fbff 69%,#fff)}
+.funnel .draw-mini-card:nth-child(3n) .draw-mini-art{background:radial-gradient(circle at 50% 75%,#fff0bc,#fffaf0 69%,#fff)}
+.funnel .draw-mini-art img{filter:drop-shadow(0 13px 17px #0a57352c)}
+.funnel .draw-mini-badge{font-size:10px;padding:6px 11px;top:13px;left:13px;background:#0b9645;color:#fff}
+.funnel .draw-mini-badge.is-concept{background:#ffcf4b;color:#563f00}
+.funnel .draw-mini-content{padding:18px 20px 19px;gap:10px}
+.funnel .draw-mini-content h3{min-height:auto;font-size:clamp(19px,2vw,25px);letter-spacing:-.035em;color:#0a412c}
+.funnel .draw-mini-content>p{font-size:12px;min-height:34px}
+.funnel .draw-mini-kicker{font-size:10px}
+.draw-mini-progress{margin:8px 0 3px}
+.draw-mini-progress-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:#5e795f}
+.draw-mini-progress-head strong{font-size:11px;color:#09783b;text-align:right}
+.draw-mini-progress-track{height:9px;margin:8px 0;border-radius:99px;background:#e7efe8;overflow:hidden}
+.draw-mini-progress-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#0da149,#9cdd18)}
+.draw-mini-progress>small{display:block;font-size:10px;color:#7b917f}
+.funnel .draw-mini-foot{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #e0eee0;margin-top:4px;min-height:58px}
+.funnel .draw-mini-foot>span{font-size:10px;max-width:65%}
+.funnel .draw-mini-foot>a{display:inline-flex;justify-content:center;align-items:center;gap:7px;color:#087b40;font-size:11px;white-space:nowrap;font-weight:900}
+.funnel .draw-row-controls{display:flex;gap:7px}
+.funnel .draw-row-controls button{height:43px;width:43px;border-radius:50%;border:1px solid #d4e8d7;background:#fff;color:#08733f;font-weight:900}
+.funnel .draw-mini-disclosure{padding:7px 4px 0;margin-bottom:27px}
+
+/* Four clear numbered participation steps, with working links. */
+.o-home-participation{padding-top:57px;padding-bottom:52px}
+.o-home-participation-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:26px}
+.o-home-participation-head h2{font-size:clamp(30px,3.2vw,45px);color:#0b3c29;margin:8px 0 0;letter-spacing:-.045em}
+.o-home-participation-head h2 span{color:#089c48}
+.o-home-participation-head>p{font-size:12px;color:#5b7565;max-width:470px;margin:0;line-height:1.55}
+.o-home-participation-grid{margin:0;padding:19px;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;
+ background:linear-gradient(105deg,#f6fff5,#e9f9e9);border:1px solid #d4ead8;border-radius:24px;box-shadow:0 11px 32px #0b74290b}
+.o-home-step{display:flex;align-items:start;gap:13px;position:relative;min-width:0;padding:11px 7px}
+.o-home-step-number{display:grid;place-items:center;width:39px;height:39px;flex:0 0 39px;border-radius:50%;background:linear-gradient(135deg,#5cda21,#0b9f46);box-shadow:0 7px 16px #259b3429;
+ font-size:19px;color:#fff;font-weight:900}
+.o-home-step-icon{color:#079d48;display:grid;place-items:center;flex:0 0 33px;height:39px}
+.o-home-step-content{min-width:0}
+.o-home-step h3{font-size:14px;color:#0b3b29;line-height:1.3;margin:0 0 6px}
+.o-home-step p{color:#5a7261;font-size:11px;line-height:1.5;margin:0 0 9px}
+.o-home-step a{display:inline-flex;gap:5px;align-items:center;color:#0a8642;font-size:11px;font-weight:850}
+.o-home-step a:hover{text-decoration:underline}
+.o-home-step-arrow{position:absolute;right:-10px;top:20px;color:#29b453}
+.o-home-participation-note{display:flex;align-items:center;gap:8px;font-size:11px;color:#587963;margin:13px 0 0;line-height:1.55}
+.o-home-participation-note svg{flex-shrink:0;color:#0b8547}
+.funnel .f-stats{margin-top:15px}
+
+/* Natural-looking samples remain explicitly marked as fictional. */
+.funnel .social-proof-heading h2{color:#0a442c}
+.funnel .social-review-card.is-example{background:#f9fcf8;border:1px dashed #d5e2ca;border-radius:18px;box-shadow:0 9px 25px #0a6e3210}
+.funnel .social-review-card.is-example .social-avatar{background:linear-gradient(135deg,#e0f7d9,#c8efd6);color:#0b8042}
+.funnel .social-example-label{background:#fff3d8;color:#865d16;border:1px solid #f2e0b5}
+.funnel .social-example-banner{font-size:12px;background:#fffaf0}
+
+/* Tablet and mobile retain both blocks without horizontal page overflow. */
+@media(max-width:1130px){
+ .o-home-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .o-home-benefit:nth-child(2):after{display:none}
+ .o-home-benefit:nth-child(-n+2){border-bottom:1px solid #e4eee5}
+ .funnel .draw-five-track{grid-auto-columns:calc((100% - 17px)/2)}
+ .o-home-participation-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .o-home-step:nth-child(2) .o-home-step-arrow{display:none}
+}
+@media(max-width:900px){
+ .funnel .f-hero-grid{grid-template-columns:1fr}
+ .funnel .f-hero-copy h1{font-size:clamp(2.9rem,8vw,4.2rem)}
+ .funnel .f-showcase{max-width:570px;width:100%;margin-inline:auto}
+ .o-home-benefits{margin-top:-10px}
+ .o-home-participation-head{align-items:flex-start;flex-direction:column;gap:9px}
+}
+@media(max-width:680px){
+ .funnel .f-hero{padding:35px 0 40px}
+ .funnel .f-hero-copy h1{font-size:clamp(2.6rem,10vw,3.6rem)}
+ .funnel .f-showcase{padding:18px;border-radius:22px}
+ .funnel .f-phone-stage{height:245px}
+ .funnel .f-showcase-bottom strong{font-size:20px}
+ .o-home-benefits{margin-top:0;margin-bottom:35px}
+ .o-home-benefits-grid{grid-template-columns:1fr;border-radius:18px}
+ .o-home-benefit{padding:15px 17px;gap:13px}
+ .o-home-benefit:after{display:none}
+ .o-home-benefit:not(:last-child){border-bottom:1px solid #e4eee5}
+ .o-home-benefit-icon{width:44px;height:44px;flex-basis:44px}
+ .o-home-benefit p{font-size:11px}
+ .funnel .draw-five-track{grid-auto-columns:minmax(240px,81%);gap:12px}
+ .funnel .draw-mini-art{height:206px}
+ .funnel .draw-mini-content{padding:17px}
+ .funnel .draw-mini-content h3{font-size:21px}
+ .o-home-participation{padding-top:40px;padding-bottom:34px}
+ .o-home-participation-grid{grid-template-columns:1fr;padding:12px;gap:4px;border-radius:18px}
+ .o-home-step{padding:12px 9px;border-bottom:1px solid #daeddc}
+ .o-home-step:last-child{border:0}
+ .o-home-step-arrow{display:none}
+ .o-home-step-number{height:36px;width:36px;flex-basis:36px}
+ .o-home-step-content h3{font-size:15px}
+ .o-home-step-content p{font-size:12px}
+ .o-home-participation-note{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ .funnel .draw-mini-card,.funnel .draw-mini-card:hover{transform:none;transition:none}
+}
