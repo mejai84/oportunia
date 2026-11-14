@@ -33,6 +33,10 @@ export type StaffModule={
   icon:string; permission:StaffPermission;
 };
 export const staffModules:readonly StaffModule[]=[
+  {href:"/admin/automatizaciones",title:"Automatizaciones internas",section:"Comunicación",icon:"⚡",permission:"staff.manage",
+   summary:"Activar o desactivar flujos de avisos privados y auditar sus ejecuciones."},
+  {href:"/admin/control-pagos",title:"Control de pagos",section:"Tesorería",icon:"▣",permission:"bank.read",
+   summary:"Trazabilidad de referencias, cotejos de archivos y controles antiacreditación."},
   {href:"/admin/seguridad",title:"Estado de producción",section:"Seguridad",icon:"⚿",permission:"audit.read",
    summary:"Validar seguridad, procedencia bancaria y condiciones pendientes antes de operar."},
   {href:"/admin/equipo",title:"Equipo y permisos",section:"Seguridad",icon:"♙",permission:"staff.manage",
