@@ -48,3 +48,25 @@ test("preview calculations are per draw and never count cancelled number locks",
   assert.equal(summarizePreviewReservations(reservations,numbers,"second",now).active,1);
   assert.equal(summarizePreviewReservations([],[],"principal",now).freeNumbers,10000);
 });
+
+test("four extra demo milestones count as 40 globally occupied without payment semantics",()=>{
+  const reservation=sample("sim-50","active");
+  const reserved:PreviewNumber[]=[
+    ...Array.from({length:10},(_,i)=>({
+      draw_id:"principal",reservation_id:reservation.id,number:i,created_at:date,
+      category:"initial" as const,milestone:0,
+    })),
+    ...Array.from({length:40},(_,i)=>({
+      draw_id:"principal",reservation_id:reservation.id,number:i+10,created_at:date,
+      category:"extra_demo" as const,milestone:Math.floor(i/10)+1,
+    })),
+  ];
+  const summary=summarizePreviewReservations([reservation],reserved,"principal",now);
+  assert.equal(summary.active,1);
+  assert.equal(summary.selectedNumbers,50);
+  assert.equal(summary.freeNumbers,9950);
+  assert.equal(summary.opportunitiesRemaining,199);
+  const cancelled=summarizePreviewReservations([{...reservation,status:"cancelled",closed_at:date}],reserved,"principal",now);
+  assert.equal(cancelled.selectedNumbers,0);
+  assert.equal(cancelled.freeNumbers,10000);
+});
