@@ -58,12 +58,14 @@ function ReportsWorkspace(){
    ]);
    if(summaryR.error||activityR.error||logsR.error)throw new Error("No fue posible consultar los informes. Verifica tu sesión, permisos y migración de Supabase.");
    if(!isValidReportSummary(summaryR.data)||!isValidActivity(activityR.data))throw new Error("Supabase devolvió un informe incompleto; la descarga está bloqueada.");
-   setSummary(summaryR.data);setActivity(activityR.data);setLogs((logsR.data||[]) as ExportRequest[]);
+   return {summary:summaryR.data,activity:activityR.data,logs:(logsR.data||[]) as ExportRequest[]};
  },[client]);
  useEffect(()=>{
   let active=true;
   setLoading(true);setError("");
-  void refresh(applied,page).catch(e=>{if(active){setSummary(null);setActivity(null);setError(e instanceof Error?e.message:"Error de consulta");}})
+  void refresh(applied,page)
+    .then(data=>{if(active){setSummary(data.summary);setActivity(data.activity);setLogs(data.logs);}})
+    .catch(e=>{if(active){setSummary(null);setActivity(null);setError(e instanceof Error?e.message:"Error de consulta");}})
     .finally(()=>{if(active)setLoading(false);});
   return()=>{active=false;};
  },[applied,page,refresh]);
