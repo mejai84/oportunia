@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type {HomeContentData} from "@/lib/homeContent";
 
 export type HomeIconName =
   | "shield" | "zap" | "wallet" | "bell" | "smartphone" | "numbers"
@@ -40,12 +41,12 @@ export const publicParticipationSteps=[
   {icon:"trophy" as const,title:"¡Listo!",detail:"Solo una oportunidad confirmada conforme al reglamento podrá participar.",href:"/reglas",action:"Consultar reglas"},
 ] as const;
 
-export function HomeBenefits(){
+export function HomeBenefits({content}:{content:HomeContentData}){
   return <section className="container o-home-benefits" aria-label="Beneficios de Oportunia">
     <div className="o-home-benefits-grid">
-      {publicBenefits.map(item=><article className="o-home-benefit" key={item.title}>
+      {publicBenefits.map((item,i)=><article className="o-home-benefit" key={item.title}>
         <span className="o-home-benefit-icon"><HomeIcon name={item.icon} size={34}/></span>
-        <div><h2>{item.title}</h2><p>{item.detail}</p></div>
+        <div><h2>{content.benefits[i]?.title||item.title}</h2><p>{content.benefits[i]?.detail||item.detail}</p></div>
       </article>)}
     </div>
   </section>;

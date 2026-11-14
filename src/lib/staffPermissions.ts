@@ -55,6 +55,8 @@ export const staffModules:readonly StaffModule[]=[
    summary:"Mapa de números y revisión de la simulación local."},
   {href:"/admin/seguimiento",title:"Agenda de seguimiento",section:"Operaciones",icon:"◷",permission:"followups.write",
    summary:"Tareas por cliente, vencimientos y responsables."},
+  {href:"/admin/contenido",title:"Contenido web",section:"Contenido",icon:"▧",permission:"catalog.write",
+   summary:"Editar portada, botones, beneficios y tarjetas de premios desde Supabase."},
   {href:"/admin/catalogo",title:"Catálogo e imágenes",section:"Sorteos",icon:"✎",permission:"catalog.write",
    summary:"Contenido e imágenes de las ediciones."},
   {href:"/admin/opiniones",title:"Opiniones y resultados",section:"Sorteos",icon:"★",permission:"reviews.write",

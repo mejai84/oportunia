@@ -11,6 +11,7 @@ import { HomeBenefits, HomeParticipation, HomeIcon } from "@/components/HomeMark
 import { SocialProofSections } from "@/components/SocialProofSections";
 import { campaignFromSearch } from "@/lib/funnel";
 import { selectPrizeImage } from "@/lib/prizePhotography";
+import { useHomeContent } from "@/lib/useHomeContent";
 
 const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
 
@@ -115,6 +116,7 @@ const faqs = [
 
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
   const { draws } = usePublicDraws();
+  const {content:home,ideas} = useHomeContent();
   const featuredDraw = draws[0];
   const heroPhoto = selectPrizeImage(featuredDraw?.id||"principal",featuredDraw?.hero_image_url,"/raffles/iphone18-hero.svg");
   const heroImage = heroPhoto.src;
@@ -165,17 +167,17 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="f-hero">
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
-          <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> OPORTUNIDAD DESTACADA · EN PREPARACIÓN</div>
-          <h1>¡Descubre el próximo <span className="f-highlight">{featuredDraw?.prize || "iPhone 18"}</span>!</h1>
-          <p className="f-hero-description">Descubre premios, conoce cómo elegir tus números y sigue las novedades de cada edición.</p>
+          <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> {home.heroEyebrow}</div>
+          <h1>{home.heroPrefix} <span className="f-highlight">{featuredDraw?.prize || "iPhone 18"}</span>!</h1>
+          <p className="f-hero-description">{home.heroDescription}</p>
           <div className="f-hero-actions">
-            <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> Explorar oportunidades <HomeIcon name="arrow-right" size={18}/></a>
-            <a href="#como-funciona" className="f-button f-button-outline"><HomeIcon name="zap" size={19}/> Cómo funciona</a>
+            <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> {home.primaryButton} <HomeIcon name="arrow-right" size={18}/></a>
+            <a href="#como-funciona" className="f-button f-button-outline"><HomeIcon name="zap" size={19}/> {home.secondaryButton}</a>
           </div>
-          <div className="f-hero-foot"><span><HomeIcon name="shield" size={16}/> Reglas claras</span><span><HomeIcon name="numbers" size={16}/> Números a tu manera</span><span><HomeIcon name="bell" size={16}/> Seguimiento de avisos</span></div>
+          <div className="f-hero-foot o-hero-trust-grid"><span><HomeIcon name="shield" size={21}/>{home.trustLabels[0]}</span><span><HomeIcon name="numbers" size={21}/>{home.trustLabels[1]}</span><span><HomeIcon name="bell" size={21}/>{home.trustLabels[2]}</span></div>
         </div>
         <div className="f-showcase">
-          <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO DESTACADO</span><span className="f-showcase-demo">{featuredDraw?.status==="closed"?"EDICIÓN CERRADA":"PRÓXIMAMENTE"}</span></div>
+          <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO DESTACADO</span></div>
           <div className="f-phone-stage" aria-label="Premio destacado de Oportunia">
             {heroImage ? <><img className={"f-hero-upload"+(heroPhoto.isStockPhoto?" o-home-real-photo":"")} src={heroImage} alt={heroPhoto.description} onError={event=>{event.currentTarget.onerror=null;event.currentTarget.src="/raffles/iphone18-hero.svg";event.currentTarget.classList.remove("o-home-real-photo");}}/>{heroPhoto.isStockPhoto&&<span className="o-home-photo-attribution">Fotografía de referencia</span>}</> : <>
               <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
@@ -192,17 +194,14 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
             <div className="f-showcase-rule" />
             <div><span>Modalidad</span><strong>50 <small>números</small></strong></div>
           </div>
-          <div className="o-home-hero-status" aria-label="Estado informativo de la edición">
-            <div><strong>Estado de la edición</strong><span>{featuredDraw?.status==="closed"?"Cerrada":"Próximamente"}</span></div>
-            <p><HomeIcon name="clock" size={15}/> {featuredDraw?.status==="closed"?"Consulta el historial de resultados":"Fecha por anunciar"}</p>
-          </div>
+
         </div>
       </div>
       <div className="f-hero-glow" />
     </section>
 
-    <HomeBenefits />
-    <DrawCarousel />
+    <HomeBenefits content={home}/>
+    <DrawCarousel content={home} ideas={ideas}/>
     <HomeParticipation />
     <section className="container f-stats" aria-label="Características de la propuesta">
       <div><strong>200</strong><span>Oportunidades previstas por edición</span></div>
@@ -252,7 +251,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <div className="f-conversion-points"><span>✓ Información de lanzamiento</span><span>✓ Sin obligación de compra</span><span>✓ Canales oficiales</span></div>
       </div>
       <div className="f-lead-card">
-        <div className="f-lead-header"><h3>Solicitar información</h3><span className="f-lead-status">{leadCaptureEnabled ? "REGISTRO DISPONIBLE" : "PRÓXIMAMENTE"}</span></div>
+        <div className="f-lead-header"><h3>Solicitar información</h3><span className="f-lead-status">{leadCaptureEnabled ? "REGISTRO DISPONIBLE" : "APERTURA PENDIENTE"}</span></div>
         <form onSubmit={submitLead} className="f-lead-form">
           <label>Nombre completo<input disabled={!leadCaptureEnabled} required minLength={3} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Tu nombre y apellido" /></label>
           <label>Celular de contacto<input disabled={!leadCaptureEnabled} required inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="300 000 0000" /></label>
@@ -261,7 +260,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
           <label className="f-check"><input disabled={!leadCaptureEnabled} required type="checkbox" checked={contactConsent} onChange={(e) => setContactConsent(e.target.checked)} /><span>Autorizo el contacto para responder a esta solicitud de información.</span></label>
           <label className="f-check"><input disabled={!leadCaptureEnabled} type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} /><span>También deseo recibir novedades promocionales (opcional).</span></label>
           {notice && <p role="status" className={"f-lead-notice" + (notice.ok ? " good" : " bad")}>{notice.message}</p>}
-          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Próximamente"}</button>
+          <button className="f-button f-button-primary f-submit" disabled={!leadCaptureEnabled || saving} type="submit">{saving ? "Enviando..." : leadCaptureEnabled ? "Enviar solicitud ↗" : "Registro cerrado"}</button>
           <p className="f-lead-legal">La disponibilidad de este formulario depende de las condiciones de privacidad y tratamiento de datos de Oportunia.</p>
         </form>
       </div>

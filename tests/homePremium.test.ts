@@ -11,7 +11,7 @@ const customerReports=readFileSync("src/components/CustomerBankReports.tsx","utf
 const css=readFileSync("src/app/home-premium.css","utf8");
 
 test("premium home preserves four benefits and four navigation steps",()=>{
- assert.match(home,/<HomeBenefits \/>/);
+ assert.match(home,/<HomeBenefits content=\{home\}\s*\/>/);
  assert.match(home,/<HomeParticipation \/>/);
  for(const label of ["Seguro y confiable","Fácil de participar","Opciones de pago","Seguimiento en tiempo real"])
    assert.ok(benefits.includes(label),label);
@@ -23,7 +23,7 @@ test("premium home preserves four benefits and four navigation steps",()=>{
 test("public hero and prize cards avoid repetitive disclaimers and invented progress",()=>{
  assert.doesNotMatch(home,/Premio ilustrativo|VISTA ILUSTRATIVA|ESTADO DE TU PAGO|¡Pago completo!/i);
  assert.doesNotMatch(home,/Avance de ventas no disponible/);
- assert.match(home,/Fecha por anunciar/);
+ assert.doesNotMatch(home,/PRÓXIMAMENTE|Fecha por anunciar/);
  assert.match(home,/CALCULADORA DE NÚMEROS/);
  assert.match(home,/no procesa transferencias ni acredita pagos/);
  assert.match(cards,/IDEA DE PREMIO/);

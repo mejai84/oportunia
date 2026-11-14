@@ -12,11 +12,11 @@ const files={
 };
 test("public marketing uses opportunities and editions instead of sorts",()=>{
  assert.match(files.header,/Oportunidades/);
- assert.match(files.landing,/OPORTUNIDAD DESTACADA/);
- assert.match(files.landing,/Explorar oportunidades/);
+ assert.match(files.landing,/home\.heroEyebrow/);
+ assert.match(files.landing,/home\.primaryButton/);
  assert.match(files.metadata,/Oportunidades de ganar premios/);
  assert.match(files.results,/Resultados y ganadores/);
- assert.match(files.cards,/Oportunidades y posibles premios/);
+ assert.match(files.cards,/Oportunidades y premios/);
  for(const [name,content] of Object.entries(files)){
   if(name==="rules")continue;
   assert.doesNotMatch(content,/>Sorteos</);
@@ -30,7 +30,7 @@ test("marketing remains truthful; actual chance mechanism and authorization rema
  assert.match(files.rules,/antes de abrir la participación/);
  assert.match(files.metadata,/autorizaciones aplicables/);
  assert.match(files.landing,/resultado oficial de lotería/);
- assert.match(files.landing,/Fecha por anunciar/);
+ assert.doesNotMatch(files.landing,/Fecha por anunciar|PRÓXIMAMENTE/);
 });
 test("in-page targets for existing shared links remain backward compatible",()=>{
  assert.match(files.header,/href="#sorteos"/);
