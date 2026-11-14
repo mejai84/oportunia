@@ -68,13 +68,13 @@ export function CustomerPaymentControl(){
   {!checked?<p className="muted">Comprobando sesión…</p>:!userId?<p className="muted">Para consultar tus reportes, <Link href="/acceso">inicia sesión</Link>.</p>:
     loading?<p className="muted">Cargando trazabilidad…</p>:<>
      {error&&<div role="alert" className="alert alert-error">{error}</div>}
-     <div className="payctrl-metrics"><div><strong>{cases.length}</strong><span>Referencias vinculadas</span></div>
+     <div className="payctrl-metrics"><div><strong>{cases.length}</strong><span>Referencias declaradas</span></div>
        <div><strong>{cases.filter(c=>c.evidence_status==="file_matched").length}</strong><span>Cotejadas con archivo</span></div>
        <div><strong>0</strong><span>Abonos certificados</span></div>
        <div><strong>{unread}</strong><span>Avisos sin leer</span></div></div>
      <div className="payctrl-two">
       <div><h3>Seguimiento de mis referencias</h3>
-       {cases.length===0?<p className="muted">No tienes referencias vinculadas a ensayos. Puedes asociar una referencia propia desde tu selección de prueba.</p>:
+       {cases.length===0?<p className="muted">No tienes referencias declaradas. Puedes consultar el formulario de reporte en Pagos.</p>:
         <div className="payctrl-list">{cases.map(c=><article key={c.id}>
          <div className="payctrl-line"><strong>{paymentCOP(c.declared_amount_cop)} declarados</strong><span>{paymentEvidenceLabels[c.evidence_status]}</span></div>
          <small>Cuenta receptora: {c.bank_account_alias==="BANCOLOMBIA_PRINCIPAL"?"Bancolombia":"Nequi"} · Registro {new Date(c.created_at).toLocaleDateString("es-CO")}</small>
