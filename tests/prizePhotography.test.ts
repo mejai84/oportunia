@@ -28,12 +28,8 @@ test("the iPhone stock photo is not claimed to be an authentic iPhone 18",()=>{
  assert.match(hero,/onError=/);
  assert.match(cards,/onError=/);
 });
-test("sample comments are not falsely presented as paying customers",()=>{
+test("homepage contains no invented customer testimonials",()=>{
  const c=readFileSync("src/components/SocialProofSections.tsx","utf8");
- const samples=c.match(/id:"ejemplo-\d+"/g) || [];
- assert.equal(samples.length,10);
- assert.match(c,/Ejemplo ficticio/);
- assert.match(c,/no son reseñas enviadas por clientes/);
- assert.match(c,/sin compra verificada/);
+ assert.doesNotMatch(c,/id:"ejemplo-\d+"|SAMPLE_REVIEWS|Ejemplo ficticio|sin compra verificada/);
  assert.match(c,/\.eq\("status","published"\)/);
 });
