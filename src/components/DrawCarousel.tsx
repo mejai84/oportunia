@@ -5,7 +5,7 @@ import { usePublicDraws, type PublicDraw } from "@/lib/usePublicDraws";
 import { HomeIcon } from "@/components/HomeMarketingSections";
 
 type DrawCard = PublicDraw & { illustrative?: boolean };
-/* Conceptos visuales: no son sorteos convocados, anunciados ni habilitados. */
+/* Ideas de premios identificadas como tales; no se presentan como sorteos confirmados. */
 const EXAMPLE_DRAWS: DrawCard[] = [
   {id:"concepto-consola",title:"Concepto: Consola",prize:"Consola de videojuegos",description:"Una propuesta de premio para quienes disfrutan jugar.",status:"preview",display_order:2,hero_image_url:null,prize_image_url:"/raffles/concept-console.svg",illustrative:true},
   {id:"concepto-televisor",title:"Concepto: Smart TV",prize:"Smart TV 55″",description:"Una idea para futuras ediciones de entretenimiento en casa.",status:"preview",display_order:3,hero_image_url:null,prize_image_url:"/raffles/concept-tv.svg",illustrative:true},
@@ -28,18 +28,18 @@ export function DrawCarousel() {
     const gap=Number.parseFloat(getComputedStyle(track).columnGap)||16;
     track.scrollBy({left:direction*(width+gap),behavior:"smooth"});
   }
-  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos y conceptos">
+  return <section id="sorteos" className="container draw-carousel-section" aria-label="Catálogo de sorteos y posibles premios">
     <div className="draw-carousel-header">
       <div><span className="f-kicker"><HomeIcon name="sparkles" size={17}/> EXPLORA OPORTUNIA</span>
-      <h2>Próximos <span className="f-highlight">sorteos y premios.</span></h2>
-      <p>Explora las ediciones en preparación y los conceptos de premios. Ninguna tarjeta representa una venta activa.</p></div>
+      <h2>Premios que <span className="f-highlight">emocionan.</span></h2>
+      <p>Descubre los premios anunciados y las ideas que estamos preparando para futuras ediciones.</p></div>
       <div className="draw-carousel-controls draw-row-controls" aria-label="Desplazar premios">
         <button type="button" aria-label="Ver premios anteriores" onClick={()=>move(-1)}>←</button>
         <button type="button" aria-label="Ver premios siguientes" onClick={()=>move(1)}>→</button>
       </div>
     </div>
     {loading&&<p role="status">Consultando el catálogo…</p>}
-    {error&&<div className="alert alert-warning" role="status">{error} Las tarjetas adicionales son conceptos ilustrativos.</div>}
+    {error&&<div className="alert alert-warning" role="status">{error}</div>}
     <div className="draw-five-track" ref={trackRef} aria-label="Premios y propuestas de sorteo">
       {cards.map((draw,i)=><article className={"draw-mini-card"+(draw.illustrative?" is-concept":"")} key={draw.id}>
         <div className="draw-mini-art">
@@ -49,19 +49,17 @@ export function DrawCarousel() {
           <img src={draw.prize_image_url||"/raffles/iphone18-product.svg"} alt={"Ilustración del premio "+draw.prize} loading={i>1?"lazy":"eager"}/>
         </div>
         <div className="draw-mini-content">
-          <span className="draw-mini-kicker">OPORTUNIA · {draw.illustrative?"CONCEPTO VISUAL":"EDICIÓN EN CATÁLOGO"}</span>
+          <span className="draw-mini-kicker">OPORTUNIA · {draw.illustrative?"POSIBLE PREMIO":"PREMIO DESTACADO"}</span>
           <h3>{draw.prize}</h3>
           <p>{draw.description}</p>
-          <div className="draw-mini-progress">
+          {!draw.illustrative&&<div className="draw-mini-progress">
             <div className="draw-mini-progress-head">
-              <span>Avance del sorteo</span>
-              <strong>{draw.illustrative?"No aplica":draw.status==="closed"?"Edición cerrada":"Sin apertura"}</strong>
+              <span>Estado de la edición</span>
+              <strong>{draw.status==="closed"?"Cerrada":"Próximamente"}</strong>
             </div>
-            <div className="draw-mini-progress-track" role="img" aria-label="No hay porcentaje de ventas oficiales publicado"><span/></div>
-            <small>{draw.illustrative?"Solo propuesta de diseño":"Participaciones oficiales aún no habilitadas"}</small>
-          </div>
+          </div>}
           <div className="draw-mini-foot">
-            <span>{draw.illustrative?"Propuesta visual · Sin convocatoria":"Consulta condiciones y novedades"}</span>
+            <span>{draw.illustrative?"Idea para una próxima edición":"Conoce sus condiciones"}</span>
             <a href="#registro" aria-label={"Conocer novedades de "+draw.prize}>Conocer más <HomeIcon name="arrow-right" size={18}/></a>
           </div>
         </div>
