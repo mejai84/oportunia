@@ -7,6 +7,7 @@ import { money } from "@/lib/domain";
 import { usePublicDraws } from "@/lib/usePublicDraws";
 
 import { DrawCarousel } from "@/components/DrawCarousel";
+import { HomeBenefits, HomeParticipation, HomeIcon } from "@/components/HomeMarketingSections";
 import { SocialProofSections } from "@/components/SocialProofSections";
 import { campaignFromSearch } from "@/lib/funnel";
 
@@ -162,18 +163,18 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="f-hero">
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
-          <div className="f-eyebrow"><span className="f-live-dot" /> SORTEOS QUE TE ACERCAN A LO QUE QUIERES</div>
-          <h1>Descubre tu próximo <span className="f-highlight">{featuredDraw?.prize || "gran premio"}</span> con <em>Oportunia.</em></h1>
-          <p className="f-hero-description">Próximamente podrás explorar sorteos, elegir tus números o recibirlos automáticamente y seguir cada edición con reglas claras.</p>
+          <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> SORTEO DESTACADO · EN PREPARACIÓN</div>
+          <h1>¡Descubre el próximo <span className="f-highlight">{featuredDraw?.prize || "iPhone 18"}</span>!</h1>
+          <p className="f-hero-description">Explora premios, conoce cómo elegir tus números y sigue cada edición con información clara. <strong>Próximamente.</strong></p>
           <div className="f-hero-actions">
-            <a href="#sorteos" className="f-button f-button-primary">Ver próximos sorteos <span aria-hidden="true">↗</span></a>
-            <a href="#como-funciona" className="f-button f-button-outline">Así funciona <span aria-hidden="true">↓</span></a>
+            <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> Ver próximos sorteos <HomeIcon name="arrow-right" size={18}/></a>
+            <a href="#como-funciona" className="f-button f-button-outline"><HomeIcon name="zap" size={19}/> Cómo funciona</a>
           </div>
-          <div className="f-hero-foot"><span>✓ Reglas claras</span><span>✓ Selección a tu manera</span><span>✓ Información transparente</span></div>
+          <div className="f-hero-foot"><span><HomeIcon name="shield" size={16}/> Reglas claras</span><span><HomeIcon name="numbers" size={16}/> Números a tu manera</span><span><HomeIcon name="bell" size={16}/> Seguimiento de avisos</span></div>
           <p className="f-disclosure">Premio ilustrativo y sujeto a disponibilidad. Aún no hay venta ni participación habilitada; se publicarán reglamento y autorizaciones antes de la apertura.</p>
         </div>
         <div className="f-showcase">
-          <div className="f-showcase-top"><span className="f-showcase-kicker">PRÓXIMA EDICIÓN</span><span className="f-showcase-demo">PRÓXIMAMENTE</span></div>
+          <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO DESTACADO</span><span className="f-showcase-demo">{featuredDraw?.status==="closed"?"EDICIÓN CERRADA":"PRÓXIMAMENTE"}</span></div>
           <div className="f-phone-stage" aria-label="Ilustración decorativa del sorteo">
             {heroImage ? <img className="f-hero-upload" src={heroImage} alt="" /> : <>
               <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
@@ -186,17 +187,23 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
             </>}
           </div>
           <div className="f-showcase-bottom">
-            <div><span>Una oportunidad</span><strong>$50.000 <small>COP</small></strong></div>
+            <div><span>Una oportunidad prevista</span><strong>$50.000 <small>COP</small></strong></div>
             <div className="f-showcase-rule" />
-            <div><span>Incluye</span><strong>50 <small>números</small></strong></div>
+            <div><span>Modalidad prevista</span><strong>50 <small>números</small></strong></div>
+          </div>
+          <div className="o-home-hero-status" aria-label="Estado informativo del sorteo">
+            <div><strong>Estado de la edición</strong><span>{featuredDraw?.status==="closed"?"Cerrada":"En preparación"}</span></div>
+            <div className="o-home-hero-status-bar" aria-label="Avance de ventas no disponible" role="img"><span/></div>
+            <p><HomeIcon name="clock" size={15}/> Inscripciones sin abrir <span aria-hidden="true">·</span> Fecha por anunciar</p>
           </div>
         </div>
       </div>
       <div className="f-hero-glow" />
     </section>
 
+    <HomeBenefits />
     <DrawCarousel />
-    <SocialProofSections />
+    <HomeParticipation />
     <section className="container f-stats" aria-label="Características de la propuesta">
       <div><strong>200</strong><span>Oportunidades previstas por sorteo</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
@@ -204,18 +211,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
     </section>
 
-    <section className="container f-section" id="como-funciona">
-      <div className="f-section-head"><span className="f-kicker">EL PROCESO</span>
-        <h2>Así funciona cada oportunidad.</h2>
-        <p>Un proceso transparente, desde la elección hasta la habilitación.</p>
-      </div>
-      <div className="f-steps">
-        <article><span className="f-step-icon">01 <b>◇</b></span><h3>Escoge o recibe 10 números</h3><p>Elige tus 10 favoritos o deja que Oportunia los asigne automáticamente entre los disponibles cuando se habilite cada edición.</p></article>
-        <article><span className="f-step-icon">02 <b>◫</b></span><h3>Define tus cuotas</h3><p>Conoce el pago completo o las opciones previstas de dos y tres cuotas. Los medios de pago se publicarán cuando estén habilitados.</p></article>
-        <article><span className="f-step-icon">03 <b>✧</b></span><h3>Recibe aleatorios</h3><p>Al confirmar cada abono se asignarían más números, hasta completar los 40 aleatorios.</p></article>
-        <article><span className="f-step-icon">04 <b>✓</b></span><h3>Habilita los 50</h3><p>Solo con $50.000 confirmados se considera habilitada la oportunidad. Un pago parcial no da derecho a jugar.</p></article>
-      </div>
-    </section>
+    <SocialProofSections />
 
     <section className="f-demo-section" id="simulador">
       <div className="container f-demo-grid">
