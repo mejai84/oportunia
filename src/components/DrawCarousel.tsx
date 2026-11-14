@@ -32,7 +32,8 @@ export function DrawCarousel({content,ideas}:Props){
   if(cards.length<=1)return;
   const timer=window.setInterval(()=>{
    if(pausedRef.current||document.hidden||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-   goTo((activeRef.current+1)%cards.length);
+   const next=(activeRef.current+1)%cards.length;
+   goTo(next,next===0?"auto":"smooth");
   },4500);
   return()=>window.clearInterval(timer);
  },[cards.length,goTo]);
@@ -41,7 +42,8 @@ export function DrawCarousel({content,ideas}:Props){
  },[cards.length,goTo]);
  const move=(direction:number)=>{
   if(cards.length<=1)return;
-  goTo((activeRef.current+direction+cards.length)%cards.length);
+  const next=(activeRef.current+direction+cards.length)%cards.length;
+  goTo(next,(direction>0&&next===0)||(direction<0&&next===cards.length-1)?"auto":"smooth");
  };
  const syncScroll=()=>{
   const track=trackRef.current;if(!track||!track.children.length)return;
