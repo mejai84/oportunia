@@ -1,6 +1,3 @@
-"use client";
-import {useEffect,useState} from "react";
-
 export type HomeContentData={
  heroEyebrow:string;heroPrefix:string;heroDescription:string;
  primaryButton:string;secondaryButton:string;
@@ -52,17 +49,4 @@ export function normalizeHomeContent(raw:Partial<HomeContentData>|null|undefined
   carouselDescription:clean(raw.carouselDescription,defaultHomeContent.carouselDescription,300),
   trustLabels,benefits
  };
-}
-export function useHomeContent(){
- const [content,setContent]=useState<HomeContentData>(defaultHomeContent);
- const [ideas,setIdeas]=useState<HomeCard[]>(fallbackHomeCards);
- useEffect(()=>{
-  const controller=new AbortController();
-  fetch("/api/home-content",{signal:controller.signal,cache:"no-store"})
-   .then(async r=>{if(!r.ok)throw Error("CMS unavailable");return r.json() as Promise<{content:HomeContentData;cards:HomeCard[]}>;})
-   .then(data=>{setContent(normalizeHomeContent(data.content));setIdeas(data.cards||[]);})
-   .catch(()=>{/* Preserve visual defaults if network is offline. */});
-  return()=>controller.abort();
- },[]);
- return {content,ideas};
 }
