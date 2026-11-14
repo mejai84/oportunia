@@ -66,6 +66,10 @@ begin
  return new;
 end; $pc$;
 
+-- A link is a separate life-cycle event from evidence status; audit both.
+create trigger payment_case_after_link after update of claim_link_id on public.payment_control_cases
+ for each row execute function public.record_payment_control_case_event();
+
 create or replace function public.track_linked_customer_payment()
  returns trigger language plpgsql security definer set search_path='' as $pc$
 declare v_claim public.bank_recon_claims%rowtype;v_id uuid;
