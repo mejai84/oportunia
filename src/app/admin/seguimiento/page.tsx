@@ -190,4 +190,4 @@ function FollowUpWorkspace(){
       </div>}
   </div>;
 }
-export default function AdminFollowupsPage(){return <AdminAccessGate><FollowUpWorkspace/></AdminAccessGate>;}
+export default function AdminFollowupsPage(){return <AdminAccessGate requiredPermission="followups.write"><FollowUpWorkspace/></AdminAccessGate>;}
