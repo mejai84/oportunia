@@ -153,3 +153,15 @@
 @media(prefers-reduced-motion:reduce){
  .funnel .draw-mini-card,.funnel .draw-mini-card:hover{transform:none;transition:none}
 }
+
+/* Real stock photography is a reference; it never implies ownership or an exact prize model. */
+.funnel .f-phone-stage{position:relative;overflow:hidden;border-radius:20px}
+.funnel .f-phone-stage .f-hero-upload.o-home-real-photo{display:block;width:100%;max-width:none;height:100%;max-height:none;object-fit:cover;object-position:50% 50%;border-radius:19px;filter:none;box-shadow:inset 0 0 0 1px #d4e9d8}
+.funnel .o-home-photo-attribution{position:absolute;right:11px;bottom:10px;padding:6px 9px;background:#ffffffeb;border-radius:9px;color:#3b6748;font-size:10px;font-weight:700;box-shadow:0 3px 12px #12452e20;pointer-events:none}
+.funnel .draw-mini-art{position:relative}
+.funnel .draw-mini-art img.o-draw-photo{display:block;object-fit:cover;object-position:center;width:100%;height:100%;border-radius:13px;filter:none}
+.funnel .o-draw-photo-note{position:absolute;bottom:13px;right:16px;background:#ffffffeb;color:#42694f;font-size:9px;font-weight:650;border-radius:8px;padding:5px 7px}
+.funnel .o-review-examples-heading{padding:13px 16px;border:1px solid #d6e7db;border-radius:14px;background:#f5faf5;color:#53705f;line-height:1.55;font-size:12px;margin:0 0 18px}
+.funnel .o-review-examples-heading strong{color:#17513a}
+.funnel .o-review-example-tag{font-size:10px;color:#785c17;background:#fff3da;border:1px solid #eeddbb;padding:5px 8px;border-radius:9px;font-weight:800}
+.funnel .social-review-card.is-example .social-review-footer small{color:#687f70}

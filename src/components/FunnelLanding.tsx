@@ -10,6 +10,7 @@ import { DrawCarousel } from "@/components/DrawCarousel";
 import { HomeBenefits, HomeParticipation, HomeIcon } from "@/components/HomeMarketingSections";
 import { SocialProofSections } from "@/components/SocialProofSections";
 import { campaignFromSearch } from "@/lib/funnel";
+import { selectPrizeImage } from "@/lib/prizePhotography";
 
 const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
 
@@ -115,7 +116,8 @@ const faqs = [
 export function FunnelLanding({ leadCaptureEnabled }: Props) {
   const { draws } = usePublicDraws();
   const featuredDraw = draws[0];
-  const heroImage = featuredDraw?.hero_image_url || "/raffles/iphone18-hero.svg";
+  const heroPhoto = selectPrizeImage(featuredDraw?.id||"principal",featuredDraw?.hero_image_url,"/raffles/iphone18-hero.svg");
+  const heroImage = heroPhoto.src;
   const [amount, setAmount] = useState(50000);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -175,7 +177,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
         <div className="f-showcase">
           <div className="f-showcase-top"><span className="f-showcase-kicker">PREMIO DESTACADO</span><span className="f-showcase-demo">{featuredDraw?.status==="closed"?"EDICIÓN CERRADA":"PRÓXIMAMENTE"}</span></div>
           <div className="f-phone-stage" aria-label="Premio destacado de Oportunia">
-            {heroImage ? <img className="f-hero-upload" src={heroImage} alt="" /> : <>
+            {heroImage ? <><img className={"f-hero-upload"+(heroPhoto.isStockPhoto?" o-home-real-photo":"")} src={heroImage} alt={heroPhoto.description} onError={event=>{event.currentTarget.onerror=null;event.currentTarget.src="/raffles/iphone18-hero.svg";event.currentTarget.classList.remove("o-home-real-photo");}}/>{heroPhoto.isStockPhoto&&<span className="o-home-photo-attribution">Fotografía de referencia</span>}</> : <>
               <div className="f-orbit f-orbit-one" /><div className="f-orbit f-orbit-two" />
               <div className="f-phone">
                 <div className="f-phone-camera"><span /><span /><span /></div>

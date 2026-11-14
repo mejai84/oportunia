@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { usePublicDraws, type PublicDraw } from "@/lib/usePublicDraws";
 import { HomeIcon } from "@/components/HomeMarketingSections";
+import { selectPrizeImage } from "@/lib/prizePhotography";
 
 type DrawCard = PublicDraw & { illustrative?: boolean };
 /* Ideas de premios identificadas como tales; no se presentan como ediciones anunciadas. */
@@ -46,7 +47,11 @@ export function DrawCarousel() {
           <span className={"draw-mini-badge"+(draw.illustrative?" is-concept":"")}>
             {draw.illustrative?"IDEA DE PREMIO":draw.status==="closed"?"EDICIÓN CERRADA":"PRÓXIMAMENTE"}
           </span>
-          <img src={draw.prize_image_url||"/raffles/iphone18-product.svg"} alt={"Ilustración del premio "+draw.prize} loading={i>1?"lazy":"eager"}/>
+          {(()=>{const photo=selectPrizeImage(draw.id,draw.prize_image_url,"/raffles/iphone18-product.svg");
+            return <><img className={photo.isStockPhoto?"o-draw-photo":""} src={photo.src} alt={photo.description} loading={i>1?"lazy":"eager"}
+            onError={event=>{event.currentTarget.onerror=null;event.currentTarget.src=draw.prize_image_url||"/raffles/iphone18-product.svg";event.currentTarget.classList.remove("o-draw-photo");}}/>
+            {photo.isStockPhoto&&<span className="o-draw-photo-note">Fotografía de referencia</span>}</>;
+          })()}
         </div>
         <div className="draw-mini-content">
           <span className="draw-mini-kicker">OPORTUNIA · {draw.illustrative?"POSIBLE PREMIO":"PREMIO DESTACADO"}</span>
