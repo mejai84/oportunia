@@ -208,7 +208,7 @@ function ReconciliationWorkspace() {
               <div className="bank-movement-top"><div><strong>{m.transaction_reference}</strong><span>{m.bank} · {m.account_alias} · {m.movement_date}</span></div>
                 <strong className="bank-money">{money(m.amount_cop)}</strong></div>
               <p>{m.description||"Abono importado"} <span className={"bank-status bank-"+m.status}>{statusLabel[m.status]}</span></p>
-              <small>Fuente declarada: {m.source_label} · Importado {new Date(m.imported_at).toLocaleDateString("es-CO")}</small>
+              <small>Fuente declarada: {m.source_label} · Importado {new Date(m.imported_at).toLocaleDateString("es-CO")} · <strong>Archivo no autenticado por el banco</strong></small>
               {m.status==="unmatched"&&<div className="bank-row-actions">{candidate?
                 <button type="button" className="btn btn-primary btn-small" disabled={busy} onClick={()=>void matchItem(m,candidate)}>Conciliar con {candidate.customer_label} · {money(candidate.expected_amount_cop)}</button>:
                 <span className="bank-no-match">Sin coincidencia exacta con un pago reportado. Verifica banco, alias, referencia y valor.</span>}

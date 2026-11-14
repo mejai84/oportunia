@@ -33,6 +33,8 @@ export type StaffModule={
   icon:string; permission:StaffPermission;
 };
 export const staffModules:readonly StaffModule[]=[
+  {href:"/admin/seguridad",title:"Estado de producción",section:"Seguridad",icon:"⚿",permission:"audit.read",
+   summary:"Validar seguridad, procedencia bancaria y condiciones pendientes antes de operar."},
   {href:"/admin/equipo",title:"Equipo y permisos",section:"Seguridad",icon:"♙",permission:"staff.manage",
    summary:"Asignar roles por cuenta y revisar quién autorizó cada cambio."},
   {href:"/admin/informes",title:"Informes y exportaciones",section:"Control",icon:"▤",permission:"audit.read",
