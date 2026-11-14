@@ -21,6 +21,7 @@ import "./central-reservations.css";
 import "./preview-progress.css";
 import "./brand.css";
 import "./oportunia-green.css";
+import "./home-premium.css";
 
 export const metadata: Metadata = {
   title: "Oportunia | Sorteos que te acercan a lo que quieres",
