@@ -12,6 +12,7 @@ export type PreviewReservation = {
 };
 export type PreviewNumber = {
   draw_id:string;reservation_id:string;number:number;created_at:string;
+  category?:"initial"|"extra_demo";milestone?:number;
 };
 export type PreviewEvent = {
   id:number;reservation_id:string;actor_id:string|null;

@@ -2,10 +2,12 @@
 import Link from "next/link";
 import { useCallback,useEffect,useMemo,useState } from "react";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
+import { PreviewProgress } from "@/components/PreviewProgress";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
-import {displayPreviewNumber,effectivePreviewStatus,summarizePreviewReservations,
+import {displayPreviewNumber,effectivePreviewStatus,
   type PreviewDraw,type PreviewReservation,type PreviewNumber,type PreviewEvent} from "@/lib/previewReservations";
 const statusLabels={active:"Vigente",expired:"Vencida",cancelled:"Cancelada"};
+type AdminSummary={active:number;expired:number;cancelled:number;occupied:number;extra:number;free:number;remaining:number};
 
 function PreviewAdminWorkspace(){
   const client=useMemo(()=>oportuniaClient(),[]);
@@ -18,13 +20,15 @@ function PreviewAdminWorkspace(){
   const [error,setError]=useState("");
   const [filter,setFilter]=useState<"all"|"active"|"expired"|"cancelled">("all");
   const [term,setTerm]=useState("");
+  const [detailsId,setDetailsId]=useState<string|null>(null);
+  const [summary,setSummary]=useState<AdminSummary|null>(null);
 
   const refresh=useCallback(async()=>{
     const [drawResult,holdResult,numberResult,eventResult]=await Promise.all([
       client.from("draw_catalog").select("id,title,enabled,status").order("display_order",{ascending:true}).limit(25),
       client.from("preview_reservations").select("id,draw_id,user_id,selection_mode,preferred_plan,status,created_at,expires_at,closed_at")
         .order("created_at",{ascending:false}).limit(500),
-      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at").limit(2500),
+      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at,category,milestone").limit(2500),
       client.from("preview_reservation_events").select("id,reservation_id,actor_id,event_type,numbers,created_at")
         .order("created_at",{ascending:false}).limit(1000),
     ]);
@@ -41,28 +45,43 @@ function PreviewAdminWorkspace(){
       .finally(()=>{if(active)setLoading(false);});
     return()=>{active=false;};
   },[refresh]);
-  const stats=useMemo(()=>summarizePreviewReservations(reservations,numbers,drawId),[reservations,numbers,drawId]);
+  const refreshSummary=useCallback(async(draw:string)=>{
+    const {data,error:summaryError}=await client.rpc("get_preview_admin_summary",{p_draw_id:draw});
+    if(summaryError)throw new Error("No fue posible calcular el inventario completo.");
+    const payload=data as AdminSummary|null;
+    if(!payload||typeof payload.active!=="number"||typeof payload.occupied!=="number"||
+       typeof payload.free!=="number"||typeof payload.extra!=="number")throw new Error("La estadística central no es válida.");
+    setSummary(payload);
+  },[client]);
+  useEffect(()=>{
+    let active=true;
+    setSummary(null);
+    if(!drawId)return;
+    void refreshSummary(drawId).catch(e=>{if(active)setError(e instanceof Error?e.message:"Error de estadísticas");});
+    return()=>{active=false;};
+  },[drawId,refreshSummary]);
   const visible=reservations.filter(r=>r.draw_id===drawId&&(filter==="all"||effectivePreviewStatus(r)===filter)&&
     (!term||r.id.toLowerCase().includes(term.toLowerCase())||r.user_id.toLowerCase().includes(term.toLowerCase())));
   return <div className="container page-space central-page">
     <div className="central-head"><div><span className="overline">ADMIN · INVENTARIO DE ENSAYOS</span>
       <h1>Reservas <span className="gradient-text">centralizadas.</span></h1>
-      <p>Auditoría global por sorteo de las diez selecciones iniciales guardadas en PostgreSQL.</p></div>
+      <p>Auditoría global de las diez selecciones iniciales y hasta cuarenta números adicionales estrictamente simulados en PostgreSQL.</p></div>
       <Link className="btn btn-secondary" href="/admin">Volver al panel</Link>
     </div>
-    <div className="central-warning"><strong>Inventario de laboratorio, no ventas:</strong> estos bloqueos son temporales, no se han pagado ni asignado oficialmente y NO afectan las selecciones de la demo local. Los 40 números restantes no se generan aquí.</div>
+    <div className="central-warning"><strong>Inventario de laboratorio, no ventas:</strong> estos bloqueos son temporales, no se han pagado ni asignado oficialmente y NO afectan las selecciones de la demo local. Los 40 números adicionales solo se crean mediante hitos ficticios habilitados para administración, sin pagos ni elegibilidad.</div>
     {error&&<div role="alert" className="alert alert-error">{error}</div>}
     {loading?<section className="central-panel">Consultando reservas…</section>:<>
       <section className="central-panel">
         <div className="central-toolbar"><label>Edición de prueba<select value={drawId} onChange={e=>setDrawId(e.target.value)}>
           {draws.map(d=><option value={d.id} key={d.id}>{d.title} · {d.status}</option>)}</select></label>
-          <button className="btn btn-secondary btn-small" type="button" onClick={()=>void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura"))}>Actualizar</button></div>
+          <button className="btn btn-secondary btn-small" type="button" onClick={()=>{void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura")); if(drawId)void refreshSummary(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de estadísticas"));}}>Actualizar</button></div>
         <div className="central-stats central-admin-stats">
-          <div><span>Ensayos vigentes</span><strong>{stats.active} / 200</strong></div>
-          <div><span>Números ocupados (ensayo)</span><strong>{stats.selectedNumbers.toLocaleString("es-CO")}</strong></div>
-          <div><span>Números libres (ensayo)</span><strong>{stats.freeNumbers.toLocaleString("es-CO")}</strong></div>
-          <div><span>Vencidas</span><strong>{stats.expired}</strong></div>
-          <div><span>Canceladas</span><strong>{stats.cancelled}</strong></div>
+          <div><span>Ensayos vigentes</span><strong>{summary?.active??"…"} / 200</strong></div>
+          <div><span>Números ocupados (ensayo)</span><strong>{summary?.occupied.toLocaleString("es-CO")??"…"}</strong></div>
+          <div><span>Números libres (ensayo)</span><strong>{summary?.free.toLocaleString("es-CO")??"…"}</strong></div>
+          <div><span>Vencidas</span><strong>{summary?.expired??"…"}</strong></div>
+          <div><span>Canceladas</span><strong>{summary?.cancelled??"…"}</strong></div>
+          <div><span>Extras de simulación</span><strong>{summary?.extra??"…"}</strong></div>
         </div>
       </section>
       <section className="central-panel">
@@ -82,6 +101,13 @@ function PreviewAdminWorkspace(){
               <p className="central-audit-detail">Usuario {r.user_id.slice(0,8)}… · {r.selection_mode==="manual"?"Manual":"Automática"} · Creada {new Date(r.created_at).toLocaleString("es-CO")} · Vence {new Date(r.expires_at).toLocaleString("es-CO")}</p>
               <div className="central-numbers">{nums.map(n=><span key={n}>{displayPreviewNumber(n)}</span>)}</div>
               <small>Eventos auditados: {events.filter(e=>e.reservation_id===r.id).map(e=>e.event_type).join(" · ")||"Sin eventos visibles"}</small>
+              <div className="central-admin-actions">
+                <button type="button" className="btn btn-secondary btn-small" onClick={()=>setDetailsId(old=>old===r.id?null:r.id)}>
+                  {detailsId===r.id?"Ocultar":"Ver"} hitos de simulación y seguimiento
+                </button>
+              </div>
+              {detailsId===r.id&&<PreviewProgress reservationId={r.id}
+                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura"));if(drawId)void refreshSummary(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de estadísticas"));}}/>}
             </article>;
           })}</div>}
         {reservations.length===500&&<p className="muted">Vista limitada a los 500 registros más recientes.</p>}

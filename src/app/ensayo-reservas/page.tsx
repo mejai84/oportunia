@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback,useEffect,useMemo,useState,type FormEvent } from "react";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
+import { PreviewProgress } from "@/components/PreviewProgress";
 import { displayPreviewNumber,parsePreviewNumber,validatePreviewSelection,effectivePreviewStatus,
   type PreviewDraw,type PreviewReservation,type PreviewNumber,type PreviewEvent,type PreviewMode,type PreviewPlan
 } from "@/lib/previewReservations";
@@ -33,6 +34,7 @@ export default function PreviewReservationsPage(){
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState("");
   const [notice,setNotice]=useState("");
+  const [openHistoryId,setOpenHistoryId]=useState<string|null>(null);
 
   useEffect(()=>{
     let mounted=true;
@@ -51,7 +53,7 @@ export default function PreviewReservationsPage(){
         .eq("enabled",true).eq("status","preview").order("display_order",{ascending:true}).limit(25),
       client.from("preview_reservations").select("id,draw_id,user_id,selection_mode,preferred_plan,status,created_at,expires_at,closed_at")
         .eq("user_id",id).order("created_at",{ascending:false}).limit(100),
-      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at").limit(500),
+      client.from("preview_reserved_numbers").select("draw_id,reservation_id,number,created_at,category,milestone").limit(500),
       client.from("preview_reservation_events").select("id,reservation_id,actor_id,event_type,numbers,created_at")
         .order("created_at",{ascending:false}).limit(200),
     ]);
@@ -64,9 +66,10 @@ export default function PreviewReservationsPage(){
     setEvents((d.data||[]) as PreviewEvent[]);
   },[client]);
   const loadTaken=useCallback(async(draw:string)=>{
-    const {data,error:rpcError}=await client.rpc("list_preview_taken_numbers",{p_draw_id:draw});
+    const {data,error:rpcError}=await client.rpc("get_preview_occupied_numbers",{p_draw_id:draw});
     if(rpcError)throw new Error("No se pudo consultar el inventario global de esta edición.");
-    setTaken(new Set(((data||[]) as {number:number}[]).map(item=>item.number)));
+    if(!Array.isArray(data) || data.some(n=>!Number.isInteger(n)||n<0||n>9999)) throw new Error("El banco de números devolvió datos incorrectos.");
+    setTaken(new Set(data as number[]));
   },[client]);
   useEffect(()=>{
     let live=true;
@@ -84,7 +87,8 @@ export default function PreviewReservationsPage(){
   },[userId,drawId,loadTaken]);
 
   const current=holds.find(h=>h.draw_id===drawId&&effectivePreviewStatus(h)==="active");
-  const currentNumbers=current?allNumbers.filter(n=>n.reservation_id===current.id).map(n=>n.number):[];
+  const currentNumbers=current?(events.find(e=>e.reservation_id===current.id&&e.event_type==="created")?.numbers
+    ??allNumbers.filter(n=>n.reservation_id===current.id&&n.category!=="extra_demo").map(n=>n.number)):[];
   const visible=Array.from({length:100},(_,i)=>i+page*100);
   function addNumber(input:string){
     setError("");
@@ -155,6 +159,9 @@ export default function PreviewReservationsPage(){
             <h2>Diez números bloqueados en Supabase</h2>
             <div className="central-numbers">{currentNumbers.map(n=><span key={n}>{displayPreviewNumber(n)}</span>)}</div>
             <p>Vence: {new Date(current.expires_at).toLocaleString("es-CO")} · Modalidad: {current.selection_mode==="manual"?"Manual":"Automática"}</p>
+            <p className="central-demo-separation">Los 40 adicionales, si se simulan, aparecen abajo por hitos. No requieren ni acreditan dinero.</p>
+            <PreviewProgress reservationId={current.id} allowOwnLink={true}
+              onChanged={()=>{if(userId){void load(userId).catch(e=>setError(e instanceof Error?e.message:"Error de lectura"));void loadTaken(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de disponibilidad"));}}}/>
             <button type="button" className="btn btn-secondary" disabled={busy} onClick={()=>void cancel(current.id)}>Cancelar y liberar números</button>
           </div>:<form onSubmit={e=>void reserve(e)}>
             <div className="central-mode"><label><input type="radio" checked={mode==="manual"} onChange={()=>setMode("manual")}/> Escoger diez números</label>
@@ -177,13 +184,17 @@ export default function PreviewReservationsPage(){
       </>}
       <section className="central-panel"><span className="overline">HISTORIAL DEL USUARIO</span><h2>Mis selecciones en Supabase</h2>
         {holds.length===0?<p className="muted">Todavía no has creado selecciones de prueba.</p>:<div className="central-history">{holds.map(h=>{
-          const nums=events.find(e=>e.reservation_id===h.id&&e.event_type==="created")?.numbers||allNumbers.filter(n=>n.reservation_id===h.id).map(n=>n.number);
+          const nums=events.find(e=>e.reservation_id===h.id&&e.event_type==="created")?.numbers||allNumbers.filter(n=>n.reservation_id===h.id&&n.category!=="extra_demo").map(n=>n.number);
           const status=effectivePreviewStatus(h);
           return <article key={h.id}><div><strong>{draws.find(d=>d.id===h.draw_id)?.title||h.draw_id}</strong>
             <span className={"central-tag central-"+status}>{statusLabel[status]}</span></div>
             <small>Creada: {new Date(h.created_at).toLocaleString("es-CO")} · Vence: {new Date(h.expires_at).toLocaleString("es-CO")}</small>
             <div className="central-numbers">{nums.map(n=><span key={n}>{displayPreviewNumber(n)}</span>)}</div>
             <small>ID de seguimiento: {h.id.slice(0,8).toUpperCase()} · Sin dinero recibido, sin participación</small>
+            {effectivePreviewStatus(h)!=="active"&&<><button type="button" className="btn btn-secondary btn-small"
+              onClick={()=>setOpenHistoryId(old=>old===h.id?null:h.id)}>
+              {openHistoryId===h.id?"Ocultar":"Consultar"} hitos y referencias históricas</button>
+              {openHistoryId===h.id&&<PreviewProgress reservationId={h.id}/>}</>}
           </article>;
         })}</div>}
       </section>
