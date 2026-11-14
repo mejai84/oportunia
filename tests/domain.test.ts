@@ -110,10 +110,12 @@ test("barra de compras muestra porcentajes y comunicaciones por hitos", () => {
   const one = setup();
   assert.equal(salesProgressPercent(one, undefined, date), 0.5);
   assert.match(salesProgressStatus(one, date).title, /comenzando/);
-  const at75 = { ...EMPTY_STATE, opportunities: Array(150).fill(one.opportunities[0]) };
+  // Keep the fixture active when the current date advances beyond the original 24-hour reservation.
+  const ongoing = { ...one.opportunities[0], reservationExpiresAt: "2100-01-01T00:00:00.000Z" };
+  const at75 = { ...EMPTY_STATE, opportunities: Array(150).fill(ongoing) };
   assert.equal(salesProgressPercent(at75, undefined, date), 75);
   assert.deepEqual(reachedSalesUpdates(at75, undefined).map((item) => item.threshold), [75, 50, 25]);
-  const all = { ...EMPTY_STATE, opportunities: Array(200).fill(one.opportunities[0]), deadlineAt: new Date("2026-11-20T18:00:00Z").toISOString() };
+  const all = { ...EMPTY_STATE, opportunities: Array(200).fill(ongoing), deadlineAt: new Date("2026-11-20T18:00:00Z").toISOString() };
   assert.equal(salesProgressPercent(all, undefined, date), 100);
   assert.match(salesProgressStatus(all, date).message, /siete días/);
   assert.equal(reachedSalesUpdates(all, undefined)[0].threshold, 100);

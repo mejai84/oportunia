@@ -23,8 +23,8 @@ export const defaultHomeContent:HomeContentData={
 export const fallbackHomeCards:HomeCard[]=[
  {id:"concepto-consola",title:"Consola de videojuegos",description:"Una propuesta de premio para quienes disfrutan jugar.",image_url:null,display_order:2,enabled:true},
  {id:"concepto-televisor",title:"Smart TV 55″",description:"Una idea para futuras ediciones de entretenimiento en casa.",image_url:null,display_order:3,enabled:true},
- {id:"concepto-moto",title:"Motocicleta urbana",description:"Una idea de premio para disfrutar de nuevas aventuras.",image_url:null,display_order:4,enabled:true},
- {id:"concepto-portatil",title:"Computador portátil",description:"Una idea de premio para estudiar, crear o trabajar.",image_url:null,display_order:5,enabled:true},
+ {id:"concepto-moto",title:"Motocicleta urbana",description:"Una propuesta de motocicleta para nuevas aventuras.",image_url:null,display_order:4,enabled:true},
+ {id:"concepto-portatil",title:"Computador portátil",description:"Una propuesta de portátil para estudiar, crear o trabajar.",image_url:null,display_order:5,enabled:true},
  {id:"concepto-tablet",title:"Tablet de última generación",description:"Una propuesta para una futura edición.",image_url:null,display_order:6,enabled:true}
 ];
 export function normalizeHomeContent(raw:Partial<HomeContentData>|null|undefined):HomeContentData{

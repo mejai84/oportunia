@@ -78,7 +78,6 @@ export function DrawCarousel({content,ideas}:Props){
     const photo=selectPrizeImage(draw.id,draw.image_url,"/raffles/iphone18-product.svg");
     return <article className={"draw-mini-card"+(draw.idea?" is-concept":"")} key={draw.id}>
      <div className="draw-mini-art">
-      {draw.idea&&<span className="draw-mini-badge is-concept">IDEA DE PREMIO</span>}
       {draw.closed&&<span className="draw-mini-badge">EDICIÓN CERRADA</span>}
       <img className={photo.isStockPhoto?"o-draw-photo":""} src={photo.src} alt={photo.description}
        loading={i>1?"lazy":"eager"}
@@ -86,11 +85,11 @@ export function DrawCarousel({content,ideas}:Props){
       {photo.isStockPhoto&&<span className="o-draw-photo-note">Fotografía de referencia</span>}
      </div>
      <div className="draw-mini-content">
-      <span className="draw-mini-kicker">OPORTUNIA · {draw.idea?"IDEA DE PREMIO":"PREMIO DESTACADO"}</span>
+      <span className="draw-mini-kicker">OPORTUNIA · {draw.idea?"OPCIÓN DE PREMIO":"PREMIO DESTACADO"}</span>
       <h3>{draw.prize}</h3>
       <p>{draw.description}</p>
       <div className="draw-mini-foot">
-       <span>{draw.idea?"Idea para una próxima edición":"Conoce sus condiciones"}</span>
+       <span>{draw.idea?"Propuesta de premio":"Conoce sus condiciones"}</span>
        <a href="#registro" aria-label={"Conocer novedades de "+draw.prize}>Conocer más <HomeIcon name="arrow-right" size={18}/></a>
       </div>
      </div>

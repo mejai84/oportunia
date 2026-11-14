@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     "question": "¿Cómo sé si una oportunidad está disponible?",
-    "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Idea de premio» muestran posibles premios para el futuro."
+    "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Opción de premio» son alternativas para futuras ediciones."
   },
   {
     "question": "¿Cuánto cuesta una oportunidad?",
@@ -189,11 +189,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
               <div className="f-floating-spark">✧</div>
             </>}
           </div>
-          <div className="f-showcase-bottom">
-            <div><span>Valor de referencia</span><strong>$50.000 <small>COP</small></strong></div>
-            <div className="f-showcase-rule" />
-            <div><span>Modalidad</span><strong>50 <small>números</small></strong></div>
-          </div>
+
 
         </div>
       </div>
@@ -207,7 +203,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
       <div><strong>200</strong><span>Oportunidades previstas por edición</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
       <div><strong>10 + 40</strong><span>Iniciales a tu elección + aleatorios</span></div>
-      <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
+
     </section>
 
     <SocialProofSections />
