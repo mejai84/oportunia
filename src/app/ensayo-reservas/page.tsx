@@ -160,7 +160,7 @@ export default function PreviewReservationsPage(){
             <p>Vence: {new Date(current.expires_at).toLocaleString("es-CO")} · Modalidad: {current.selection_mode==="manual"?"Manual":"Automática"}</p>
             <p className="central-demo-separation">Los 40 adicionales, si se simulan, aparecen abajo por hitos. No requieren ni acreditan dinero.</p>
             <PreviewProgress reservationId={current.id} allowOwnLink={true}
-              onChanged={()=>{void load(userId);void loadTaken(drawId);}}/>
+              onChanged={()=>{if(userId){void load(userId).catch(e=>setError(e instanceof Error?e.message:"Error de lectura"));void loadTaken(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de disponibilidad"));}}}/>
             <button type="button" className="btn btn-secondary" disabled={busy} onClick={()=>void cancel(current.id)}>Cancelar y liberar números</button>
           </div>:<form onSubmit={e=>void reserve(e)}>
             <div className="central-mode"><label><input type="radio" checked={mode==="manual"} onChange={()=>setMode("manual")}/> Escoger diez números</label>
