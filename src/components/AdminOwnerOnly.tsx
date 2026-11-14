@@ -7,7 +7,7 @@ export function AdminOwnerOnly({children}:{children:ReactNode}){
   const [isOwner,setIsOwner]=useState<boolean|null>(null);
   useEffect(()=>{
     let active=true;
-    void client.rpc("staff_has_permission",{p_permission:"admin.dashboard"})
+    void Promise.resolve(client.rpc("staff_has_permission",{p_permission:"admin.dashboard"}))
       .then(({data,error})=>{if(active)setIsOwner(!error&&data===true);})
       .catch(()=>{if(active)setIsOwner(false);});
     return()=>{active=false;};
