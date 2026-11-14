@@ -218,7 +218,7 @@ begin
  where n.nspname='public' and p.proname='get_preview_admin_summary' and p.prokind='f';
  if v_oid is null then raise exception 'Preview summary function missing';end if;
  v_def:=pg_get_functiondef(v_oid);
- v_old:='not exists(\n   select 1 from public.oportunia_admins a where a.user_id=v_actor\n )';
+ v_old:=E'not exists(\n   select 1 from public.oportunia_admins a where a.user_id=v_actor\n )';
  if position(v_old in v_def)=0 then raise exception 'Preview summary guard differs';end if;
  execute replace(v_def,v_old,'not public.staff_has_permission(''preview.read'')');
 end; $patch$;
