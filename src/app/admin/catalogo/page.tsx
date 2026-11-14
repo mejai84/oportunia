@@ -95,4 +95,4 @@ function CatalogEditor() {
     </div>
   </section>;
 }
-export default function CatalogAdminPage(){return <AdminAccessGate><CatalogEditor/></AdminAccessGate>;}
+export default function CatalogAdminPage(){return <AdminAccessGate requiredPermission="catalog.write"><CatalogEditor/></AdminAccessGate>;}

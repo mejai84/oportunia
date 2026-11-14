@@ -260,5 +260,5 @@ function ReconciliationWorkspace() {
 }
 
 export default function BankReconciliationPage() {
-  return <AdminAccessGate><ReconciliationWorkspace /></AdminAccessGate>;
+  return <AdminAccessGate requiredPermission="bank.write"><ReconciliationWorkspace /></AdminAccessGate>;
 }

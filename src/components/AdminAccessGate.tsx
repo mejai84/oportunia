@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
+import type { StaffPermission } from "@/lib/staffPermissions";
 
 type AccessState =
   | { status: "checking"; user: User | null }
@@ -11,7 +12,7 @@ type AccessState =
   | { status: "denied"; user: User }
   | { status: "error"; user: User | null };
 
-export function AdminAccessGate({ children }: { children: ReactNode }) {
+export function AdminAccessGate({ children, requiredPermission="admin.menu" }: { children: ReactNode; requiredPermission?: StaffPermission }) {
   const client = useMemo(() => oportuniaClient(), []);
   const [access, setAccess] = useState<AccessState>({ status: "checking", user: null });
   const [email, setEmail] = useState("");
@@ -43,11 +44,9 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
       setError("");
 
       try {
-        const { data, error: permissionError } = await client
-          .from("oportunia_admins")
-          .select("user_id")
-          .eq("user_id", user.id)
-          .maybeSingle();
+        const { data, error: permissionError } = await client.rpc("staff_has_permission",{
+          p_permission:requiredPermission,
+        });
 
         if (!mounted || currentRevision !== revision) return;
         if (permissionError) {
@@ -55,7 +54,7 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
           setAccess({ status: "error", user });
           return;
         }
-        setAccess({ status: data ? "allowed" : "denied", user });
+        setAccess({ status: data === true ? "allowed" : "denied", user });
       } catch {
         if (!mounted || currentRevision !== revision) return;
         lastUserId.current = null;
@@ -103,7 +102,7 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
       if (pendingTimer) clearTimeout(pendingTimer);
       subscription.subscription.unsubscribe();
     };
-  }, [client]);
+  }, [client,requiredPermission]);
 
   async function login(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -144,7 +143,7 @@ export function AdminAccessGate({ children }: { children: ReactNode }) {
   }
   if (access.status === "denied") {
     return <section className="container page-space"><div className="alert alert-warning">
-      Tu cuenta no tiene permiso para administrar Oportunia. Un responsable debe autorizarla en Supabase.
+      Tu cuenta no tiene permiso para abrir este módulo. Solicita al propietario que revise tu rol desde Equipo y permisos.
       <button className="btn btn-secondary" type="button" onClick={() => { void client.auth.signOut(); }}>Cerrar sesión</button>
     </div></section>;
   }

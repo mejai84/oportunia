@@ -115,4 +115,4 @@ function PreviewAdminWorkspace(){
       </>}
   </div>;
 }
-export default function PreviewReservationsAdminPage(){return <AdminAccessGate><PreviewAdminWorkspace/></AdminAccessGate>;}
+export default function PreviewReservationsAdminPage(){return <AdminAccessGate requiredPermission="preview.write"><PreviewAdminWorkspace/></AdminAccessGate>;}

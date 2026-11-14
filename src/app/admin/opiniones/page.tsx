@@ -75,4 +75,4 @@ function ContentModeration(){
   {notice&&<p className="alert alert-warning top-gap" role="status">{notice}</p>}
  </section>;
 }
-export default function AdminOpinionesPage(){return <AdminAccessGate><ContentModeration/></AdminAccessGate>;}
+export default function AdminOpinionesPage(){return <AdminAccessGate requiredPermission="reviews.write"><ContentModeration/></AdminAccessGate>;}

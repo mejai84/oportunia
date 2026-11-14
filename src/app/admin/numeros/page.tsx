@@ -93,4 +93,4 @@ function NumberControl() {
     </div>
   </div>;
 }
-export default function NumbersAdminPage(){return <AdminAccessGate><NumberControl/></AdminAccessGate>;}
+export default function NumbersAdminPage(){return <AdminAccessGate requiredPermission="preview.read"><NumberControl/></AdminAccessGate>;}
