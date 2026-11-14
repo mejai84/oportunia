@@ -16,9 +16,9 @@ export default function ReglasPage() {
    <h2>5. Sorteo, resultados y premio</h2>
    <p>La fecha, el mecanismo de selección, la entidad de referencia, la entrega del premio y las autorizaciones aplicables se informarán en el reglamento de cada edición. Solo se publicarán resultados verificables.</p>
    <h2>6. Cuenta y datos</h2>
-   <p>El registro y acceso por correo utilizan Supabase Auth. La verificación por celular aún requiere un proveedor de códigos. Las opiniones y el catálogo tienen almacenamiento central; las selecciones de números y reportes de pagos que se muestran actualmente se guardan únicamente en este navegador.</p>
+   <p>El acceso por correo utiliza Supabase Auth. Las opiniones publicadas, los reportes de referencias y las selecciones centralizadas se registran en la base de datos asociados a cada usuario. Algunas herramientas de cálculo siguen siendo locales. La autenticación por celular requerirá un proveedor de verificación.</p>
    <h2>7. Disponibilidad de operaciones</h2>
-   <p>La selección local no representa una reserva real. No existe un canal de cobro habilitado en las pantallas de selección y abonos. No envíes dinero ni compartas datos bancarios hasta que se publiquen los medios oficiales y se habilite el sistema central.</p>
+   <p>Las selecciones de números de las herramientas actuales son informativas y no constituyen participaciones comerciales. Los canales para efectuar pagos se anunciarán cuando la edición correspondiente cumpla sus condiciones y esté habilitada. No envíes dinero por medios no publicados oficialmente.</p>
    <p className="muted small">Información preliminar sujeta a actualización antes de abrir una edición.</p>
    <Link className="btn btn-primary" href="/">Ver próximos sorteos</Link>
   </section>

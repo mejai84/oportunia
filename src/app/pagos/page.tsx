@@ -1,87 +1,21 @@
-"use client";
-import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { CustomerBankReports } from "@/components/CustomerBankReports";
-import { useApp } from "@/components/AppProvider";
-import { isReservationExpired, money, PRICE, shortId, type Method } from "@/lib/domain";
-const methods: Method[] = ["Bre-B", "Nequi", "Bancolombia", "DaviPlata", "PSE", "Efectivo"];
+
 export default function PagosPage() {
-  const { state, hydrated, sendPayment } = useApp();
-  const [orderId, setOrderId] = useState("");
-  const [amount, setAmount] = useState(50000);
-  const [method, setMethod] = useState<Method>("Bre-B");
-  const [reference, setReference] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  function suggestedAmount(id: string): number {
-    const item = state.opportunities.find((o) => o.id === id);
-    if (!item) return PRICE;
-    const pendingAmount = state.reports.filter((r) => r.orderId === id && r.status === "pendiente")
-      .reduce((sum, r) => sum + r.amount, 0);
-    const balance = Math.max(0, PRICE - item.paid - pendingAmount);
-    if (item.plan === "contado") return balance;
-    if (item.plan === "dos-cuotas") return Math.min(25_000, balance);
-    return Math.min(item.paid === 0 ? 20_000 : 15_000, balance);
-  }
-  useEffect(() => {
-    if (hydrated && !orderId && state.opportunities.length > 0) {
-      const id = state.opportunities[state.opportunities.length - 1].id;
-      setOrderId(id);
-      const item = state.opportunities[state.opportunities.length - 1];
-      const amount = item.plan === "contado" ? PRICE - item.paid : item.plan === "dos-cuotas" ? 25_000 : item.paid === 0 ? 20_000 : 15_000;
-      setAmount(Math.max(0, Math.min(amount, PRICE - item.paid)));
-    }
-  }, [hydrated, orderId, state.opportunities]);
-  const order = state.opportunities.find((o) => o.id === orderId);
-  const expired = order ? isReservationExpired(order) : false;
-  const pending = state.reports.filter((r) => r.orderId === orderId && r.status === "pendiente")
-    .reduce((sum, r) => sum + r.amount, 0);
-  const balance = order ? PRICE - order.paid - pending : 0;
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setError(""); setSuccess("");
-    try {
-      sendPayment({ orderId, amount, method, reference });
-      setReference("");
-      setSuccess("Referencia guardada solo en este navegador. No fue verificada por el banco y no genera participación.");
-    } catch (e) { setError(e instanceof Error ? e.message : "No se pudo reportar el abono."); }
-  }
-  return <div className="container page-space">
-    <div className="page-title"><span className="overline">PASO 02 · CONSULTA DE ABONOS</span>
-      <h1>Reporta un <span className="gradient-text">abono.</span></h1>
-      <p className="muted">Esta pantalla registra referencias de prueba en este navegador, sin conexiones a bancos. No confirma transferencias de Bancolombia, Nequi, Bre-B ni DaviPlata, ni constituye pago recibido. No envíes dinero por esta pantalla.</p>
+ return <div className="container page-space">
+   <div className="page-title"><span className="overline">TRANSFERENCIAS Y SEGUIMIENTO</span>
+    <h1>Tu reporte, <span className="gradient-text">paso a paso.</span></h1>
+    <p className="muted">Registra una referencia de transferencia y consulta su seguimiento desde tu cuenta Oportunia.</p>
+   </div>
+   <div id="reportar-transferencia"><CustomerBankReports mode="full"/></div>
+   <section className="panel top-gap">
+    <h2>¿Dónde consultar el estado?</h2>
+    <p>Desde Mi cuenta puedes consultar las referencias registradas y los cambios de estado asociados a tu usuario.</p>
+    <p className="small muted">El registro de una referencia no equivale a una confirmación bancaria. Consulta las condiciones de cada edición antes de participar.</p>
+    <div className="row-actions">
+     <Link className="btn btn-primary" href="/mi-cuenta">Ver mi historial</Link>
+     <Link className="btn btn-secondary" href="/reglas">Consultar condiciones</Link>
     </div>
-    <div id="reportar-transferencia"><CustomerBankReports mode="full" linkedOrderReference={orderId} /></div>
-    <div className="page-title top-gap"><span className="overline">HERRAMIENTA DE DEMOSTRACIÓN</span><h2>Simulación de cuotas y números en este navegador</h2><p className="muted">Este formulario inferior no envía referencias a la conciliación bancaria. Para dejar un rastro centralizado utiliza el formulario superior, iniciando sesión.</p></div>
-    <div className="two-col-layout"><section className="panel">
-      <h2>Nuevo reporte de pago</h2>
-      {!hydrated ? <p className="muted">Cargando…</p> : state.opportunities.length === 0 ?
-        <div className="empty-state"><span>◎</span><h3>Aún no tienes oportunidades</h3><p>Primero escoge tus diez números o solicita asignación automática.</p><Link className="btn btn-primary" href="/numeros">Elegir números</Link></div> :
-        <form onSubmit={submit} className="form-stack top-gap">
-          <label>Oportunidad<select value={orderId} onChange={(e) => { setOrderId(e.target.value); setAmount(suggestedAmount(e.target.value)); setSuccess(""); }}>
-            {state.opportunities.map((o) => <option key={o.id} value={o.id}>{shortId(o.id)} · {o.customer.name}</option>)}
-          </select></label>
-          <div className="info-grid">
-            <div className="info-tile"><span className="small muted">Abonado y aprobado</span><strong>{money(order?.paid || 0)}</strong></div>
-            <div className="info-tile"><span className="small muted">Saldo para reportar</span><strong>{money(balance)}</strong></div>
-          </div>
-          {expired && <div className="alert alert-warning">Esta reserva inicial venció a las 24 horas. Debes recuperar tus números antes de crear otro reporte de pago. <Link href={"/recuperar?orden=" + encodeURIComponent(orderId)}>Recuperar números →</Link></div>}
-          <p className="small muted">Plan seleccionado: <strong>{order?.plan === "contado" ? "Pago completo" : order?.plan === "dos-cuotas" ? "Dos cuotas" : "Tres cuotas"}</strong>. El valor sugerido corresponde al saldo o a la próxima cuota.</p>
-          <label>Valor del abono (COP)<input type="number" min={1000} max={balance} step={1000} value={amount} onChange={(e) => setAmount(Number(e.target.value))} /></label>
-          <label>Canal declarado (simulación, sin verificación bancaria)<select value={method} onChange={(e) => setMethod(e.target.value as Method)}>{methods.map((m) => <option key={m}>{m}</option>)}</select></label>
-          <label>Referencia declarada (no verificada)<input required value={reference} onChange={(e) => setReference(e.target.value)} placeholder="Ej. REFERENCIA-123456" /></label>
-          {error && <div className="alert alert-error" role="alert">{error}</div>}
-          {success && <div className="alert alert-success" role="status">{success}</div>}
-          <button type="submit" className="btn btn-primary full" disabled={!order || expired || balance <= 0}>Enviar reporte →</button>
-        </form>}
-    </section><div className="stack">
-      <section className="panel"><h2>¿Qué ocurre después?</h2><div className="timeline">
-        <div><span>01</span><p>Registras una referencia ilustrativa en este navegador.</p></div>
-        <div><span>02</span><p>Un administrador revisa y aprueba el reporte.</p></div>
-        <div><span>03</span><p>Se asignan números aleatorios según el total abonado.</p></div>
-        <div><span>04</span><p>Con $50.000 confirmados, los 50 números quedan habilitados.</p></div>
-      </div></section>
-      <div className="alert alert-warning"><strong>Importante:</strong> los números asignados por pagos parciales NO participan en el sorteo. La reserva inicial sin pago confirmado vence a las 24 horas.</div>
-      <Link className="btn btn-secondary full" href="/mi-cuenta">Ver mi cuenta y números →</Link>
-    </div></div>
+   </section>
   </div>;
 }

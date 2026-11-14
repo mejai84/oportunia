@@ -13,7 +13,7 @@ const plans:{value:PreviewPlan;label:string}[]=[
   {value:"dos-cuotas",label:"Dos cuotas (preferencia de ensayo)"},
   {value:"tres-cuotas",label:"Tres cuotas (preferencia de ensayo)"},
 ];
-const statusLabel={active:"Prueba vigente",expired:"Vencida",cancelled:"Cancelada"};
+const statusLabel={active:"Vigente",expired:"Vencida",cancelled:"Cancelada"};
 
 export default function PreviewReservationsPage(){
   const client=useMemo(()=>oportuniaClient(),[]);
@@ -116,14 +116,14 @@ export default function PreviewReservationsPage(){
       if(rpcError)throw rpcError;
       await Promise.all([load(userId),loadTaken(drawId)]);
       setChosen([]);setEntry("");
-      setNotice("Se guardó tu selección de ensayo en Supabase. No es una compra, no permite pagos y no participa en un sorteo.");
+      setNotice("Tu selección quedó registrada en tu cuenta por 24 horas.");
     }catch(e){
       setError(e instanceof Error?e.message:"No fue posible guardar la selección.");
       await loadTaken(drawId).catch(()=>undefined);
     }finally{setBusy(false);}
   }
   async function cancel(id:string){
-    if(busy||!userId||!window.confirm("¿Cancelar esta selección de prueba y liberar sus números?"))return;
+    if(busy||!userId||!window.confirm("¿Cancelar esta selección y liberar sus números?"))return;
     setBusy(true);setError("");setNotice("");
     try{
       const {error:rpcError}=await client.rpc("cancel_preview_reservation",{p_reservation_id:id});
@@ -134,32 +134,32 @@ export default function PreviewReservationsPage(){
     finally{setBusy(false);}
   }
   return <div className="container page-space central-page">
-    <div className="central-head"><div><span className="overline">LABORATORIO · SUPABASE</span>
+    <div className="central-head"><div><span className="overline">TUS NÚMEROS · MI CUENTA</span>
       <h1>Selección <span className="gradient-text">centralizada.</span></h1>
-      <p>Ensaya la selección de 10 números guardados en la base de datos, compartiendo la disponibilidad entre celulares y computadores.</p></div>
-      <Link href="/numeros" className="btn btn-secondary">Volver a la demostración</Link>
+      <p>Selecciona diez números y consulta su disponibilidad desde tu cuenta en distintos dispositivos.</p></div>
+      <Link href="/numeros" className="btn btn-secondary">Ver otras opciones</Link>
     </div>
-    <div className="central-warning"><strong>Solo ensayo no comercial.</strong> La disponibilidad corresponde a este módulo de pruebas, no a participaciones oficiales. No realices transferencias, no hay cobros, ni asignación de 40 números adicionales. Los cupos de ensayo vencen a las 24 horas.</div>
+    <div className="central-warning"><strong>Selección por 24 horas.</strong> Guardar números en esta sección no constituye una participación oficial. Consulta las condiciones de la edición.</div>
     {!checked?<section className="central-panel">Comprobando sesión…</section>:!userId?
-      <section className="central-panel central-login"><h2>Inicia sesión para ensayar</h2>
+      <section className="central-panel central-login"><h2>Inicia sesión para guardar tus números</h2>
         <p>La selección queda ligada a tu cuenta y no a un navegador. Solo tú y los administradores autorizados pueden ver tu registro completo.</p>
         <Link href="/acceso" className="btn btn-primary">Iniciar sesión o crear cuenta</Link></section>:
     loading?<section className="central-panel">Consultando Supabase…</section>:<>
       {error&&<div className="alert alert-error" role="alert">{error}</div>}
       {notice&&<div className="alert alert-success" role="status">{notice}</div>}
-      {draws.length===0?<section className="central-panel">No hay ediciones con vista previa disponible en Supabase.</section>:<>
+      {draws.length===0?<section className="central-panel">No hay ediciones disponibles para seleccionar números.</section>:<>
         <section className="central-panel">
-          <div className="central-toolbar"><label>Edición de prueba<select value={drawId} onChange={e=>{setDrawId(e.target.value);setChosen([]);setPage(0);setError("");}}>
+          <div className="central-toolbar"><label>Edición<select value={drawId} onChange={e=>{setDrawId(e.target.value);setChosen([]);setPage(0);setError("");}}>
             {draws.map(d=><option key={d.id} value={d.id}>{d.title}</option>)}</select></label>
           <button type="button" className="btn btn-secondary btn-small" disabled={busy} onClick={()=>void loadTaken(drawId).then(()=>setNotice("Disponibilidad actualizada.")).catch(e=>setError(e instanceof Error?e.message:"Error"))}>Actualizar disponibilidad</button></div>
-          <div className="central-stats"><div><span>Números ocupados en este ensayo</span><strong>{taken.size.toLocaleString("es-CO")}</strong></div>
-            <div><span>Libres en este ensayo</span><strong>{(10000-taken.size).toLocaleString("es-CO")}</strong></div>
+          <div className="central-stats"><div><span>Números ocupados</span><strong>{taken.size.toLocaleString("es-CO")}</strong></div>
+            <div><span>Números disponibles</span><strong>{(10000-taken.size).toLocaleString("es-CO")}</strong></div>
             <div><span>Tu selección actual</span><strong>{current?"10 / 10":"Sin selección"}</strong></div></div>
           {current?<div className="central-current"><span className="overline">TU SELECCIÓN VIGENTE</span>
             <h2>Diez números bloqueados en Supabase</h2>
             <div className="central-numbers">{currentNumbers.map(n=><span key={n}>{displayPreviewNumber(n)}</span>)}</div>
             <p>Vence: {new Date(current.expires_at).toLocaleString("es-CO")} · Modalidad: {current.selection_mode==="manual"?"Manual":"Automática"}</p>
-            <p className="central-demo-separation">Los 40 adicionales, si se simulan, aparecen abajo por hitos. No requieren ni acreditan dinero.</p>
+            <p className="central-demo-separation">Los números adicionales, cuando existan, aparecerán en el seguimiento de esta selección.</p>
             <PreviewProgress reservationId={current.id} allowOwnLink={true}
               onChanged={()=>{if(userId){void load(userId).catch(e=>setError(e instanceof Error?e.message:"Error de lectura"));void loadTaken(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de disponibilidad"));}}}/>
             <button type="button" className="btn btn-secondary" disabled={busy} onClick={()=>void cancel(current.id)}>Cancelar y liberar números</button>
@@ -176,14 +176,14 @@ export default function PreviewReservationsPage(){
               <div className="central-pages"><button type="button" className="btn btn-ghost btn-small" disabled={page===0} onClick={()=>setPage(p=>p-1)}>Anterior</button>
                 <span>Página {page+1} / 100</span>
                 <button type="button" className="btn btn-ghost btn-small" disabled={page===99} onClick={()=>setPage(p=>p+1)}>Siguiente</button></div>
-            </>:<div className="central-auto"><strong>Diez números al azar</strong><p>La base de datos los elegirá entre los libres en el momento de registrar el ensayo. No se publican ni se consideran pagados.</p></div>}
-            <label className="central-plan">Preferencia ilustrativa de cuotas<select value={plan} onChange={e=>setPlan(e.target.value as PreviewPlan)}>{plans.map(p=><option key={p.value} value={p.value}>{p.label}</option>)}</select></label>
-            <button type="submit" className="btn btn-primary" disabled={busy||(mode==="manual"&&chosen.length!==10)}>{busy?"Registrando…":"Guardar selección de prueba por 24 horas"}</button>
+            </>:<div className="central-auto"><strong>Diez números al azar</strong><p>Se elegirán diez números disponibles cuando guardes tu selección.</p></div>}
+            <label className="central-plan">Modalidad de referencia<select value={plan} onChange={e=>setPlan(e.target.value as PreviewPlan)}>{plans.map(p=><option key={p.value} value={p.value}>{p.label}</option>)}</select></label>
+            <button type="submit" className="btn btn-primary" disabled={busy||(mode==="manual"&&chosen.length!==10)}>{busy?"Registrando…":"Guardar selección por 24 horas"}</button>
           </form>}
         </section>
       </>}
       <section className="central-panel"><span className="overline">HISTORIAL DEL USUARIO</span><h2>Mis selecciones en Supabase</h2>
-        {holds.length===0?<p className="muted">Todavía no has creado selecciones de prueba.</p>:<div className="central-history">{holds.map(h=>{
+        {holds.length===0?<p className="muted">Todavía no tienes selecciones guardadas.</p>:<div className="central-history">{holds.map(h=>{
           const nums=events.find(e=>e.reservation_id===h.id&&e.event_type==="created")?.numbers||allNumbers.filter(n=>n.reservation_id===h.id&&n.category!=="extra_demo").map(n=>n.number);
           const status=effectivePreviewStatus(h);
           return <article key={h.id}><div><strong>{draws.find(d=>d.id===h.draw_id)?.title||h.draw_id}</strong>

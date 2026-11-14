@@ -110,7 +110,7 @@ export function CustomerBankReports({ mode = "full", linkedOrderReference }: Pro
       if(submitError) throw submitError;
       await refresh(userId);
       setReference(""); setConfirmation(false);
-      setNotice("Tu referencia quedó registrada en Supabase. Puedes ver abajo el seguimiento. Esto NO significa que el banco haya confirmado el pago.");
+      setNotice("Tu referencia quedó registrada. Puedes consultar su seguimiento en tu cuenta.");
     } catch(err) {
       const msg=err instanceof Error?err.message:"No se pudo enviar el reporte.";
       setError(msg.includes("duplicate key")||msg.includes("unique constraint")
@@ -125,7 +125,7 @@ export function CustomerBankReports({ mode = "full", linkedOrderReference }: Pro
       <p>Los reportes quedan vinculados a tu usuario y su estado se conserva entre dispositivos.</p></div>
       {mode==="history"&&<Link className="btn btn-secondary btn-small" href="/pagos#reportar-transferencia">Reportar referencia ↗</Link>}
     </header>
-    <p className="customer-reports-warning"><strong>Sin confirmación bancaria automática:</strong> la referencia enviada es tu declaración. Solo se marcará como coincidencia cuando administración cruce los datos con un extracto cargado. Esta sección no asigna números ni confirma una compra.</p>
+    <p className="customer-reports-warning">Las referencias se registran para seguimiento. Una coincidencia con un extracto no equivale a confirmación bancaria.</p>
     {!authChecked?<p className="muted">Comprobando tu sesión…</p>:
       !userId?<div className="customer-reports-auth">
         <strong>Inicia sesión para guardar tu reporte.</strong>
@@ -147,7 +147,7 @@ export function CustomerBankReports({ mode = "full", linkedOrderReference }: Pro
         <label>Referencia de la transferencia<input required minLength={4} maxLength={100} pattern="[A-Za-z0-9][A-Za-z0-9._/-]{3,99}" value={reference} onChange={event=>setReference(event.target.value.toUpperCase())} placeholder="Referencia única indicada por el banco"/></label>
         <label>Código de oportunidad (opcional)<input maxLength={80} value={orderReference} onChange={event=>setOrderReference(event.target.value)} placeholder="Código interno de tu participación"/></label>
         <label className="customer-report-check"><input type="checkbox" required checked={confirmation} onChange={event=>setConfirmation(event.target.checked)}/>
-          <span>Confirmo que los datos corresponden a una transferencia que he realizado. Entiendo que reportarla no acredita la recepción del dinero, ni habilita números.</span></label>
+          <span>Confirmo que los datos son correctos y entiendo que este reporte requiere verificación antes de cualquier acreditación.</span></label>
         <button type="submit" className="btn btn-primary" disabled={busy||!confirmation}>{busy?"Guardando…":"Registrar referencia y generar seguimiento"}</button>
       </form>}
       {error&&<div role="alert" className="alert alert-error customer-reports-message">{error}</div>}

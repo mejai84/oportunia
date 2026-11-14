@@ -28,15 +28,15 @@ export function HomeIcon({ name, size=28, className="" }:{
 
 export const publicBenefits=[
   {icon:"shield" as const,title:"Seguro y confiable",detail:"Historial de tus reportes y acceso protegido a tu cuenta."},
-  {icon:"zap" as const,title:"Fácil de participar",detail:"Conoce las reglas y ensaya tus números antes de la apertura."},
-  {icon:"wallet" as const,title:"Opciones de pago",detail:"Consulta las modalidades previstas. El recaudo real aún no está habilitado."},
+  {icon:"zap" as const,title:"Fácil de participar",detail:"Conoce las reglas y descubre cómo elegir tus números."},
+  {icon:"wallet" as const,title:"Opciones de pago",detail:"Explora las modalidades de pago definidas para cada edición."},
   {icon:"bell" as const,title:"Seguimiento en tiempo real",detail:"Revisa los cambios registrados en tu cuenta y tus avisos."},
 ] as const;
 
 export const publicParticipationSteps=[
   {icon:"smartphone" as const,title:"Regístrate",detail:"Crea tu cuenta para consultar avisos y guardar tu historial.",href:"/acceso",action:"Ir a mi cuenta"},
-  {icon:"numbers" as const,title:"Elige tus números",detail:"Prueba cómo seleccionar 10 números o recibirlos automáticamente.",href:"/ensayo-reservas",action:"Probar números"},
-  {icon:"credit-card" as const,title:"Realiza tu pago",detail:"Cuando se autorice la apertura, consulta los canales y la verificación oficial.",href:"/reglas",action:"Conocer condiciones"},
+  {icon:"numbers" as const,title:"Elige tus números",detail:"Conoce cómo elegir 10 números o recibirlos automáticamente.",href:"/ensayo-reservas",action:"Elegir números"},
+  {icon:"credit-card" as const,title:"Realiza tu pago",detail:"Consulta los canales y requisitos publicados para cada edición.",href:"/reglas",action:"Conocer condiciones"},
   {icon:"trophy" as const,title:"¡Listo!",detail:"Solo una oportunidad confirmada conforme al reglamento podrá participar.",href:"/reglas",action:"Consultar reglas"},
 ] as const;
 
@@ -56,7 +56,7 @@ export function HomeParticipation(){
     <div className="o-home-participation-head">
       <div><span className="f-kicker">GUÍA DE PARTICIPACIÓN</span>
         <h2 id="o-home-participation-title">¿Cómo <span>participar?</span></h2></div>
-      <p>Cuatro pasos sencillos. Por ahora puedes explorar el proceso y probar tus números sin comprar.</p>
+      <p>Descubre en cuatro pasos cómo funciona Oportunia.</p>
     </div>
     <ol className="o-home-participation-grid">
       {publicParticipationSteps.map((step,index)=><li className="o-home-step" key={step.title}>
@@ -69,6 +69,6 @@ export function HomeParticipation(){
       </li>)}
     </ol>
     <p className="o-home-participation-note"><HomeIcon name="shield" size={17}/>
-      Las ventas y participaciones reales siguen cerradas hasta cumplir las verificaciones y autorizaciones aplicables.</p>
+      Revisa el reglamento y las condiciones de cada edición antes de participar.</p>
   </section>;
 }
