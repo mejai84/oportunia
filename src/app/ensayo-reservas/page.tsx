@@ -87,7 +87,8 @@ export default function PreviewReservationsPage(){
   },[userId,drawId,loadTaken]);
 
   const current=holds.find(h=>h.draw_id===drawId&&effectivePreviewStatus(h)==="active");
-  const currentNumbers=current?allNumbers.filter(n=>n.reservation_id===current.id&&n.category!=="extra_demo").map(n=>n.number):[];
+  const currentNumbers=current?(events.find(e=>e.reservation_id===current.id&&e.event_type==="created")?.numbers
+    ??allNumbers.filter(n=>n.reservation_id===current.id&&n.category!=="extra_demo").map(n=>n.number)):[];
   const visible=Array.from({length:100},(_,i)=>i+page*100);
   function addNumber(input:string){
     setError("");
