@@ -1,0 +1,33 @@
+
+/* Milestones and customer bank-reference trace: strictly non-commercial preview. */
+.central-progress{background:#fbfefc;border:1px solid #bfe2cf;border-radius:15px;padding:17px;margin:17px 0;color:#1c4c39;box-shadow:0 7px 24px #0e53380b}
+.central-progress-top{display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px}
+.central-progress-top h3{font-size:16px;margin:7px 0 12px;color:#224c3b}
+.central-progress-top>strong{font-size:22px;color:#188559;white-space:nowrap}
+.central-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:15px 0}
+.central-steps>div{background:#f2f6f4;border:1px solid #deebe2;border-radius:11px;padding:12px 9px;min-width:0}
+.central-steps>div.completed{background:#dcf7e8;border-color:#b3e6c8}
+.central-steps strong,.central-steps small{display:block;font-size:11px;color:#37644c;line-height:1.5}
+.central-steps small{font-size:10px;color:#80938a;margin-top:4px}
+.central-steps>div.completed strong{color:#11754e}
+.central-extra-history{display:grid;gap:9px;margin:12px 0}
+.central-extra-history>div{background:white;border:1px solid #e1ede5;border-radius:11px;padding:12px 15px}
+.central-extra-caption{display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap}
+.central-extra-caption strong{font-size:12px;color:#156a48}
+.central-extra-caption small{font-size:10px;color:#82998d}
+.central-progress-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:14px 0}
+.central-progress-actions small{color:#6d8678;font-size:11px}
+.central-tracking{border-top:1px solid #dcece2;margin:21px 0 0;padding-top:20px}
+.central-tracking h3{font-size:15px;color:#20513d;margin:9px 0}
+.central-tracking p{font-size:12px;line-height:1.6;color:#5b7868}
+.central-linked-list{display:grid;gap:7px;margin:12px 0}
+.central-linked-list>div{display:grid;grid-template-columns:minmax(140px,1fr) minmax(160px,1fr) auto;align-items:center;gap:9px;background:#f4faf6;border:1px solid #dcece0;border-radius:9px;padding:10px}
+.central-linked-list strong,.central-linked-list span,.central-linked-list small{font-size:11px;overflow-wrap:anywhere}
+.central-linked-list strong{color:#17583c}.central-linked-list span{color:#537b63}.central-linked-list small{color:#81978a}
+.central-link-form{display:flex;align-items:end;gap:10px;flex-wrap:wrap;padding:12px;background:#f8fcf9;border:1px dashed #c9e4d4;border-radius:12px;margin-top:13px}
+.central-link-form label{display:grid;gap:6px;flex:1 1 225px;font-weight:700;font-size:11px;color:#356247}
+.central-link-form select{border:1px solid #c9e5d5;color:#274c3b;border-radius:9px;padding:10px 12px;background:#fff;width:100%;font-size:12px}
+.central-link-form small{font-size:11px;color:#6e887b;flex-basis:100%;line-height:1.6}
+.central-admin-actions{margin-top:14px}
+.central-demo-separation{font-size:11px;color:#7a8658}
+@media(max-width:680px){.central-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.central-linked-list>div{grid-template-columns:1fr}.central-progress{padding:12px}.central-progress-top>strong{font-size:19px}}
