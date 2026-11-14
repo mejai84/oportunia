@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 export type HomeIconName =
   | "shield" | "zap" | "wallet" | "bell" | "smartphone" | "numbers"
@@ -7,7 +8,7 @@ export type HomeIconName =
 export function HomeIcon({ name, size=28, className="" }:{
   name:HomeIconName;size?:number;className?:string;
 }){
-  const paths:Record<HomeIconName,React.ReactNode>={
+  const paths:Record<HomeIconName,ReactNode>={
     shield:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></>,
     zap:<path d="m13 2-10 12h8l-1 8 11-12h-8l1-8Z"/>,
     wallet:<><rect x="2" y="5" width="20" height="16" rx="3"/><path d="M2 9h20M16 15h2"/></>,
