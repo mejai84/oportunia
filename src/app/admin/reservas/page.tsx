@@ -107,7 +107,7 @@ function PreviewAdminWorkspace(){
                 </button>
               </div>
               {detailsId===r.id&&<PreviewProgress reservationId={r.id}
-                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh();if(drawId)void refreshSummary(drawId);}}/>}
+                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura"));if(drawId)void refreshSummary(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de estadísticas"));}}/>}
             </article>;
           })}</div>}
         {reservations.length===500&&<p className="muted">Vista limitada a los 500 registros más recientes.</p>}
