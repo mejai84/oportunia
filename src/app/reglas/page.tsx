@@ -13,14 +13,14 @@ export default function ReglasPage() {
    <p>El mecanismo previsto contempla 24 horas para confirmar el primer abono. Los números sin abono podrían liberarse al vencimiento, según las condiciones publicadas para la edición.</p>
    <h2>4. Cuotas y protección de abonos</h2>
    <p>Se prevén modalidades de pago completo, dos cuotas o tres cuotas. Las reglas de vencimiento, cancelación, devolución y conservación de abonos parciales deberán estar publicadas antes de recibir dinero.</p>
-   <h2>5. Sorteo, resultados y premio</h2>
-   <p>La fecha, el mecanismo de selección, la entidad de referencia, la entrega del premio y las autorizaciones aplicables se informarán en el reglamento de cada edición. Solo se publicarán resultados verificables.</p>
+   <h2>5. Selección del ganador, resultados y premio</h2>
+   <p>La adjudicación del premio depende de un mecanismo por azar (sorteo o resultado de lotería), según el reglamento autorizado de cada edición. La fecha, la entidad de referencia, las condiciones de entrega y las autorizaciones aplicables se informarán antes de abrir la participación. Solo se publicarán resultados verificables.</p>
    <h2>6. Cuenta y datos</h2>
    <p>El acceso por correo utiliza Supabase Auth. Las opiniones publicadas, los reportes de referencias y las selecciones centralizadas se registran en la base de datos asociados a cada usuario. Algunas herramientas de cálculo siguen siendo locales. La autenticación por celular requerirá un proveedor de verificación.</p>
    <h2>7. Disponibilidad de operaciones</h2>
    <p>Las selecciones de números de las herramientas actuales son informativas y no constituyen participaciones comerciales. Los canales para efectuar pagos se anunciarán cuando la edición correspondiente cumpla sus condiciones y esté habilitada. No envíes dinero por medios no publicados oficialmente.</p>
    <p className="muted small">Información preliminar sujeta a actualización antes de abrir una edición.</p>
-   <Link className="btn btn-primary" href="/">Ver próximos sorteos</Link>
+   <Link className="btn btn-primary" href="/">Explorar oportunidades</Link>
   </section>
  </div>;
 }

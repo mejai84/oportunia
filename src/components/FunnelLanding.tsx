@@ -16,10 +16,10 @@ const PAYMENT_EXAMPLES = [0, 10000, 20000, 25000, 35000, 50000];
 const faqs = [
   {
     "question": "¿Qué es Oportunia?",
-    "answer": "Oportunia es una plataforma para consultar sorteos, conocer sus premios y reglas y, cuando una edición esté oficialmente habilitada, gestionar oportunidades de participación."
+    "answer": "Oportunia reúne oportunidades de ganar premios. En cada edición encontrarás sus condiciones de participación y el mecanismo de selección del ganador."
   },
   {
-    "question": "¿Cómo sé si un sorteo está disponible?",
+    "question": "¿Cómo sé si una oportunidad está disponible?",
     "answer": "Consulta el estado de cada edición y sus reglas. Las propuestas marcadas como «Idea de premio» muestran posibles premios para el futuro."
   },
   {
@@ -36,11 +36,11 @@ const faqs = [
   },
   {
     "question": "¿Qué ocurre con los otros 40 números?",
-    "answer": "Se asignarían de forma aleatoria y sin duplicados dentro del mismo sorteo, según el total abonado y las condiciones de la edición."
+    "answer": "Se asignarían de forma aleatoria y sin duplicados dentro de la misma edición, según el total abonado y las condiciones de la edición."
   },
   {
     "question": "¿Los números se repiten entre clientes?",
-    "answer": "En un mismo sorteo, cada número debe corresponder a una sola oportunidad activa. Sorteos distintos pueden utilizar la misma numeración, porque son ediciones independientes."
+    "answer": "En una misma edición, cada número debe corresponder a una sola oportunidad activa. Ediciones distintas pueden utilizar la misma numeración, porque son independientes."
   },
   {
     "question": "¿Puedo pagar de contado?",
@@ -75,7 +75,7 @@ const faqs = [
     "answer": "Los medios disponibles se anunciarán únicamente después de activar y verificar los canales oficiales de recaudo. No envíes dinero a cuentas difundidas por terceros."
   },
   {
-    "question": "¿Cuándo se realizará el sorteo?",
+    "question": "¿Cuándo se realizará la selección del ganador?",
     "answer": "La fecha se publicará en la ficha oficial de cada edición, junto con las condiciones y autorizaciones aplicables. Actualmente no hay una fecha confirmada para la edición anunciada."
   },
   {
@@ -84,15 +84,15 @@ const faqs = [
   },
   {
     "question": "¿Dónde podré consultar los resultados?",
-    "answer": "En la sección «Sorteos realizados y ganadores», con fecha, número ganador y fuente de verificación. No se publican ganadores inventados."
+    "answer": "En la sección «Resultados y ganadores», con fecha, número ganador y fuente de verificación. No se publican ganadores inventados."
   },
   {
     "question": "¿Cómo sé que las opiniones son auténticas?",
     "answer": "Las opiniones se envían desde cuentas registradas, pasan por revisión y se publican en la sección de la comunidad."
   },
   {
-    "question": "¿Puedo calificar un sorteo?",
-    "answer": "Sí. Desde «Mi cuenta», al iniciar sesión, puedes enviar una calificación de 1 a 5 estrellas y un comentario por sorteo. Las opiniones pasan por revisión antes de publicarse."
+    "question": "¿Puedo opinar sobre una edición?",
+    "answer": "Sí. Desde «Mi cuenta», al iniciar sesión, puedes enviar una calificación de 1 a 5 estrellas y un comentario por edición. Las opiniones pasan por revisión antes de publicarse."
   },
   {
     "question": "¿Cómo ingreso a mi cuenta?",
@@ -163,11 +163,11 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="f-hero">
       <div className="container f-hero-grid">
         <div className="f-hero-copy">
-          <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> SORTEO DESTACADO · EN PREPARACIÓN</div>
+          <div className="f-eyebrow"><HomeIcon name="sparkles" size={17}/> OPORTUNIDAD DESTACADA · EN PREPARACIÓN</div>
           <h1>¡Descubre el próximo <span className="f-highlight">{featuredDraw?.prize || "iPhone 18"}</span>!</h1>
           <p className="f-hero-description">Descubre premios, conoce cómo elegir tus números y sigue las novedades de cada edición.</p>
           <div className="f-hero-actions">
-            <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> Ver próximos sorteos <HomeIcon name="arrow-right" size={18}/></a>
+            <a href="#sorteos" className="f-button f-button-primary"><HomeIcon name="sparkles" size={19}/> Explorar oportunidades <HomeIcon name="arrow-right" size={18}/></a>
             <a href="#como-funciona" className="f-button f-button-outline"><HomeIcon name="zap" size={19}/> Cómo funciona</a>
           </div>
           <div className="f-hero-foot"><span><HomeIcon name="shield" size={16}/> Reglas claras</span><span><HomeIcon name="numbers" size={16}/> Números a tu manera</span><span><HomeIcon name="bell" size={16}/> Seguimiento de avisos</span></div>
@@ -190,7 +190,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
             <div className="f-showcase-rule" />
             <div><span>Modalidad</span><strong>50 <small>números</small></strong></div>
           </div>
-          <div className="o-home-hero-status" aria-label="Estado informativo del sorteo">
+          <div className="o-home-hero-status" aria-label="Estado informativo de la edición">
             <div><strong>Estado de la edición</strong><span>{featuredDraw?.status==="closed"?"Cerrada":"Próximamente"}</span></div>
             <p><HomeIcon name="clock" size={15}/> {featuredDraw?.status==="closed"?"Consulta el historial de resultados":"Fecha por anunciar"}</p>
           </div>
@@ -203,7 +203,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <DrawCarousel />
     <HomeParticipation />
     <section className="container f-stats" aria-label="Características de la propuesta">
-      <div><strong>200</strong><span>Oportunidades previstas por sorteo</span></div>
+      <div><strong>200</strong><span>Oportunidades previstas por edición</span></div>
       <div><strong>10.000</strong><span>Números de cuatro cifras</span></div>
       <div><strong>10 + 40</strong><span>Iniciales a tu elección + aleatorios</span></div>
       <div><strong>$50.000</strong><span>Valor por oportunidad</span></div>
@@ -267,7 +267,7 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
 
     <section className="f-faq-section" id="preguntas">
       <div className="container f-faq-grid">
-        <div><span className="f-kicker">RESPUESTAS CLARAS</span><h2>Preguntas frecuentes.</h2><p>Resolvemos tus dudas sobre números, abonos, resultados, seguridad y apertura de sorteos.</p></div>
+        <div><span className="f-kicker">RESPUESTAS CLARAS</span><h2>Preguntas frecuentes.</h2><p>Resolvemos tus dudas sobre números, abonos, resultados, seguridad y apertura de ediciones.</p></div>
         <div className="f-faq-list">{faqs.map((faq) =>
           <details key={faq.question}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
       </div>
@@ -276,10 +276,10 @@ export function FunnelLanding({ leadCaptureEnabled }: Props) {
     <section className="container f-last-section">
       <div className="f-last-card"><div className="f-last-light" /><span className="f-kicker">CONOCE LA EXPERIENCIA</span>
         <h2>Tú eliges cómo empezar. <span>Las reglas, siempre claras.</span></h2>
-        <p>Conoce el proceso de asignación antes de la apertura de los sorteos.</p>
-        <a className="f-button f-button-primary" href="#sorteos">Explorar sorteos ↗</a>
+        <p>Conoce el proceso de asignación antes de la apertura de cada edición.</p>
+        <a className="f-button f-button-primary" href="#sorteos">Explorar oportunidades ↗</a>
       </div>
     </section>
-    <div className="f-mobile-action"><a href="#sorteos" className="f-button f-button-primary">Explorar sorteos ↗</a></div>
+    <div className="f-mobile-action"><a href="#sorteos" className="f-button f-button-primary">Explorar oportunidades ↗</a></div>
   </div>;
 }

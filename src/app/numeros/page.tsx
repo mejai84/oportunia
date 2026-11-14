@@ -40,7 +40,7 @@ export default function NumerosPage() {
   }
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError("");
-    if (soldOut) return setError("Este sorteo no está disponible.");
+    if (soldOut) return setError("Esta edición no está disponible.");
     if (!termsAccepted) return setError("Debes aceptar las reglas antes de reservar.");
     try {
       createOrder({ customer: { name, phone, email }, selected: selectionMode === "manual" ? selected : [], selectionMode, plan, drawId, termsAccepted });
@@ -50,7 +50,7 @@ export default function NumerosPage() {
   return <div className="container page-space">
     <div className="page-title"><span className="overline">PASO 01 · PERSONALIZA TU OPORTUNIDAD</span>
       <h1>10 números <span className="gradient-text">a tu manera.</span></h1>
-      <p className="draw-selected">Sorteo seleccionado: <strong>{draw?.title ?? "Sin sorteo habilitado"}</strong></p>
+      <p className="draw-selected">Edición seleccionada: <strong>{draw?.title ?? "Sin edición habilitada"}</strong></p>
       <p className="muted">Descubre cómo elegir tus primeros 10 números o recibirlos automáticamente.</p>
     </div>
     <section className="panel" style={{marginBottom:20}}><span className="overline">SELECCIÓN EN TU CUENTA</span><h2>Consulta números disponibles desde distintos dispositivos</h2><p className="muted">Puedes guardar diez números en tu cuenta con disponibilidad centralizada y vigencia de 24 horas.</p><Link href="/ensayo-reservas" className="btn btn-secondary">Abrir selección centralizada ↗</Link></section>
@@ -122,7 +122,7 @@ export default function NumerosPage() {
           <label className="terms-accept"><input type="checkbox" checked={termsAccepted} required
             onChange={(e) => setTermsAccepted(e.target.checked)} />
             <span>He leído y acepto las <Link href="/reglas" target="_blank" rel="noopener noreferrer">condiciones de participación</Link>.
-              Entiendo que <strong>si no pago la totalidad de la oportunidad, ninguno de mis números participa en el sorteo</strong>.</span>
+              Entiendo que <strong>si no pago la totalidad de la oportunidad, ninguno de mis números participa en la adjudicación del premio</strong>.</span>
           </label>
           {error && <div className="alert alert-error" role="alert">{error}</div>}
           <button type="submit" className="btn btn-primary full" disabled={!hydrated || soldOut || !termsAccepted || (selectionMode === "manual" && selected.length !== 10)}>Guardar selección →</button>

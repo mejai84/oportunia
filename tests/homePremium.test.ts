@@ -36,7 +36,7 @@ test("only genuine moderated reviews are visible, never invented customer testim
  assert.match(reviews,/Opiniones de nuestra comunidad/);
  assert.match(reviews,/Tu opinión también cuenta/);
  assert.doesNotMatch(reviews,/EXAMPLE_REVIEWS|COMENTARIO FICTICIO|VISTA ILUSTRATIVA|Perfil ficticio|persona-ficticia/);
- assert.match(reviews,/Sorteos realizados y ganadores/);
+ assert.match(reviews,/Resultados y ganadores/);
  assert.doesNotMatch(reviews,/IMAGEN ILUSTRATIVA/);
 });
 test("customer payment page uses central reporting, never the browser-only mock checkout",()=>{

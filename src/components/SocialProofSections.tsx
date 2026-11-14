@@ -61,16 +61,16 @@ export function SocialProofSections(){
   </section>
   <section className="container social-proof-section social-results" id="resultados">
    <div className="social-proof-heading"><div><span className="f-kicker">HISTORIAL TRANSPARENTE</span>
-    <h2>Sorteos realizados y ganadores</h2>
+    <h2>Resultados y ganadores</h2>
     <p>Consulta resultados con fecha, número ganador y fuente de verificación.</p></div></div>
    {resultError&&<p role="status">No fue posible consultar el historial de resultados.</p>}
    {ready&&!resultError&&results.length===0&&<div className="social-empty social-empty-result">
     <span className="social-empty-icon">✦</span><h3>Próximamente, nuestros primeros resultados.</h3>
-    <p>Aquí encontrarás el historial de cada sorteo una vez publicado su resultado.</p>
+    <p>Aquí encontrarás el historial de cada edición una vez publicado su resultado.</p>
    </div>}
    {ready&&!resultError&&results.length>0&&<div className="social-result-grid">{results.map(r=><article className="social-result-card" key={r.id}>
     {r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt={r.draw_catalog.title}/>}
-    <div><span className="social-verified">Resultado verificado</span><h3>{r.draw_catalog?.title||"Sorteo Oportunia"}</h3>
+    <div><span className="social-verified">Resultado verificado</span><h3>{r.draw_catalog?.title||"Edición Oportunia"}</h3>
      <p>Número ganador: <strong>{r.winning_number}</strong></p><p>Ganador: <strong>{r.winner_display_name}</strong></p>
      <small>{new Date(r.draw_date+"T12:00:00").toLocaleDateString("es-CO")} · Fuente: {r.result_source}</small>
     </div>
