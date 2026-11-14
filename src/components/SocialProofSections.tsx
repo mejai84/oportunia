@@ -5,106 +5,16 @@ import { oportuniaClient } from "@/lib/oportuniaSupabase";
 type Review={id:string;draw_id:string;user_id:string;rating:number;comment:string;display_name:string;created_at:string;draw_catalog:{title:string;prize_image_url:string|null}|null};
 type Result={id:string;draw_id:string;draw_date:string;winning_number:string;winner_display_name:string;result_source:string;draw_catalog:{title:string;prize_image_url:string|null}|null};
 const EXAMPLE_REVIEWS = [
-  {
-    "id": "ejemplo-1",
-    "user_id": "ejemplo-usuario-1",
-    "display_name": "Ejemplo 01",
-    "rating": 5,
-    "comment": "Me encanta la idea de poder escoger mis números desde el celular, sin complicaciones.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-2",
-    "user_id": "ejemplo-usuario-2",
-    "display_name": "Ejemplo 02",
-    "rating": 5,
-    "comment": "El diseño es muy claro; así es fácil entender cómo funcionaría cada sorteo.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-3",
-    "user_id": "ejemplo-usuario-3",
-    "display_name": "Ejemplo 03",
-    "rating": 5,
-    "comment": "Ver las reglas antes de participar me parece un detalle muy importante.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-4",
-    "user_id": "ejemplo-usuario-4",
-    "display_name": "Ejemplo 04",
-    "rating": 5,
-    "comment": "Poder consultar todos mis números desde mi cuenta sería bastante cómodo.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-5",
-    "user_id": "ejemplo-usuario-5",
-    "display_name": "Ejemplo 05",
-    "rating": 5,
-    "comment": "La opción de elegir números o recibirlos automáticamente me parece genial.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-6",
-    "user_id": "ejemplo-usuario-6",
-    "display_name": "Ejemplo 06",
-    "rating": 5,
-    "comment": "Me gustan los colores y lo sencillo que resulta explorar los premios.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-7",
-    "user_id": "ejemplo-usuario-7",
-    "display_name": "Ejemplo 07",
-    "rating": 4,
-    "comment": "Que se explique cuándo queda habilitada una oportunidad me da tranquilidad.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-8",
-    "user_id": "ejemplo-usuario-8",
-    "display_name": "Ejemplo 08",
-    "rating": 5,
-    "comment": "El esquema de abonos se entiende muy bien con el simulador.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-9",
-    "user_id": "ejemplo-usuario-9",
-    "display_name": "Ejemplo 09",
-    "rating": 4,
-    "comment": "Las imágenes de los premios hacen que navegar por los sorteos sea más agradable.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  },
-  {
-    "id": "ejemplo-10",
-    "user_id": "ejemplo-usuario-10",
-    "display_name": "Ejemplo 10",
-    "rating": 5,
-    "comment": "Me parece excelente que se preparen resultados con fuentes verificables.",
-    "draw_id": "principal",
-    "created_at": "",
-    "draw_catalog": null
-  }
+  {id:"ejemplo-1",user_id:"persona-ficticia-1",display_name:"María P.",rating:5,comment:"Estuve mirando cómo se escogen los números y me pareció sencillo. Me gusta poder probar antes de decidir.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-2",user_id:"persona-ficticia-2",display_name:"Camilo R.",rating:4,comment:"Lo abrí desde el celular y pude ver los premios sin enredarme. Me gustaría tener un filtro por tipo de premio.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-3",user_id:"persona-ficticia-3",display_name:"Diana M.",rating:5,comment:"El paso a paso está claro. Sobre todo me gustó que expliquen cuándo una reserva todavía no participa.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-4",user_id:"persona-ficticia-4",display_name:"Julián C.",rating:4,comment:"El simulador me ayudó a entender las cuotas. Quedaría mejor si las fechas se ven más grandes cuando estén disponibles.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-5",user_id:"persona-ficticia-5",display_name:"Paola S.",rating:5,comment:"Me parece bueno que el reporte de una transferencia tenga seguimiento. Así uno sabe si sigue pendiente y no se confunde.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-6",user_id:"persona-ficticia-6",display_name:"Andrés V.",rating:5,comment:"Los colores y los iconos hacen que la página sea fácil de recorrer. La sección de cómo funciona es la que más miré.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-7",user_id:"persona-ficticia-7",display_name:"Laura G.",rating:4,comment:"Probé el recorrido de los números. Se entiende, aunque me gustaría que explicaran con un ejemplo el sorteo final.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-8",user_id:"persona-ficticia-8",display_name:"Santiago F.",rating:5,comment:"Se agradece que avisen que por ahora es una demostración. Prefiero esperar a que publiquen todo oficialmente.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-9",user_id:"persona-ficticia-9",display_name:"Natalia D.",rating:4,comment:"La información de pagos se ve ordenada y me gusta que no den por confirmado un abono solo con una referencia.",draw_id:"principal",created_at:"",draw_catalog:null},
+  {id:"ejemplo-10",user_id:"persona-ficticia-10",display_name:"Felipe A.",rating:5,comment:"Me interesa seguir las novedades desde mi cuenta. El diseño se ve limpio y los pasos son fáciles de recordar.",draw_id:"principal",created_at:"",draw_catalog:null}
 ] satisfies Review[];
 /** Fisher–Yates shuffle; one review per user in each displayed selection. */
 function uniqueRandom(reviews:Review[],limit:number) {
@@ -140,17 +50,17 @@ export function SocialProofSections(){
   <section className="container social-proof-section" id="opiniones">
    <div className="social-proof-heading"><div><span className="f-kicker">TU OPINIÓN IMPORTA</span>
     <h2>⭐ {isExample?"Así se verán las opiniones":"Lo que dice nuestra comunidad"}</h2>
-    <p>{isExample?"Diez textos ilustrativos para mostrar el diseño. No son reseñas de clientes ni experiencias verificadas.":"Valoraciones reales publicadas tras revisión, sin repetir al mismo cliente en cada selección."}</p></div>
+    <p>{isExample?"Comentarios de muestra con lenguaje natural para presentar el diseño. Son ficticios: no proceden de clientes ni describen compras reales.":"Valoraciones reales publicadas tras revisión, sin repetir al mismo cliente en cada selección."}</p></div>
    {reviews.length>10&&<button type="button" className="btn btn-secondary" onClick={()=>setRotation(n=>n+1)}>Ver otras opiniones ↻</button>}</div>
    {!ready&&<p role="status">Cargando opiniones…</p>}
    {reviewError&&<p role="status">No fue posible consultar las opiniones reales. No se muestran testimonios no verificados como auténticos.</p>}
-   {isExample&&<div className="social-example-banner" role="note"><strong>VISTA ILUSTRATIVA</strong> · Las siguientes 10 reseñas son ejemplos de diseño, no comentarios publicados por clientes.</div>}
+   {isExample&&<div className="social-example-banner" role="note"><strong>VISTA ILUSTRATIVA</strong> · Los nombres, puntuaciones y comentarios son ejemplos ficticios. No son testimonios de clientes, compras o ganadores.</div>}
    {ready&&!reviewError&&<div className="social-review-grid">{featured.map(r=><article className={"social-review-card"+(isExample?" is-example":"")} key={r.id}>
     <div className="social-review-top"><span aria-label={r.rating+" de 5 estrellas"} className="social-stars">{"★".repeat(r.rating)}<span>{"☆".repeat(5-r.rating)}</span></span>
-     <span className={isExample?"social-example-label":"social-verified"}>{isExample?"EJEMPLO":"Opinión publicada"}</span></div>
+     <span className={isExample?"social-example-label":"social-verified"}>{isExample?"COMENTARIO FICTICIO":"Opinión publicada"}</span></div>
     <p className="social-review-text">“{r.comment}”</p>
-    <div className="social-review-footer"><div className="social-avatar">{isExample?"✦":r.display_name.trim().charAt(0).toUpperCase()}</div>
-    <div><strong>{r.display_name}</strong><small>{isExample?"Texto ilustrativo · Sin cliente real":r.draw_catalog?.title||"Sorteo Oportunia"}</small></div>
+    <div className="social-review-footer"><div className="social-avatar">{r.display_name.trim().charAt(0).toUpperCase()}</div>
+    <div><strong>{r.display_name}</strong><small>{isExample?"Perfil ficticio · Vista de demostración":r.draw_catalog?.title||"Sorteo Oportunia"}</small></div>
     {!isExample&&r.draw_catalog?.prize_image_url&&<img src={r.draw_catalog.prize_image_url} alt="" className="social-draw-thumb"/>}</div>
    </article>)}</div>}
   </section>
