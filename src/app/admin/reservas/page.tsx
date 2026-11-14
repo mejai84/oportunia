@@ -4,9 +4,10 @@ import { useCallback,useEffect,useMemo,useState } from "react";
 import { AdminAccessGate } from "@/components/AdminAccessGate";
 import { PreviewProgress } from "@/components/PreviewProgress";
 import { oportuniaClient } from "@/lib/oportuniaSupabase";
-import {displayPreviewNumber,effectivePreviewStatus,summarizePreviewReservations,
+import {displayPreviewNumber,effectivePreviewStatus,
   type PreviewDraw,type PreviewReservation,type PreviewNumber,type PreviewEvent} from "@/lib/previewReservations";
 const statusLabels={active:"Vigente",expired:"Vencida",cancelled:"Cancelada"};
+type AdminSummary={active:number;expired:number;cancelled:number;occupied:number;extra:number;free:number;remaining:number};
 
 function PreviewAdminWorkspace(){
   const client=useMemo(()=>oportuniaClient(),[]);
@@ -20,6 +21,7 @@ function PreviewAdminWorkspace(){
   const [filter,setFilter]=useState<"all"|"active"|"expired"|"cancelled">("all");
   const [term,setTerm]=useState("");
   const [detailsId,setDetailsId]=useState<string|null>(null);
+  const [summary,setSummary]=useState<AdminSummary|null>(null);
 
   const refresh=useCallback(async()=>{
     const [drawResult,holdResult,numberResult,eventResult]=await Promise.all([
@@ -43,7 +45,21 @@ function PreviewAdminWorkspace(){
       .finally(()=>{if(active)setLoading(false);});
     return()=>{active=false;};
   },[refresh]);
-  const stats=useMemo(()=>summarizePreviewReservations(reservations,numbers,drawId),[reservations,numbers,drawId]);
+  const refreshSummary=useCallback(async(draw:string)=>{
+    const {data,error:summaryError}=await client.rpc("get_preview_admin_summary",{p_draw_id:draw});
+    if(summaryError)throw new Error("No fue posible calcular el inventario completo.");
+    const payload=data as AdminSummary|null;
+    if(!payload||typeof payload.active!=="number"||typeof payload.occupied!=="number"||
+       typeof payload.free!=="number"||typeof payload.extra!=="number")throw new Error("La estadística central no es válida.");
+    setSummary(payload);
+  },[client]);
+  useEffect(()=>{
+    let active=true;
+    setSummary(null);
+    if(!drawId)return;
+    void refreshSummary(drawId).catch(e=>{if(active)setError(e instanceof Error?e.message:"Error de estadísticas");});
+    return()=>{active=false;};
+  },[drawId,refreshSummary]);
   const visible=reservations.filter(r=>r.draw_id===drawId&&(filter==="all"||effectivePreviewStatus(r)===filter)&&
     (!term||r.id.toLowerCase().includes(term.toLowerCase())||r.user_id.toLowerCase().includes(term.toLowerCase())));
   return <div className="container page-space central-page">
@@ -58,13 +74,14 @@ function PreviewAdminWorkspace(){
       <section className="central-panel">
         <div className="central-toolbar"><label>Edición de prueba<select value={drawId} onChange={e=>setDrawId(e.target.value)}>
           {draws.map(d=><option value={d.id} key={d.id}>{d.title} · {d.status}</option>)}</select></label>
-          <button className="btn btn-secondary btn-small" type="button" onClick={()=>void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura"))}>Actualizar</button></div>
+          <button className="btn btn-secondary btn-small" type="button" onClick={()=>{void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de lectura")); if(drawId)void refreshSummary(drawId).catch(e=>setError(e instanceof Error?e.message:"Error de estadísticas"));}}>Actualizar</button></div>
         <div className="central-stats central-admin-stats">
-          <div><span>Ensayos vigentes</span><strong>{stats.active} / 200</strong></div>
-          <div><span>Números ocupados (ensayo)</span><strong>{stats.selectedNumbers.toLocaleString("es-CO")}</strong></div>
-          <div><span>Números libres (ensayo)</span><strong>{stats.freeNumbers.toLocaleString("es-CO")}</strong></div>
-          <div><span>Vencidas</span><strong>{stats.expired}</strong></div>
-          <div><span>Canceladas</span><strong>{stats.cancelled}</strong></div>
+          <div><span>Ensayos vigentes</span><strong>{summary?.active??"…"} / 200</strong></div>
+          <div><span>Números ocupados (ensayo)</span><strong>{summary?.occupied.toLocaleString("es-CO")??"…"}</strong></div>
+          <div><span>Números libres (ensayo)</span><strong>{summary?.free.toLocaleString("es-CO")??"…"}</strong></div>
+          <div><span>Vencidas</span><strong>{summary?.expired??"…"}</strong></div>
+          <div><span>Canceladas</span><strong>{summary?.cancelled??"…"}</strong></div>
+          <div><span>Extras de simulación</span><strong>{summary?.extra??"…"}</strong></div>
         </div>
       </section>
       <section className="central-panel">
@@ -90,7 +107,7 @@ function PreviewAdminWorkspace(){
                 </button>
               </div>
               {detailsId===r.id&&<PreviewProgress reservationId={r.id}
-                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh();}}/>}
+                allowDemoAllocation={status==="active"} onChanged={()=>{void refresh();if(drawId)void refreshSummary(drawId);}}/>}
             </article>;
           })}</div>}
         {reservations.length===500&&<p className="muted">Vista limitada a los 500 registros más recientes.</p>}
