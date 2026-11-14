@@ -85,7 +85,7 @@ export function DrawCarousel({content,ideas}:Props){
       {photo.isStockPhoto&&<span className="o-draw-photo-note">Fotografía de referencia</span>}
      </div>
      <div className="draw-mini-content">
-      <span className="draw-mini-kicker">OPORTUNIA · {draw.idea?"OPCIÓN DE PREMIO":"PREMIO DESTACADO"}</span>
+      <span className="draw-mini-kicker">OPORTUNIA · {draw.idea?"CATÁLOGO OPORTUNIA":"PREMIO DESTACADO"}</span>
       <h3>{draw.prize}</h3>
       <p>{draw.description}</p>
       <div className="draw-mini-foot">

@@ -39,7 +39,7 @@ export function SocialProofSections(){
  return <>
   {(featured.length>0||!ready||reviewError)&&<section className="container social-proof-section" id="opiniones">
    <div className="social-proof-heading"><div><span className="f-kicker">TU OPINIÓN IMPORTA</span>
-    <h2>⭐ Opiniones de nuestra comunidad</h2>
+    <h2>Opiniones de nuestra comunidad</h2>
     <p>Conoce las valoraciones que comparten los usuarios de Oportunia.</p></div>
    {reviews.length>10&&<button type="button" className="btn btn-secondary" onClick={()=>setRotation(n=>n+1)}>Ver otras opiniones ↻</button>}</div>
    {!ready&&<p role="status">Cargando opiniones…</p>}

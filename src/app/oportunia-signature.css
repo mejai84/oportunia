@@ -1,0 +1,260 @@
+/* Oportunia Signature 2026 — unified premium presentation layer.
+   Style direction: editorial, emerald/ivory/champagne. No business-state changes.
+   Impeccable: distill, typeset, adapt, polish.
+   UI UX Pro Max: semantic tokens, focus states, 44px targets, reduced motion. */
+
+:root{
+  --op-forest:#073b2b;
+  --op-forest-strong:#052e23;
+  --op-emerald:#086747;
+  --op-emerald-soft:#eaf5ee;
+  --op-gold:#bb8a35;
+  --op-gold-soft:#efe3c8;
+  --op-ivory:#faf9f4;
+  --op-paper:#ffffff;
+  --op-stroke:#dde6dc;
+  --op-ink:#193c30;
+  --op-subtle:#557267;
+  --op-shadow:0 24px 62px rgba(14,49,33,.09);
+  --op-shadow-hover:0 30px 70px rgba(14,49,33,.16);
+  --op-radius-lg:26px;
+  --op-radius-md:18px;
+  --op-timing:cubic-bezier(.2,.75,.2,1);
+  color-scheme:light;
+}
+html{scroll-padding-top:100px}
+body{background:var(--op-ivory);color:var(--op-ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{color:var(--op-forest);text-wrap:balance}
+p{overflow-wrap:break-word}
+::selection{background:#d8eddd;color:var(--op-forest)}
+.container{width:min(1220px,calc(100% - 48px))}
+.page-space{padding-top:clamp(36px,5vw,68px)}
+.page-title{margin-bottom:clamp(22px,4vw,42px)}
+.page-title h1{font-size:clamp(2.15rem,4vw,4rem);letter-spacing:-.055em;line-height:1.1}
+.page-title p{max-width:690px;color:var(--op-subtle)}
+.overline,.f-kicker,.f-eyebrow{letter-spacing:.12em}
+a,button,summary{ -webkit-tap-highlight-color:transparent }
+a:focus-visible,button:focus-visible,summary:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid #b8862b;outline-offset:3px;
+}
+button,.btn,.f-button,.nav-link,.f-header-cta{min-height:44px}
+.btn,.f-button,.f-header-cta{transition:transform .2s var(--op-timing),background-color .2s,border-color .2s,box-shadow .2s}
+.btn:hover:not(:disabled),.f-button:hover:not(:disabled),.f-header-cta:hover{transform:translateY(-2px)}
+.btn:active:not(:disabled),.f-button:active:not(:disabled),.f-header-cta:active{transform:translateY(0)}
+.btn-primary,.f-button-primary{background:var(--op-forest);border-color:var(--op-forest);color:#fff;box-shadow:0 12px 24px rgba(4,58,36,.15)}
+.btn-primary:hover:not(:disabled),.f-button-primary:hover:not(:disabled){background:#0d6547;box-shadow:0 18px 28px rgba(4,58,36,.2)}
+.btn-secondary,.btn-ghost,.f-button-outline{border-color:#c8dcd0;background:#fff;color:var(--op-forest)}
+.btn-secondary:hover:not(:disabled),.btn-ghost:hover:not(:disabled),.f-button-outline:hover:not(:disabled){background:#edf7f0;border-color:#9bcab0}
+input,select,textarea{border-radius:12px;border:1px solid #cadbd0;background:#fff;color:var(--op-ink);min-height:44px}
+input::placeholder,textarea::placeholder{color:#728a7e}
+input:focus,select:focus,textarea:focus{border-color:#167a53;box-shadow:0 0 0 3px rgba(18,121,77,.12)}
+.panel,.access-card,.legal-page .panel{border:1px solid var(--op-stroke);background:var(--op-paper);border-radius:var(--op-radius-lg);box-shadow:0 12px 38px rgba(9,56,35,.035)}
+.panel h2,.panel h3{letter-spacing:-.025em}
+.muted{color:var(--op-subtle)}
+.alert{border-radius:14px;line-height:1.55}
+.alert-warning{background:#fff7e9;color:#755019;border-color:#ebd5ae}
+.data-table th{background:#edf5ef;color:#2c6049}
+.data-table{border-collapse:separate;border-spacing:0}
+.data-table td{border-color:#e5ede6}
+.tabs{gap:7px;scrollbar-width:thin}
+.tab{border-radius:11px;transition:background .18s,color .18s}
+.tab.active{background:var(--op-forest);color:#fff;border-color:var(--op-forest)}
+.metric-card{background:#fff;border:1px solid var(--op-stroke);box-shadow:0 8px 22px rgba(7,64,37,.04);border-radius:18px}
+.metric-card strong{color:var(--op-forest)}
+/* Header: one clear horizontal rhythm and a distinct account CTA. */
+.site-header{background:rgba(250,249,244,.96);border-bottom:1px solid rgba(14,90,52,.12);box-shadow:0 3px 22px rgba(4,53,31,.035);backdrop-filter:blur(20px)}
+.site-header .header-inner{min-height:84px;gap:18px}
+.site-header .brand{font-family:"Outfit",system-ui,sans-serif;font-size:clamp(23px,2.4vw,29px);font-weight:900;letter-spacing:-.055em;color:var(--op-forest)}
+.site-header .brand-dot{color:var(--op-gold)}
+.site-header .brand-clover{width:40px;height:40px;flex-basis:40px}
+.site-header .f-header-nav{gap:clamp(14px,2vw,32px);color:#345b4a}
+.site-header .f-header-nav a{font-weight:700;font-size:13px;transition:color .2s}
+.site-header .f-header-nav a:hover,.site-header .nav-link:hover{color:#087347}
+.site-header .f-header-cta{border:1px solid var(--op-forest);border-radius:999px;background:var(--op-forest);color:white;padding:11px 20px;box-shadow:0 6px 20px rgba(5,55,34,.12)}
+.site-header .nav-links{gap:4px}
+.site-header .nav-link{font-size:13px;color:#355e4c;border-radius:999px;padding:11px 15px}
+.site-header .nav-link.active{background:#dfeee4;color:var(--op-forest)}
+.mobile-nav-menu summary{background:#fff;border-color:#cbded0;color:var(--op-forest);border-radius:12px}
+.mobile-nav-menu nav{background:#fff;border-color:#dce7dc;box-shadow:var(--op-shadow)}
+.mobile-nav-menu nav a{color:var(--op-forest)}
+.mobile-nav-menu nav a:hover,.mobile-nav-menu nav a:focus-visible{background:#edf7f0}
+/* Hero: typography leads, the award image sits in a dark gallery vitrine. */
+.funnel{color:var(--op-ink);overflow:clip}
+.funnel .container{width:min(1280px,calc(100% - 48px))}
+.funnel .f-hero{
+  background:radial-gradient(circle at 83% 14%,rgba(216,230,191,.45),transparent 40%),var(--op-ivory);
+  padding:clamp(52px,6vw,88px) 0 clamp(62px,7vw,96px);
+  overflow:hidden;
+}
+.funnel .f-hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(30px,5vw,78px);align-items:center}
+.funnel .f-eyebrow{background:transparent;border:1px solid #c4d9ca;color:#216e4d;font-weight:800;box-shadow:none;padding:10px 15px}
+.funnel .f-hero-copy h1{font-family:"Outfit",system-ui,sans-serif;font-size:clamp(3.1rem,5.4vw,5.8rem);line-height:1.04;letter-spacing:-.071em;font-weight:800;color:var(--op-forest);margin:22px 0}
+.funnel .f-hero-copy .f-highlight{background:none;-webkit-text-fill-color:var(--op-emerald);color:var(--op-emerald);text-decoration:none}
+.funnel .f-hero-description{font-size:clamp(16px,1.42vw,19px);line-height:1.7;color:#466658;max-width:510px}
+.funnel .f-hero-actions{margin:33px 0 26px;gap:12px}
+.funnel .f-hero-actions .f-button{border-radius:999px;min-height:54px;padding:13px 24px;letter-spacing:-.01em;font-size:14px}
+.funnel .f-hero-foot{display:flex;flex-wrap:wrap;align-items:stretch;gap:9px;margin-top:24px}
+.funnel .o-hero-trust-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.funnel .o-hero-trust-grid>span{min-width:0;display:flex;align-items:center;justify-content:flex-start;gap:8px;padding:12px 10px;background:#fff;border:1px solid #e2eae0;border-radius:12px;color:#315c46;font-size:11px;line-height:1.35;font-weight:760;box-shadow:0 5px 16px rgba(18,66,38,.04)}
+.funnel .o-hero-trust-grid svg{flex:0 0 20px;color:#11744c}
+.funnel .f-showcase{
+  background:linear-gradient(151deg,#174c36 0%,#083c2b 60%,#062a21 100%);
+  border:1px solid rgba(239,222,178,.35);border-radius:clamp(24px,3vw,35px);
+  padding:clamp(19px,2.5vw,30px);box-shadow:0 34px 76px rgba(3,55,31,.24),inset 0 1px rgba(255,255,255,.14);
+  isolation:isolate;
+}
+.funnel .f-showcase::before{background:radial-gradient(circle at 50% 46%,rgba(220,241,188,.21),transparent 57%);z-index:-1}
+.funnel .f-showcase-kicker{color:#e8cf91;font-size:11px;letter-spacing:.16em}
+.funnel .f-phone-stage{height:clamp(285px,29vw,390px);padding:13px}
+.funnel .f-phone-stage .f-hero-upload{width:100%;max-height:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 28px rgba(0,0,0,.24))}
+.funnel .f-showcase .o-home-photo-attribution{background:rgba(7,42,31,.78);border-radius:8px;color:#fff}
+.funnel .f-hero-glow{display:none}
+/* Benefits: a calm horizontal evidence strip, not floating decorations. */
+.o-home-benefits{margin-top:-18px;position:relative;z-index:2}
+.o-home-benefits-grid{border:1px solid var(--op-stroke);border-radius:22px;background:#fff;box-shadow:var(--op-shadow);overflow:hidden}
+.o-home-benefit{background:#fff;border:0;padding:clamp(18px,2vw,28px);align-items:flex-start;gap:13px}
+.o-home-benefit-icon{flex:0 0 46px;width:46px;height:46px;border:1px solid #d9e8dc;background:#f0f8f1;color:var(--op-emerald);border-radius:14px;display:grid;place-items:center}
+.o-home-benefit-icon svg{height:25px;width:25px}
+.o-home-benefit h2{font-size:14px;line-height:1.35;color:var(--op-forest);margin-bottom:8px}
+.o-home-benefit p{color:var(--op-subtle);font-size:12px;line-height:1.65}
+/* Merchandising: consistent portrait cards and intentional whitespace. */
+.funnel .draw-carousel-section{padding-top:clamp(64px,8vw,116px)}
+.funnel .draw-carousel-header{margin-bottom:29px}
+.funnel .draw-carousel-header h2{font-size:clamp(2.25rem,4.3vw,4.25rem);letter-spacing:-.058em;line-height:1.08;color:var(--op-forest);margin:12px 0 16px}
+.funnel .draw-carousel-header p{font-size:15px;color:var(--op-subtle);max-width:560px;line-height:1.7}
+.funnel .draw-row-controls{gap:9px}
+.funnel .draw-row-controls button{width:48px;height:48px;border:1px solid #bdd5c5;background:#fff;color:var(--op-forest);border-radius:50%;font-size:22px;box-shadow:0 5px 15px rgba(11,73,44,.055)}
+.funnel .draw-row-controls button:hover:not(:disabled){background:var(--op-forest);color:#fff;border-color:var(--op-forest)}
+.funnel .draw-five-track{gap:18px;scroll-padding-inline:2px;padding:6px 2px 20px;scrollbar-width:thin;overscroll-behavior-x:contain}
+.funnel .draw-mini-card{background:#fff;border:1px solid #dee9df;border-radius:24px;box-shadow:0 9px 24px rgba(12,54,35,.045);overflow:hidden;transition:transform .25s var(--op-timing),box-shadow .25s var(--op-timing),border-color .25s}
+.funnel .draw-mini-card:hover{transform:translateY(-5px);box-shadow:var(--op-shadow-hover);border-color:#b3d4bf}
+.funnel .draw-mini-art,.funnel .draw-mini-card:nth-child(2n) .draw-mini-art,.funnel .draw-mini-card:nth-child(3n) .draw-mini-art{aspect-ratio:4/5;height:auto;background:radial-gradient(circle at 52% 30%,#fff 0%,#f1f4ed 58%,#e8ede5 100%);position:relative}
+.funnel .draw-mini-art img{width:100%;height:100%;object-fit:contain;padding:18px;transition:transform .35s var(--op-timing)}
+.funnel .draw-mini-card:hover .draw-mini-art img{transform:scale(1.025)}
+.funnel .draw-mini-art img.o-draw-photo{padding:0;object-fit:cover}
+.funnel .draw-mini-content{padding:22px 22px 19px;display:flex;flex-direction:column;gap:9px}
+.funnel .draw-mini-kicker{font-size:10px;letter-spacing:.11em;font-weight:850;color:#5e795f}
+.funnel .draw-mini-content h3{color:var(--op-forest);font-size:clamp(18px,1.75vw,23px);letter-spacing:-.035em;line-height:1.22}
+.funnel .draw-mini-content>p{color:#5d7668;font-size:12px;line-height:1.6}
+.funnel .draw-mini-foot{border-top:1px solid #e4ebe4;padding-top:15px;margin-top:auto;gap:8px}
+.funnel .draw-mini-foot>span{color:#6c806f;font-size:11px}
+.funnel .draw-mini-foot>a{color:var(--op-emerald);font-weight:850;text-underline-offset:3px}
+.funnel .draw-mini-foot>a:hover{text-decoration:underline}
+.funnel .o-carousel-indicator{gap:8px}
+.funnel .o-carousel-indicator button{min-width:34px;min-height:36px;display:grid;place-items:center}
+.funnel .o-carousel-indicator button::before{content:"";display:block;width:7px;height:7px;border-radius:50%;background:#a7b9a9;transition:width .2s,background .2s}
+.funnel .o-carousel-indicator button.active::before{width:23px;border-radius:7px;background:var(--op-emerald)}
+/* Guide: steps are readable and connected by layout, never tiny icon tiles. */
+.o-home-participation{padding-top:clamp(63px,8vw,100px)}
+.o-home-participation-head h2{font-size:clamp(2.15rem,4vw,3.85rem);letter-spacing:-.055em;line-height:1.12}
+.o-home-participation-head h2 span{color:var(--op-emerald)}
+.o-home-participation-head>p{color:var(--op-subtle)}
+.o-home-participation-grid{gap:15px}
+.o-home-step{background:#fff;border:1px solid #dfe9de;border-radius:22px;box-shadow:0 8px 26px rgba(7,58,36,.045);padding:24px}
+.o-home-step-number{background:#e7f1e8;color:var(--op-forest);border:1px solid #c5dec9;font-size:12px}
+.o-home-step-icon{color:#176d4a}
+.o-home-step h3{font-size:18px;letter-spacing:-.03em}
+.o-home-step p{font-size:12px;color:var(--op-subtle);line-height:1.7}
+.o-home-step a{color:var(--op-emerald);font-weight:800;text-decoration:none}
+.o-home-step a:hover{text-decoration:underline;text-underline-offset:4px}
+.o-home-participation-note{color:#526e60}
+/* Stats: clear feature numbers, do not imply that sales have occurred. */
+.funnel .f-stats{margin-top:clamp(40px,6vw,72px);background:var(--op-forest);border:1px solid var(--op-forest);border-radius:23px;overflow:hidden;box-shadow:0 18px 45px rgba(5,51,32,.15)}
+.funnel .f-stats>div{padding:24px;min-width:0;border-color:rgba(255,255,255,.16)}
+.funnel .f-stats strong{color:#f6e7ba;font-size:clamp(26px,2.7vw,39px);letter-spacing:-.05em}
+.funnel .f-stats span{color:#d2e1d4;line-height:1.5}
+/* Calculator, signup and FAQs: controlled information density. */
+.funnel .f-demo-section{background:#f0f5ed;border-top:1px solid #e2eadd;border-bottom:1px solid #e2eadd;margin-top:clamp(70px,8vw,106px)}
+.funnel .f-demo-copy h2,.funnel .f-conversion h2{color:var(--op-forest);letter-spacing:-.052em}
+.funnel .f-demo-copy>p,.funnel .f-conversion-copy>p{color:var(--op-subtle)}
+.funnel .f-amount{border:1px solid #c9dbce;background:#fff;color:#265641;transition:background .18s,border-color .18s,color .18s}
+.funnel .f-amount.active{background:var(--op-forest);color:#fff;border-color:var(--op-forest)}
+.funnel .f-amount:hover:not(.active){border-color:#7ab896}
+.funnel .f-demo-card,.funnel .f-lead-card{border:1px solid #e0e9de;border-radius:24px;background:#fff;box-shadow:var(--op-shadow)}
+.funnel .f-demo-total strong{color:var(--op-forest)}
+.funnel .f-progress{background:#e6efe5}
+.funnel .f-progress>div{background:var(--op-emerald)}
+.funnel .f-lead-status{letter-spacing:.02em}
+.funnel .f-conversion{padding-top:clamp(68px,8vw,110px);padding-bottom:clamp(68px,8vw,110px)}
+.funnel .f-faq-section{background:#faf9f4}
+.funnel .f-faq-list details{border:1px solid #dee8dc;border-radius:13px;background:#fff;margin-bottom:9px;transition:border-color .2s,box-shadow .2s}
+.funnel .f-faq-list details[open]{border-color:#a9ceae;box-shadow:0 8px 22px rgba(14,67,36,.07)}
+.funnel .f-faq-list summary{cursor:pointer}
+.funnel .f-faq-list summary:hover{color:var(--op-emerald)}
+/* Honest reviews/results keep their native empty states. */
+.funnel .social-proof-section{padding-top:clamp(64px,7vw,100px)}
+.funnel .social-proof-heading h2{color:var(--op-forest);letter-spacing:-.055em}
+.funnel .social-empty,.funnel .social-review-card,.funnel .social-result-card{border-radius:22px;border-color:#dce8dc;background:#fff;box-shadow:0 9px 28px rgba(8,61,35,.045)}
+/* Admin: editorial, scannable and easy to navigate. */
+.admin-module-menu{margin:25px 0 32px}
+.admin-module-menu-head h2{color:var(--op-forest);font-size:clamp(23px,3vw,34px);letter-spacing:-.04em}
+.admin-module-menu-head p{color:var(--op-subtle)}
+.admin-module-grid{gap:13px}
+.admin-module-link{background:#fff;border:1px solid #d9e6db;border-radius:19px;box-shadow:0 8px 25px rgba(11,56,35,.045);padding:20px;transition:transform .2s var(--op-timing),box-shadow .2s,border-color .2s}
+.admin-module-link:hover,.admin-module-link:focus-visible{transform:translateY(-3px);border-color:#abd1b4;background:#fff;box-shadow:var(--op-shadow)}
+.admin-module-symbol{background:#edf5ed;color:#126842;border-radius:13px}
+.admin-module-copy small{color:#668471}
+.admin-module-copy strong{color:var(--op-forest);font-size:16px;letter-spacing:-.025em}
+.admin-module-copy>span{color:#5a7764;line-height:1.5}
+.admin-module-arrow{color:var(--op-emerald)}
+.admin-module-footnote{color:var(--op-subtle)}
+/* Protect purpose-built dark analytics charts: only refine the outer frame. */
+.op-dashboard{border:1px solid #204b3c;border-radius:26px;box-shadow:0 24px 58px rgba(4,50,36,.15)}
+.op-dashboard .op-dash-cta{min-height:44px;border-radius:999px}
+.op-dashboard .op-dash-kpi,.op-dashboard .op-dash-card{border-radius:17px}
+.op-dashboard .op-dash-kicker{letter-spacing:.12em}
+.footer{background:#073d2c;border-top:3px solid #b89450;color:#dceade;margin-top:clamp(56px,7vw,100px);padding:32px 0}
+.footer-inner{gap:18px;line-height:1.6}
+.footer-inner span:first-child{color:#fff;font-weight:800}
+.footer-inner span:last-child{color:#d2e4d7;max-width:610px}
+@media(max-width:1100px){
+  .site-header .f-header-nav{gap:14px}
+  .funnel .f-hero-grid{gap:28px}
+  .funnel .f-hero-copy h1{font-size:clamp(2.8rem,5.2vw,4.7rem)}
+  .o-home-benefit{padding:19px}
+}
+@media(max-width:900px){
+  .site-header .header-inner{min-height:74px}
+  .funnel .f-hero-grid{grid-template-columns:1fr}
+  .funnel .f-hero-copy{max-width:710px}
+  .funnel .f-hero-copy h1{font-size:clamp(2.7rem,7vw,4.4rem)}
+  .funnel .f-showcase{max-width:640px;width:100%;margin-inline:auto}
+  .funnel .f-hero{padding:50px 0 70px}
+  .funnel .o-hero-trust-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .container,.funnel .container{width:calc(100% - 32px)}
+  .site-header .brand-clover{width:34px;height:34px;flex-basis:34px}
+  .site-header .brand{font-size:24px}
+  .funnel .f-hero{padding:35px 0 54px}
+  .funnel .f-hero-copy h1{font-size:clamp(2.45rem,10.2vw,3.35rem);letter-spacing:-.06em}
+  .funnel .f-hero-description{font-size:15px}
+  .funnel .f-hero-actions{flex-direction:column;align-items:stretch}
+  .funnel .f-hero-actions .f-button{width:100%}
+  .funnel .o-hero-trust-grid{grid-template-columns:1fr;gap:8px}
+  .funnel .o-hero-trust-grid>span{min-height:44px;padding:10px 13px;font-size:12px}
+  .funnel .f-showcase{padding:18px;border-radius:23px}
+  .funnel .f-phone-stage{height:auto;aspect-ratio:4/3;max-height:380px}
+  .o-home-benefits{margin-top:0}
+  .o-home-benefits-grid{border-radius:18px}
+  .funnel .draw-carousel-section{padding-top:70px}
+  .funnel .draw-carousel-header h2{font-size:clamp(2rem,9vw,3rem)}
+  .funnel .draw-row-controls button{width:46px;height:46px}
+  .funnel .draw-five-track{gap:12px}
+  .funnel .draw-mini-content{padding:17px}
+  .funnel .f-stats{border-radius:18px}
+  .funnel .f-stats>div{padding:18px 14px}
+  .o-home-step{padding:19px}
+  .admin-module-link{padding:16px}
+  .footer{padding:28px 0}
+}
+@media(max-width:390px){
+  .funnel .f-hero-copy h1{font-size:2.38rem}
+  .funnel .f-hero-actions .f-button{font-size:13px}
+  .funnel .draw-mini-content h3{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .funnel .draw-mini-card:hover,.admin-module-link:hover{transform:none}
+}
