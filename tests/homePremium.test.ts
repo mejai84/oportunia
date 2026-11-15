@@ -41,7 +41,7 @@ test("homepage shows only authentic reviews, without placeholder testimonials",(
  assert.doesNotMatch(reviews,/IMAGEN ILUSTRATIVA/);
 });
 test("customer payment page uses central reporting, never the browser-only mock checkout",()=>{
- assert.match(payments,/<CustomerBankReports mode="full"\s*\/>/);
+ assert.match(payments,/<CommerceCustomer accountOnly\s*\/>/);
  assert.doesNotMatch(payments,/sendPayment|HERRAMIENTA DE DEMOSTRACIÓN|Esta pantalla registra referencias de prueba/);
  assert.match(customerReports,/Una coincidencia con un extracto no equivale a confirmación bancaria/);
  assert.match(customerReports,/requiere verificación antes de cualquier acreditación/);
