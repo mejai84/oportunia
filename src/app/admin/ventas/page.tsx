@@ -137,13 +137,13 @@ function OwnerCommerceSettings(){
      {draws.map(d=><option key={d.id} value={d.id}>{d.title}</option>)}</select></label>
     <label>País donde se permite participar (código ISO de dos letras)
      <input required maxLength={2} pattern="[A-Z]{2}" value={form.country_code}
-      onChange={e=>setForm(p=>({...p,country_code:e.target.value.toUpperCase().replace(/[^A-Z]/g,"")}))}
+      onChange={e=>setForm(p=>({...p,country_code:e.target.value.toUpperCase().replace(/[^A-Z]/g,""),legal_mode:e.target.value.toUpperCase()==="CO"?"permit_required":p.legal_mode}))}
       placeholder="CO"/></label>
-    <p className="small muted">Ejemplo: CO = Colombia. Define un país por edición; no se determina automáticamente si una jurisdicción exige permiso.</p>
+    <p className="small muted">Ejemplo: CO = Colombia. Define un país por edición. La ausencia de permiso nunca se determina automáticamente. No podrás cambiar el país o el régimen después de que existan pedidos.</p>
     <label>Modalidad legal de esta edición
      <select value={form.legal_mode} onChange={e=>setForm(p=>({...p,legal_mode:e.target.value}))}>
       <option value="permit_required">Autorización requerida — registrar permiso</option>
-      <option value="no_permit_required">No requiere autorización específica — documentar fundamento legal</option>
+      <option value="no_permit_required" disabled={form.country_code==="CO"}>No requiere autorización específica — documentar fundamento legal</option>
      </select>
     </label>
     {form.country_code==="CO"&&form.legal_mode==="no_permit_required"&&
