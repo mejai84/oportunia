@@ -90,7 +90,7 @@ export function DrawCarousel({content,ideas}:Props){
       <p>{draw.description}</p>
       <div className="draw-mini-foot">
        <span>{draw.idea?"Propuesta de premio":"Conoce sus condiciones"}</span>
-       <a href="#registro" aria-label={"Conocer novedades de "+draw.prize}>Conocer más <HomeIcon name="arrow-right" size={18}/></a>
+       <a href={draw.idea?"#registro":"/numeros"} aria-label={"Conocer condiciones de "+draw.prize}>Conocer más <HomeIcon name="arrow-right" size={18}/></a>
       </div>
      </div>
     </article>;
