@@ -1,26 +1,23 @@
 import Link from "next/link";
-export default function ReglasPage() {
- return <div className="container page-space legal-page">
-  <span className="overline">INFORMACIÓN DE PARTICIPACIÓN · CONDICIONES PRELIMINARES</span>
-  <h1>Reglas claras desde el inicio.</h1>
-  <section className="panel">
-   <p><strong>Estado actual:</strong> estas son las condiciones de funcionamiento previstas. No constituyen un reglamento autorizado ni una convocatoria abierta. Antes de aceptar pagos se publicarán las condiciones definitivas, fechas y autorizaciones correspondientes.</p>
-   <h2>1. Precio y numeración previstos</h2>
-   <p>La modalidad propuesta para la edición de iPhone contempla una oportunidad de COP $50.000 y 50 números de cuatro cifras: 10 elegidos o asignados automáticamente y 40 adicionales asignados con los abonos confirmados.</p>
-   <h2>2. Elegibilidad</h2>
-   <p><strong>Solo una oportunidad pagada y confirmada al 100 % podría participar en un sorteo oficialmente habilitado.</strong> La selección, una reserva inicial o un abono parcial no dan derecho a participar.</p>
-   <h2>3. Reserva inicial</h2>
-   <p>El mecanismo previsto contempla 24 horas para confirmar el primer abono. Los números sin abono podrían liberarse al vencimiento, según las condiciones publicadas para la edición.</p>
-   <h2>4. Cuotas y protección de abonos</h2>
-   <p>Se prevén modalidades de pago completo, dos cuotas o tres cuotas. Las reglas de vencimiento, cancelación, devolución y conservación de abonos parciales deberán estar publicadas antes de recibir dinero.</p>
-   <h2>5. Selección del ganador, resultados y premio</h2>
-   <p>La adjudicación del premio depende de un mecanismo por azar (sorteo o resultado de lotería), según el reglamento autorizado de cada edición. La fecha, la entidad de referencia, las condiciones de entrega y las autorizaciones aplicables se informarán antes de abrir la participación. Solo se publicarán resultados verificables.</p>
-   <h2>6. Cuenta y datos</h2>
-   <p>El acceso por correo utiliza Supabase Auth. Las opiniones publicadas, los reportes de referencias y las selecciones centralizadas se registran en la base de datos asociados a cada usuario. Algunas herramientas de cálculo siguen siendo locales. La autenticación por celular requerirá un proveedor de verificación.</p>
-   <h2>7. Disponibilidad de operaciones</h2>
-   <p>Las selecciones de números de las herramientas actuales son informativas y no constituyen participaciones comerciales. Los canales para efectuar pagos se anunciarán cuando la edición correspondiente cumpla sus condiciones y esté habilitada. No envíes dinero por medios no publicados oficialmente.</p>
-   <p className="muted small">Información preliminar sujeta a actualización antes de abrir una edición.</p>
-   <Link className="btn btn-primary" href="/">Explorar oportunidades</Link>
-  </section>
- </div>;
-}
+export default function ReglasPage(){return <div className="container page-space">
+ <div className="page-title"><span className="overline">TRANSPARENCIA · OPORTUNIA</span>
+  <h1>Reglamento y condiciones de participación</h1></div>
+ <section className="panel">
+  <h2>1. Reglamento de cada edición</h2>
+  <p>La edición comercial muestra su autoridad, operador, resolución o referencia de autorización y un enlace HTTPS a sus reglas aprobadas antes de ofrecer reservas. La vigencia y los canales de comercialización deben corresponder a esa autorización.</p>
+  <p><strong>Consulta siempre el enlace al reglamento específico desde <Link href="/numeros">Elegir números</Link>.</strong> Este resumen no lo sustituye.</p>
+  <h2>2. Reserva y protección de números</h2>
+  <p>Una reserva de diez números sin comprobante dura 24 horas. Si se presenta un comprobante antes del vencimiento, la reserva pasa a pendiente de verificación y sus números continúan bloqueados hasta que tesorería decida. El plazo objetivo de revisión es 72 horas; un atraso no libera automáticamente esos números.</p>
+  <h2>3. Confirmación manual y cuotas</h2>
+  <p>Los pagos se transfieren a las cuentas bancarias que aparecen publicadas en cada edición. Un comprobante no demuestra por sí mismo que el dinero llegó. Tesorería revisa el abono directamente, registra referencia bancaria única, fecha y responsable; solo entonces el sistema acredita el valor y asigna números adicionales.</p>
+  <p>La oportunidad cuesta $50.000 COP y puede tener uno, dos o tres abonos: $50.000; dos veces $25.000; o $20.000 + $15.000 + $15.000, cuando esas modalidades estén contempladas por el reglamento autorizado. Los números se asignan proporcionalmente a los valores confirmados, hasta un máximo de 50.</p>
+  <h2>4. Participación y sorteo</h2>
+  <p>Una reserva, comprobante en revisión o abono parcial <strong>no habilita para participar</strong>. La totalidad de $50.000 debe estar confirmada manualmente y la edición debe estar vigente. El resultado y entrega de premio siguen las reglas aprobadas de la edición.</p>
+  <h2>5. WhatsApp y privacidad</h2>
+  <p>El grupo por edición es opcional; la invitación se presenta después del pago total confirmado y del consentimiento del titular. Quienes se unan verán el nombre y número de teléfono de WhatsApp de los demás participantes. Puedes retirar tu consentimiento desde Mi cuenta, aunque ello no implica que se te expulse automáticamente del grupo.</p>
+  <h2>6. Atención y reclamaciones</h2>
+  <p>Consulta en tu cuenta los comprobantes y decisiones. Si una transferencia no coincide con tu reporte o una reserva vence, contacta al equipo antes de efectuar un segundo pago. Las reglas particulares definen reembolsos, plazos y demás obligaciones.</p>
+  <div className="row-actions"><Link href="/numeros" className="btn btn-primary">Ver edición y autorización</Link>
+   <Link href="/mi-cuenta" className="btn btn-secondary">Consultar mis pedidos</Link></div>
+ </section>
+ </div>;}
