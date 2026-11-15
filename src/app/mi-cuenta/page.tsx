@@ -23,11 +23,15 @@ export default function MiCuentaPage(){
    Hay {oldRecords} registro(s) de una simulación antigua guardados solo en este navegador. Se conservan sin borrar, pero <strong>no son reservas centrales, abonos bancarios ni oportunidades para un sorteo</strong>. Crea una nueva selección en el sistema central si deseas ensayar la disponibilidad.
   </div>}
   <CommerceCustomer accountOnly/>
-  <CustomerPreviewReservations/>
-  <CustomerPaymentControl/>
-  <CustomerNotifications/>
   <CustomerProfile/>
-  <section className="panel"><h2>Referencias registradas anteriormente</h2><p className="muted">Estos reportes son históricos e independientes de los pagos comerciales verificados manualmente.</p><CustomerBankReports mode="history"/></section>
+  <details className="panel">
+   <summary>Consultar simulaciones y reportes anteriores (sin valor comercial)</summary>
+   <p className="muted">Los siguientes registros son pruebas anteriores y no acreditan dinero ni participan en las ediciones comerciales.</p>
+   <CustomerPreviewReservations/>
+   <CustomerPaymentControl/>
+   <CustomerNotifications/>
+   <CustomerBankReports mode="history"/>
+  </details>
   <MyReviews/>
  </div>;
 }
