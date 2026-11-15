@@ -50,7 +50,7 @@ const faqs = [
   },
   {
     "question": "¿Cómo funcionarían las cuotas?",
-    "answer": "Las opciones previstas son dos pagos de $25.000 o tres abonos de $20.000, $15.000 y $15.000. El pago total de $50.000 es indispensable para participar."
+    "answer": "Las cuotas son dos pagos de $25.000 o tres abonos de $20.000, $15.000 y $15.000 cuando el reglamento de la edición lo autorice. Solo el total de $50.000 confirmado puede habilitar la participación."
   },
   {
     "question": "¿Con un abono parcial puedo ganar?",
@@ -58,11 +58,11 @@ const faqs = [
   },
   {
     "question": "¿Cuánto dura la reserva de números?",
-    "answer": "El plazo previsto es de 24 horas sin un primer abono confirmado. Al vencer, los números pueden liberarse. Este mecanismo solo será vinculante cuando funcione en el sistema central y conste en el reglamento."
+    "answer": "Sin comprobante, la reserva vence en 24 horas. Si envías el comprobante antes de vencer, los números quedan protegidos hasta la verificación manual de tesorería; el plazo objetivo de revisión es 72 horas."
   },
   {
     "question": "¿Qué pasa si se vence mi reserva?",
-    "answer": "Podrás intentar recuperar los números que continúen disponibles y sustituir los que otra persona haya ocupado. La disponibilidad deberá verificarse en el sistema central al confirmar."
+    "answer": "Si no enviaste comprobante dentro de las 24 horas, los números se liberan y puedes crear una nueva reserva con los números disponibles. Los pedidos pendientes de revisión no liberan números automáticamente."
   },
   {
     "question": "¿Qué sucede si ya hice un abono y no completo el saldo?",
@@ -70,11 +70,11 @@ const faqs = [
   },
   {
     "question": "¿Cómo sabré si se confirmó mi pago?",
-    "answer": "Cuando se habiliten pagos reales, Oportunia deberá mostrar un comprobante verificable y el estado confirmado de la operación. Una referencia ingresada manualmente no prueba por sí sola que el dinero fue recibido."
+    "answer": "Desde Mi cuenta verás tu comprobante como pendiente, aprobado manualmente o rechazado. La comprobación por tesorería del dinero recibido, y no la foto enviada, determina cuándo se acredita un abono."
   },
   {
     "question": "¿Puedo pagar por Nequi, PSE o transferencia?",
-    "answer": "Los medios disponibles se anunciarán únicamente después de activar y verificar los canales oficiales de recaudo. No envíes dinero a cuentas difundidas por terceros."
+    "answer": "La edición comercial puede mostrar cuentas oficiales Bancolombia o Nequi habilitadas por administración. Puedes transferir desde Bancolombia, Nequi, Bre-B o DaviPlata hacia una cuenta de destino publicada. No se usa pasarela de pagos."
   },
   {
     "question": "¿Cuándo se realizará la selección del ganador?",
@@ -90,11 +90,11 @@ const faqs = [
   },
   {
     "question": "¿Cómo sé que las opiniones son auténticas?",
-    "answer": "Las opiniones se envían desde cuentas registradas, pasan por revisión y se publican en la sección de la comunidad."
+    "answer": "La recepción y publicación de nuevas opiniones está deshabilitada hasta poder vincularlas con participaciones verificadas. Nunca publicamos opiniones inventadas."
   },
   {
     "question": "¿Puedo opinar sobre una edición?",
-    "answer": "Sí. Desde «Mi cuenta», al iniciar sesión, puedes enviar una calificación de 1 a 5 estrellas y un comentario por edición. Las opiniones pasan por revisión antes de publicarse."
+    "answer": "El módulo de opiniones se habilitará cuando sea posible demostrar la participación real del cliente. Actualmente no recibe nuevas calificaciones."
   },
   {
     "question": "¿Cómo ingreso a mi cuenta?",
@@ -102,11 +102,11 @@ const faqs = [
   },
   {
     "question": "¿Mis números se guardan si cambio de celular?",
-    "answer": "Tu cuenta permite consultar los reportes y avisos registrados. Algunas herramientas de cálculo y selección del navegador no representan participaciones oficiales."
+    "answer": "Sí. Los pedidos comerciales y los números asignados se almacenan en Supabase y se consultan con tu misma cuenta desde otro dispositivo. Las simulaciones anteriores quedan separadas."
   },
   {
     "question": "¿Es posible comprar o pagar en este momento?",
-    "answer": "La compra de oportunidades estará disponible cuando se anuncie la apertura y se publiquen los medios de pago autorizados. Revisa las condiciones de cada edición."
+    "answer": "Visita Elegir números. Si la edición está habilitada con su autorización, reglas y cuentas receptoras, puedes reservar por 24 horas. En caso contrario verás el estado sin recibir pagos."
   },
   {
     "question": "¿Qué debo hacer si tengo una duda o una reclamación?",

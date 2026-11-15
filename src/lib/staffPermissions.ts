@@ -33,6 +33,8 @@ export type StaffModule={
   icon:string; permission:StaffPermission;
 };
 export const staffModules:readonly StaffModule[]=[
+  {href:"/admin/ventas",title:"Autorización y ventas",section:"Propietario",icon:"♢",permission:"admin.dashboard",summary:"Operador, autorización, cuentas receptoras y grupos WhatsApp."},
+  {href:"/admin/revision-pagos",title:"Comprobantes comerciales",section:"Tesorería",icon:"✓",permission:"bank.write",summary:"Revisión bancaria manual con números protegidos y asignación transaccional."},
   {href:"/admin/automatizaciones",title:"Automatizaciones internas",section:"Comunicación",icon:"⚡",permission:"staff.manage",
    summary:"Activar o desactivar flujos de avisos privados y auditar sus ejecuciones."},
   {href:"/admin/control-pagos",title:"Control de pagos",section:"Tesorería",icon:"▣",permission:"bank.read",

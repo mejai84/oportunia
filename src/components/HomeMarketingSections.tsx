@@ -36,7 +36,7 @@ export const publicBenefits=[
 
 export const publicParticipationSteps=[
   {icon:"smartphone" as const,title:"Regístrate",detail:"Crea tu cuenta para consultar avisos y guardar tu historial.",href:"/acceso",action:"Ir a mi cuenta"},
-  {icon:"numbers" as const,title:"Elige tus números",detail:"Conoce cómo elegir 10 números o recibirlos automáticamente.",href:"/ensayo-reservas",action:"Elegir números"},
+  {icon:"numbers" as const,title:"Elige tus números",detail:"Conoce cómo elegir 10 números o recibirlos automáticamente.",href:"/numeros",action:"Elegir números"},
   {icon:"credit-card" as const,title:"Realiza tu pago",detail:"Consulta los canales y requisitos publicados para cada edición.",href:"/reglas",action:"Conocer condiciones"},
   {icon:"trophy" as const,title:"¡Listo!",detail:"Solo una oportunidad confirmada conforme al reglamento podrá participar.",href:"/reglas",action:"Consultar reglas"},
 ] as const;
