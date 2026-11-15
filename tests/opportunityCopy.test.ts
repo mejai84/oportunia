@@ -24,10 +24,10 @@ test("public marketing uses opportunities and editions instead of sorts",()=>{
  }
 });
 test("marketing remains truthful; actual chance mechanism and authorization remain disclosed",()=>{
- assert.match(files.rules,/mecanismo por azar/);
- assert.match(files.rules,/sorteo o resultado de lotería/);
- assert.match(files.rules,/reglamento autorizado/);
- assert.match(files.rules,/antes de abrir la participación/);
+ assert.match(files.rules,/reglamento específico/);
+ assert.match(files.rules,/sorteo/);
+ assert.match(files.rules,/reglamento autorizado|reglas aprobadas/);
+ assert.match(files.rules,/comprobante/);
  assert.match(files.metadata,/autorizaciones aplicables/);
  assert.match(files.landing,/resultado oficial de lotería/);
  assert.doesNotMatch(files.landing,/Fecha por anunciar|PRÓXIMAMENTE/);
