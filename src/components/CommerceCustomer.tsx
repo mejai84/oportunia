@@ -27,7 +27,7 @@ const customerStatus:Record<string,string>={
  reserved:"Reservada · pendiente de comprobante",
  proof_pending:"Comprobante recibido · pendiente de verificación manual (números protegidos)",
  part_paid:"Abono confirmado · números bloqueados hasta completar",
- paid:"Pago completo confirmado · oportunidad registrada",
+ paid:"Pago completo confirmado manualmente · consulta las condiciones de participación",
  expired:"Reserva vencida · números liberados",
  cancelled:"Reserva cancelada"
 };
@@ -268,7 +268,7 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
        {effective==="reserved"&&<p>Reserva sin comprobante hasta {new Date(o.expires_at).toLocaleString("es-CO")}.</p>}
        {effective==="proof_pending"&&<p className="alert alert-warning">Comprobante recibido; tus números no se liberarán por vencimiento mientras tesorería decide. Fecha objetivo de revisión: {o.review_due_at?new Date(o.review_due_at).toLocaleString("es-CO"):"Pendiente"}.</p>}
        {effective==="part_paid"&&<p>Los números ya asignados permanecen bloqueados. Falta confirmar el saldo.</p>}
-       {effective==="paid"&&<p className="alert alert-success">Pago total confirmado por revisión bancaria manual. Conserva tu registro y revisa las condiciones oficiales del sorteo.</p>}
+       {effective==="paid"&&<p className="alert alert-success">Pago total confirmado por tesorería mediante revisión bancaria manual. Conserva tu comprobante; la validación de la participación y el sorteo se sujetan al reglamento y al operador autorizado.</p>}
        <div className="chips">{ownNumbers.map(n=><span className="chip" key={n.number}
         title={n.category==="extra"?"Asignado tras abono confirmado":"Número inicial"}>
         {displayPreviewNumber(n.number)}</span>)}</div>
