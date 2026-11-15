@@ -4,7 +4,8 @@ import {useCallback,useEffect,useMemo,useState,type FormEvent} from "react";
 import {oportuniaClient} from "@/lib/oportuniaSupabase";
 import {displayPreviewNumber,parsePreviewNumber} from "@/lib/previewReservations";
 
-type Draw={draw_id:string;authority_name:string;operator_name:string;authorization_reference:string;
+type Draw={draw_id:string;country_code:string;legal_mode:"permit_required"|"no_permit_required";legal_basis_url:string;
+ authority_name:string;operator_name:string;authorization_reference:string;
  authorization_document_url:string;rules_url:string;sales_enabled:boolean;authorized_from:string|null;
  authorized_until:string|null;price_cop:number;max_orders:number};
 type Order={id:string;draw_id:string;user_id:string;selection_mode:string;payment_plan:string;
@@ -15,6 +16,8 @@ type Receipt={id:string;order_id:string;destination_bank:string;claimed_referenc
 type Bank={bank:string;account_number:string;account_holder:string;account_type:string;enabled:boolean};
 type GroupConsent={order_id:string;consented_at:string|null;revoked_at:string|null};
 type Group={draw_id:string;group_name:string;invite_url:string};
+type VerifiedCountry={country_code:string;expires_at:string};
+type CountryRequest={id:string;country_code:string;status:string;requested_at:string};
 const money=(n:number)=>new Intl.NumberFormat("es-CO",{style:"currency",currency:"COP",maximumFractionDigits:0}).format(n);
 const plans=[{value:"contado",label:"Un pago de $50.000"},{value:"dos-cuotas",label:"Dos pagos de $25.000"},{value:"tres-cuotas",label:"Tres pagos: $20.000 + $15.000 + $15.000"}];
 function nextAmount(o:Order):number {
@@ -40,6 +43,8 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
  const [banks,setBanks]=useState<Bank[]>([]),[orders,setOrders]=useState<Order[]>([]);
  const [numbers,setNumbers]=useState<Num[]>([]),[receipts,setReceipts]=useState<Receipt[]>([]);
  const [consents,setConsents]=useState<GroupConsent[]>([]),[groups,setGroups]=useState<Group[]>([]);
+ const [verifiedCountries,setVerifiedCountries]=useState<VerifiedCountry[]>([]);
+ const [countryRequests,setCountryRequests]=useState<CountryRequest[]>([]);
  const [taken,setTaken]=useState<Set<number>>(new Set());
  const [chosen,setChosen]=useState<number[]>([]),[mode,setMode]=useState<"manual"|"automatic">("manual");
  const [plan,setPlan]=useState("contado"),[entry,setEntry]=useState(""),[page,setPage]=useState(0);
@@ -61,8 +66,8 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
  },[client]);
 
  const refresh=useCallback(async(u:string)=>{
-  const [d,t,b,o,n,rc,c,g]=await Promise.all([
-   client.from("commerce_draws").select("draw_id,authority_name,operator_name,authorization_reference,authorization_document_url,rules_url,sales_enabled,authorized_from,authorized_until,price_cop,max_orders"),
+  const [d,t,b,o,n,rc,c,g,v,q]=await Promise.all([
+   client.from("commerce_draws").select("draw_id,country_code,legal_mode,legal_basis_url,authority_name,operator_name,authorization_reference,authorization_document_url,rules_url,sales_enabled,authorized_from,authorized_until,price_cop,max_orders"),
    client.from("draw_catalog").select("id,title").eq("enabled",true),
    client.from("commerce_payment_channels").select("bank,account_number,account_holder,account_type,enabled").eq("enabled",true),
    client.from("commerce_orders").select("id,draw_id,user_id,selection_mode,payment_plan,paid_cop,price_cop,status,expires_at,review_due_at,created_at").eq("user_id",u).order("created_at",{ascending:false}).limit(40),
@@ -70,8 +75,11 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
    client.from("commerce_receipts").select("id,order_id,destination_bank,claimed_reference,amount_cop,status,created_at,rejection_reason").eq("user_id",u).order("created_at",{ascending:false}).limit(80),
    client.from("commerce_group_consent").select("order_id,consented_at,revoked_at").eq("user_id",u),
    client.from("commerce_whatsapp_groups").select("draw_id,group_name,invite_url"),
+   client.from("commerce_country_verifications").select("country_code,expires_at").eq("user_id",u),
+   client.from("commerce_country_requests").select("id,country_code,status,requested_at")
+    .eq("user_id",u).order("requested_at",{ascending:false}).limit(30),
   ]);
-  const results=[d,t,b,o,n,rc,c,g];
+  const results=[d,t,b,o,n,rc,c,g,v,q];
   if(results.some(x=>x.error))throw new Error("No fue posible consultar tu historial comercial. Comprueba tu sesión y la conexión.");
   const list=(d.data||[]) as Draw[];
   setDraws(list);setDrawId(prev=>list.some(x=>x.draw_id===prev)?prev:(list.find(x=>x.sales_enabled)?.draw_id||list[0]?.draw_id||""));
@@ -82,6 +90,8 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
   setReceipts((rc.data||[]) as Receipt[]);
   setConsents((c.data||[]) as GroupConsent[]);
   setGroups((g.data||[]) as Group[]);
+  setVerifiedCountries((v.data||[]) as VerifiedCountry[]);
+  setCountryRequests((q.data||[]) as CountryRequest[]);
  },[client]);
  const loadTaken=useCallback(async(id:string)=>{
   const {data,error:rpcError}=await client.rpc("get_commerce_taken_numbers",{p_draw_id:id});
@@ -109,6 +119,21 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
   return()=>{active=false;};
  },[userId,drawId,live,loadTaken]);
 
+ const country=activeDraw?.country_code||"CO";
+ const countryEligible=country==="CO"||verifiedCountries.some(v=>
+   v.country_code===country&&new Date(v.expires_at).getTime()>Date.now());
+ const countryRequest=countryRequests.find(q=>q.country_code===country&&q.status==="pending");
+ async function requestCountry(){
+  if(!userId||busy||country==="CO")return;
+  setBusy(true);setError("");setNotice("");
+  try{
+   const {error:rpcError}=await client.rpc("request_commerce_country_review",{p_country_code:country});
+   if(rpcError)throw rpcError;
+   await refresh(userId);
+   setNotice("Solicitud enviada. La administración debe verificar tu elegibilidad territorial antes de permitir la reserva.");
+  }catch(e){setError(e instanceof Error?e.message:"No se pudo solicitar la revisión de país.");}
+  finally{setBusy(false);}
+ }
  const current=orders.find(o=>o.draw_id===drawId &&
  (["reserved","proof_pending","part_paid"].includes(o.status)) &&
  !(o.status==="reserved" && new Date(o.expires_at).getTime()<=Date.now()));
@@ -126,6 +151,7 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
  async function reserve(e:FormEvent){
   e.preventDefault();if(!userId||busy||!drawId)return;
   if(current){setError("Ya tienes una selección activa en esta edición.");return;}
+  if(!countryEligible){setError("Tu país de residencia debe ser validado antes de reservar.");return;}
   if(mode==="manual"&&chosen.length!==10){setError("Selecciona exactamente diez números.");return;}
   setBusy(true);setError("");setNotice("");
   try{
