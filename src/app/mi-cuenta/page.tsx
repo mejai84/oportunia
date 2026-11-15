@@ -4,6 +4,7 @@ import {useApp} from "@/components/AppProvider";
 import {CustomerProfile} from "@/components/CustomerProfile";
 import {CustomerPreviewReservations} from "@/components/CustomerPreviewReservations";
 import {CustomerBankReports} from "@/components/CustomerBankReports";
+import {CommerceCustomer} from "@/components/CommerceCustomer";
 import {CustomerPaymentControl} from "@/components/CustomerPaymentControl";
 import {CustomerNotifications} from "@/components/CustomerNotifications";
 import {MyReviews} from "@/components/MyReviews";
@@ -21,11 +22,12 @@ export default function MiCuentaPage(){
   {oldRecords>0&&<div className="alert alert-warning" role="note">
    Hay {oldRecords} registro(s) de una simulación antigua guardados solo en este navegador. Se conservan sin borrar, pero <strong>no son reservas centrales, abonos bancarios ni oportunidades para un sorteo</strong>. Crea una nueva selección en el sistema central si deseas ensayar la disponibilidad.
   </div>}
+  <CommerceCustomer accountOnly/>
   <CustomerPreviewReservations/>
   <CustomerPaymentControl/>
   <CustomerNotifications/>
   <CustomerProfile/>
-  <CustomerBankReports mode="history"/>
+  <section className="panel"><h2>Referencias registradas anteriormente</h2><p className="muted">Estos reportes son históricos e independientes de los pagos comerciales verificados manualmente.</p><CustomerBankReports mode="history"/></section>
   <MyReviews/>
  </div>;
 }
