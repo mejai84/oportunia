@@ -23,7 +23,7 @@ test("treasury cannot modify draws or read CRM notes",()=>{
  assert.equal(canStaffRole("treasury","bank.write"),true);
  assert.equal(canStaffRole("treasury","catalog.write"),false);
  assert.equal(canStaffRole("treasury","crm.read"),false);
- assert.deepEqual(visibleStaffModules("treasury").map(m=>m.href),["/admin/control-pagos","/admin/conciliacion"]);
+ assert.deepEqual(visibleStaffModules("treasury").map(m=>m.href),["/admin/revision-pagos","/admin/control-pagos","/admin/conciliacion"]);
 });
 test("support has customer management and followups, not finance or raffle changes",()=>{
  assert.equal(canStaffRole("support","crm.write"),true);
