@@ -43,7 +43,9 @@ begin
  and current_date between c.authorized_from and c.authorized_until)
  then raise exception 'La edición no admite ventas actualmente'; end if;
  select coalesce(jsonb_agg(number order by number),'[]'::jsonb) into v
- from public.commerce_numbers where draw_id=p_draw_id;
+ from public.commerce_numbers n join public.commerce_orders o on o.id=n.order_id
+ where n.draw_id=p_draw_id and (o.status in ('proof_pending','part_paid','paid')
+ or (o.status='reserved' and o.expires_at>now()));
  return v;
 end $$;
 
