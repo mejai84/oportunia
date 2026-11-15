@@ -146,6 +146,8 @@ begin
  or v_channel not in ('BANCOLOMBIA','NEQUI','BRE-B','DAVIPLATA','OTRO')
  or v_reference !~ '^[A-Z0-9][A-Z0-9._/-]{3,99}$'
  then raise exception 'Datos de banco o referencia inválidos';end if;
+ if not exists(select 1 from public.commerce_payment_channels b
+ where b.bank=v_bank and b.enabled) then raise exception 'El banco de destino no está publicado';end if;
  v_expected:=case o.payment_plan
  when 'contado' then case when o.paid_cop=0 then 50000 end
  when 'dos-cuotas' then case when o.paid_cop in (0,25000) then 25000 end
