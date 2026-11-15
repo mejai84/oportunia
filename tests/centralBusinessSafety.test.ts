@@ -51,5 +51,5 @@ test("commercial orders protect submitted receipts until treasury makes a decisi
  assert.match(create,/storage\.objects/);
  assert.match(review,/review_commerce_receipt/);
  assert.match(review,/insert into public\.commerce_confirmed_credits/);
- assert.match(review,/unique bank transaction/i);
+ assert.match(ddl,/unique\(bank,bank_transaction_reference\)/);
 });
