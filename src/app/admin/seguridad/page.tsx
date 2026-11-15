@@ -5,7 +5,12 @@ import {AdminAccessGate} from "@/components/AdminAccessGate";
 import {oportuniaClient} from "@/lib/oportuniaSupabase";
 
 type Readiness={
- mode:"non_commercial_preview";
+ mode:"non_commercial_preview"|"commerce_manual_review";
+ commerce_owner_authorizations_recorded:number;
+ commerce_active_editions:number;
+ commerce_manual_confirmed_credits:number;
+ commerce_pending_receipts:number;
+ commerce_published_bank_accounts:number;
  owner_count:number;
  owner_auto_email_grant_enabled:boolean;
  bank_provider_connection_available:boolean;
@@ -53,8 +58,12 @@ function ReadinessWorkspace(){
    details:"Debe comprobarse y habilitarse directamente en los controles de autenticación de Supabase.",kind:"security"},
   {title:"Autorizaciones y reglamento",verified:data.legal_authorization_verified_in_app,
    details:"No existe validación documental de la autorización del sorteo en la plataforma.",kind:"operations"},
-  {title:"Ventas y participaciones oficiales",verified:data.official_sales_enabled&&data.official_draw_entries_enabled,
-   details:"Permanecen inhabilitadas. Las reservas y los 50 números son pruebas no comerciales.",kind:"operations"},
+  {title:"Ventas comerciales por edición",verified:data.official_sales_enabled,
+   details:"Se habilitan cuando el propietario publica autorización, operador, reglamento, vigencia y cuenta receptora. La tesorería confirma cada ingreso bancario manualmente.",kind:"operations"},
+  {title:"Registro o validación externa de participaciones ante operador",verified:data.official_draw_entries_enabled,
+   details:"No existe aún integración automática con el operador para registrar participaciones ante él. No anuncies validación externa que el sistema no pueda demostrar.",kind:"operations"},
+  {title:"Documentación de autorización declarada por el propietario",verified:data.commerce_owner_authorizations_recorded>0,
+   details:"Es una declaración del propietario; no sustituye comprobación jurídica independiente de vigencia, comercialización web y reglas autorizadas.",kind:"operations"},
   {title:"Publicación en Vercel",verified:null,
    details:"Este módulo no puede determinar el estado externo del despliegue. Revisa Vercel y prueba el acceso real.",kind:"operations"},
  ]:[];
@@ -73,6 +82,12 @@ function ReadinessWorkspace(){
     <article><span>Movimientos importados</span><strong>{data.bank_files_uploaded}</strong><small>Cotejados con archivo: {data.bank_file_matches}</small></article>
     <article><span>Movimientos certificados por banco</span><strong>{data.bank_provider_verified_movements}</strong><small>Integración bancaria no conectada</small></article>
    </div>
+   <section className="readiness-panel">
+    <h2>Seguimiento comercial central</h2>
+    <p>{data.commerce_active_editions} edición(es) configuradas con ventas habilitadas; {data.commerce_published_bank_accounts} cuenta(s) receptoras publicadas;
+     {data.commerce_pending_receipts} comprobante(s) pendientes de decisión y {data.commerce_manual_confirmed_credits} ingreso(s) acreditados por revisión humana.</p>
+    <Link href="/admin/ventas" className="btn btn-secondary btn-small">Abrir configuración de ventas</Link>
+   </section>
    <section className="readiness-panel"><div className="readiness-section-top"><h2>Lista de condiciones previas</h2><button className="btn btn-secondary btn-small" type="button"
     onClick={()=>void refresh().catch(e=>setError(e instanceof Error?e.message:"Error de consulta"))}>Actualizar diagnóstico</button></div>
     <div className="readiness-checks">{checks.map(check=><article key={check.title}>
