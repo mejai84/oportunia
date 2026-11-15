@@ -225,12 +225,22 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
    {loading&&<p role="status">Consultando inventario y tus pedidos…</p>}
    {!accountOnly&&<section className="panel">
     <h2>Elegir y reservar números</h2>
-    {draws.length===0?<p className="alert alert-warning">No hay ediciones comerciales configuradas. Administración debe cargar la autorización y publicar las cuentas receptoras.</p>:<>
+    {draws.length===0?<p className="alert alert-warning">No hay ediciones comerciales configuradas. Administración debe configurar la modalidad legal aplicable, el reglamento y las cuentas receptoras.</p>:<>
      <label>Edición<select value={drawId} onChange={e=>{setDrawId(e.target.value);setChosen([]);setPage(0);}}>
       {draws.map(d=><option key={d.draw_id} value={d.draw_id}>{titles[d.draw_id]||d.draw_id}</option>)}
      </select></label>
-     {!live?<p className="alert alert-warning">La venta de esta edición aún no está habilitada o su autorización no está vigente. No envíes dinero.</p>:
-     <form className="form-stack" onSubmit={reserve}>
+     {!live?<p className="alert alert-warning">Esta edición no tiene ventas habilitadas o su período legal ha vencido. No envíes dinero.</p>:
+     <>
+      <p><strong>País de la edición: {country}</strong> · Régimen legal:{" "}
+       {activeDraw?.legal_mode==="no_permit_required"?
+        "No requiere permiso específico según análisis jurídico documentado":"Autorización requerida"}</p>
+      {!countryEligible&&<div className="alert alert-warning" role="status">
+       <p>Esta edición es para participantes elegibles de {country}. Administración debe verificar tu residencia; una dirección IP o declaración no bastan.</p>
+       {countryRequest?<p>Tu solicitud de revisión está pendiente.</p>:
+        <button type="button" className="btn btn-secondary btn-small" disabled={busy}
+         onClick={()=>void requestCountry()}>Solicitar revisión de mi país</button>}
+      </div>}
+      <form className="form-stack" onSubmit={reserve}>
       <p>Valor de la oportunidad: <strong>{money(activeDraw?.price_cop||50000)}</strong> · 10 números iniciales y hasta 40 adicionales según pagos confirmados. Solo participa con el 100 % confirmado.</p>
       {current?<p className="alert alert-warning">Ya tienes una reserva o pago parcial vigente en esta edición. Consulta el estado más abajo.</p>:<>
       <div className="row-actions">
@@ -261,12 +271,15 @@ export function CommerceCustomer({accountOnly=false}:{accountOnly?:boolean}){
        {plans.map(p=><option value={p.value} key={p.value}>{p.label}</option>)}</select></label>
       <label><input type="checkbox" required checked={terms} onChange={e=>setTerms(e.target.checked)}/>
        Acepto el reglamento publicado, el tratamiento de los datos necesarios y las condiciones de reserva.</label>
-      <p>Consulta el <a href={activeDraw?.rules_url} target="_blank" rel="noopener noreferrer">reglamento oficial de esta edición</a>
-       {" "}y la <a href={activeDraw?.authorization_document_url} target="_blank" rel="noopener noreferrer">autorización registrada</a>.</p>
+      <p>Consulta el <a href={activeDraw?.rules_url} target="_blank" rel="noopener noreferrer">reglamento de esta edición</a>{" "}
+       y {activeDraw?.legal_mode==="permit_required"?
+        <a href={activeDraw.authorization_document_url} target="_blank" rel="noopener noreferrer">su permiso publicado</a>:
+        <a href={activeDraw?.legal_basis_url} target="_blank" rel="noopener noreferrer">el fundamento de que no requiere permiso específico</a>}.</p>
+      {country!=="CO"&&<p className="small muted">Actualmente Oportunia solo admite pagos en COP a cuentas Bancolombia o Nequi. No ofrece métodos de pago locales de otros países.</p>}
       <button className="btn btn-primary" type="submit"
-       disabled={busy||(mode==="manual"&&chosen.length!==10)||!terms}>Reservar números por 24 horas</button>
+       disabled={busy||!countryEligible||(mode==="manual"&&chosen.length!==10)||!terms}>Reservar números por 24 horas</button>
       </>}
-     </form>}
+     </form></>}
     </>}
    </section>}
    <section className="panel">
